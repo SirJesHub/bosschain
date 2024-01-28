@@ -71,7 +71,7 @@ export async function POST(req: Request) {
         .upsert([
           {
             user_id: id,
-            role_name: "fromWebhook",
+            role_name: "student",
           },
         ])
         .select();

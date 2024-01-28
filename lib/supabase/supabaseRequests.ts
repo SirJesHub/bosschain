@@ -5,11 +5,11 @@ interface UserAuth {
   token: string | null | undefined;
 }
 
-interface writeRequest extends UserAuth{
+interface writeRequest extends UserAuth {
   event: any;
 }
 
-export const getTest = async ({ userId, token }: UserAuth) => {
+export const getPost = async ({ userId, token }: UserAuth) => {
   if (!token) return [];
   const supabase = await supabaseClient(token);
   const { data } = await supabase
@@ -20,13 +20,16 @@ export const getTest = async ({ userId, token }: UserAuth) => {
   return data;
 };
 
-export const addTest = async ({ userId, token, event }: writeRequest) => {
+export const addPost = async ({ userId, token, event }: writeRequest) => {
   if (!token) return [];
   const supabase = await supabaseClient(token);
-  const { data, error } = await supabase.from("test").insert({
-    user_id: userId,
-    text: event.target[0].value,
-  });
+  const { data, error } = await supabase
+    .from("test")
+    .insert({
+      user_id: userId,
+      text: event.target[0].value,
+    })
+    .select();
   if (error) {
     console.log("[ERROR]: ", error);
     return [];

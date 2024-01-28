@@ -80,3 +80,15 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.cl-formButtonPrimary {
+  font-size: 14px;
+  text-transform: none;
+  background-color: #a70e0e;
+}
+
+.cl-formButtonPrimary:hover,
+.cl-formButtonPrimary:focus,
+.cl-formButtonPrimary:active {
+  background-color: #49247a;
+}
