@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen-types": "npx supabase gen types typescript --linked > types/supabase.ts",
+    "tsformatAll": "npx prettier --write \"**/*.ts\""
   },
   "dependencies": {
     "@clerk/nextjs": "^4.27.5",
@@ -33,5 +35,9 @@
     "tailwindcss-animate": "^1.0.7",
     "tslib": "^2.6.2",
     "typescript": "5.3.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.4",
+    "supabase": "^1.136.3"
   }
 }

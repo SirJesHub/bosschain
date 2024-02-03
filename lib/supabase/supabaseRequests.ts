@@ -1,11 +1,13 @@
+import { ResponseStatus } from "@/constants/auth";
 import { supabaseClient } from "./supabaseClient";
+import { GetUserRoleResponse } from "@/models/requestModels";
 
 interface UserAuth {
-  userId: string | null | undefined;
+  userId: string;
   token: string | null | undefined;
 }
 
-interface writeRequest extends UserAuth {
+interface WriteRequest extends UserAuth {
   event: any;
 }
 
@@ -20,7 +22,7 @@ export const getPost = async ({ userId, token }: UserAuth) => {
   return data;
 };
 
-export const addPost = async ({ userId, token, event }: writeRequest) => {
+export const addPost = async ({ userId, token, event }: WriteRequest) => {
   if (!token) return [];
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase
@@ -35,4 +37,30 @@ export const addPost = async ({ userId, token, event }: writeRequest) => {
     return [];
   }
   return data;
+};
+
+export const getUserRole = async ({
+  userId,
+  token,
+}: UserAuth): Promise<GetUserRoleResponse> => {
+  try {
+    if (!token) throw new Error("Where is your token?!!");
+    const supabase = await supabaseClient(token);
+    const { data } = await supabase
+      .from("user")
+      .select("role_name")
+      .eq("user_id", userId)
+      .single();
+
+    console.log(data);
+
+    return {
+      data: data?.role_name || null,
+      error: null,
+      status: ResponseStatus.OK,
+    };
+  } catch (error) {
+    console.log("[SERVER ERROR]: ", error);
+    return { data: null, error: null, status: ResponseStatus.UNAUTHORIZED };
+  }
 };
