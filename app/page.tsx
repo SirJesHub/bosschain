@@ -2,38 +2,64 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addTest, getTest } from "@/lib/supabase/supabaseRequests";
+import { addPost, getPost, getUserRole } from "@/lib/supabase/supabaseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
-import Image from "next/image";
+import ReactJson from "react-json-view";
 import { useEffect, useState } from "react";
+import { Role } from "@/constants/auth";
 
 export default function Home() {
-  const { user, isSignedIn, isLoaded } = useUser();
-  const { userId, getToken } = useAuth();
+  const { user, isSignedIn } = useUser();
+  const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
+  const userId = maybeUserId || "";
 
-  const [test, setTest] = useState<any[]>();
+  const [post, setPost] = useState<{
+    created_at: string;
+    id: number;
+    text: string;
+    user_id: string;
+}[]>();
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadToTest = async () => {
-      const token = await getToken({ template: "supabase" });
-      const test = await getTest({ userId, token });
-      setTest(test);
+    const initializePage = async () => {
+      try {
+        const token = await getToken({ template: "supabase" });
+        const roleName = await getUserRole({ userId, token });
+        setRole(roleName.data);
+
+        const post = await getPost({ userId, token });
+        setPost(post);
+
+        setLoading(false);
+      } catch (error) {
+        console.log("[ERROR DURING PAGE LOAD]: ", error);
+      }
     };
 
-    loadToTest();
+    initializePage();
   }, []);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const token = await getToken({ template: "supabase" });
-    const addedTest = await addTest({ userId, token, event });
-    const updatedTest = await getTest({ userId, token });
-    setTest(updatedTest);
+    const addedPost = await addPost({ userId, token, event });
+    setPost(addedPost);
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
       <UserButton afterSignOutUrl="/" />
+      <div>isLoaded: {isLoaded.toString()}</div>
+      <div>sessionId: {sessionId}</div>
+      <h2>
+        Your role is <b>{role}</b>
+      </h2>
       {isSignedIn ? (
         <div className="p-3">
           <p className="text-3xl font-medium text-sky-700">
@@ -42,11 +68,11 @@ export default function Home() {
           <br />
           {userId}
           <br />
-          {JSON.stringify(test)}
+          {post?.map((row) => <ReactJson src={row} key={row.id}/>)}
           <br />
           <form onSubmit={handleSubmit}>
             <Input placeholder="dummy input" />
-            <Button>Dummy add test</Button>
+            <Button>Dummy add post</Button>
           </form>
         </div>
       ) : (

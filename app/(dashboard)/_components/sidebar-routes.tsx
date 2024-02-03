@@ -2,6 +2,7 @@
 
 import { Compass, Layout } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
+import { randomUUID } from "crypto";
 
 const guestRoutes = [
   {
@@ -22,7 +23,7 @@ export const SidebarRoutes = () => {
   return (
     <div className="flex flex-col w-full">
       {routes.map((route) => (
-        <SidebarItem />
+        <SidebarItem key={randomUUID()} />
         // key = {route.href}
         // icon = {route.icon}
         // label = {route.label}

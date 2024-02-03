@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
-      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
+      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local",
     );
   }
 
@@ -51,14 +51,14 @@ export async function POST(req: Request) {
   }
 
   // Get the ID and type
-  const { id } = evt.data;
+  const { id } = evt.data; // id should be supplied through clerk webhook
   const eventType = evt.type;
 
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
 
   try {
-    if (eventType === "user.created") {
+    if (eventType === "user.created" && id) {
       const supabase = await supabaseClientWithoutToken();
 
       // Insert role into Supabase table
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
         .upsert([
           {
             user_id: id,
-            role_name: "fromWebhook",
+            role_name: "student",
           },
         ])
         .select();
@@ -85,12 +85,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { err: "Bad webhook event type: expect 'user.created'" },
-      { status: 400 }
+      { status: 400 },
     );
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
