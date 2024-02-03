@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "gen-types": "npx supabase gen types typescript --linked > types/supabase.ts",
-    "tsformatAll": "npx prettier --write \"**/*.ts\""
+    "tsformatAll": "npx prettier --write \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@clerk/nextjs": "^4.27.5",

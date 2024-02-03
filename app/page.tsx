@@ -13,12 +13,14 @@ export default function Home() {
   const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
   const userId = maybeUserId || "";
 
-  const [post, setPost] = useState<{
-    created_at: string;
-    id: number;
-    text: string;
-    user_id: string;
-}[]>();
+  const [post, setPost] = useState<
+    {
+      created_at: string;
+      id: number;
+      text: string;
+      user_id: string;
+    }[]
+  >();
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -68,7 +70,7 @@ export default function Home() {
           <br />
           {userId}
           <br />
-          {post?.map((row) => <ReactJson src={row} key={row.id}/>)}
+          {post?.map((row) => <ReactJson src={row} key={row.id} />)}
           <br />
           <form onSubmit={handleSubmit}>
             <Input placeholder="dummy input" />
