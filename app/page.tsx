@@ -7,9 +7,12 @@ import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import ReactJson from "react-json-view";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/nav-bar";
+import { useRoleContext } from "@/context/roleContext";
 import { Role } from "@/constants/auth";
 
 export default function Home() {
+  const { role, setRole } = useRoleContext();
+
   const { user, isSignedIn } = useUser();
   const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
   const userId = maybeUserId || "";
@@ -22,15 +25,13 @@ export default function Home() {
       user_id: string;
     }[]
   >();
-  const [role, setRole] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initializePage = async () => {
       try {
         const token = await getToken({ template: "supabase" });
-        const roleName = await getUserRole({ userId, token });
-        setRole(roleName.data);
 
         const post = await getPost({ userId, token });
         setPost(post);

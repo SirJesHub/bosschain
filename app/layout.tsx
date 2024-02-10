@@ -6,6 +6,7 @@ import NavBar from "@/components/nav-bar";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import Layout from "@/components/layout/layout";
+import { RoleContextProvider } from "@/context/roleContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,15 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <ClerkProvider>
-        <html lang="en">
-          <body className={inter.className}>
-            <NavBar />
-            {children}
+    <ClerkProvider>
+      <html lang="en">
+        <RoleContextProvider>
+          <body className={inter.className}><NavBar />
+          {children}
           </body>
-        </html>
-      </ClerkProvider>
-    </>
+        </RoleContextProvider>
+      </html>
+    </ClerkProvider>
   );
 }
