@@ -5,12 +5,10 @@ import "@blocknote/react/style.css";
 import "./TextEditor.css";
 import { lessonContent } from "../mockData/lessonContent";
 
-
-export default function TextEditor({content}:{content:any}) {
-  console.log(content)
-  console.log("type",typeof(content))
-console.log("xxxxxxxXXX", JSON.parse(content))
-  const [blocks, setBlocks] = useState<any>(content);
+export default function TextEditor({ content }: { content: any }) {
+  console.log("CONTENTTTT", content);
+  console.log("type", typeof content);
+  const [blocks, setBlocks] = useState<any>(JSON.parse(content));
 
   const editor: BlockNoteEditor = useBlockNote({
     editable: false,
