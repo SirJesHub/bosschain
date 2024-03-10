@@ -16,7 +16,7 @@ export default function NavBar() {
           </Link>
           <div className="pl-40 items-center md:order-3 space-x-0 md:space-x-5 rtl:space-x-reverse">
             <Link
-              href="/"
+              href="/teacher/courses"
               className="text-white py-2 px-3 bg-blue-700 md:hover:bg-orange-300 md:bg-transparent md:text-white md:p-5 md:dark:text-blue-500"
               aria-current="page"
             >
