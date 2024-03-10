@@ -63,20 +63,16 @@ export default function LessonPage({
         }
         if (lessonContent.data) {
           setLessonContent(lessonContent.data.content);
+          console.log("LESSSON OCNTECT", lessonContent);
         } else {
           console.log("No course data found in the lesson Content");
         }
-      } catch (error) {
-        console.log("[ERROR DURING PAGE LOAD]: ", error);
-      }
-
-      //get user progress
-      try {
         const userProgress = getUserProgress();
         setUserProgress(userProgress);
       } catch (error) {
         console.log("[ERROR DURING PAGE LOAD]: ", error);
       }
+
       setLoading(false);
     };
     initializePage();
@@ -99,32 +95,12 @@ export default function LessonPage({
     setTotalLessonCount(totalLessonCount);
   };
 
-  // Initialize lesson visibility state
-  // const initialLessonVisibility = courseInformation.weeks.reduce((acc:any, week:any) => {
-  //   acc[week.weekNumber] = false;
-  //   return acc;
-  // }, {});
-
-  // const [lessonVisibility, setLessonVisibility] = useState(
-  //   initialLessonVisibility
-  // );
-
-  // const toggleLesson = (weekNumber:any) => {
-  //   setLessonVisibility((prevState:any) => ({
-  //     ...prevState,
-  //     [weekNumber]:!prevState[weekNumber]
-
-  //   }));
-  // };
-
-  // console.log(lessonVisibility, "from page.tsx")
-
   return (
     <div className="grid grid-cols-12 grid-rows-5 h-screen gap-2 ">
       <div className=" col-span-9 row-span-5 overflow-auto px-4  mt-4">
-        {!lessonType && (
+        {!lessonType && lessonContent && (
           <div className="flex flex-col items-end ">
-            <TextEditor content={{content:lessonContent}} />
+            <TextEditor content={lessonContent} />
             {nextLessonId != null && (
               <button
                 className="p-1 pl-2 pr-2 my-5 h-10 rounded-3xl bg-blue-500 w-48"
