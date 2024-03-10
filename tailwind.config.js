@@ -6,6 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './node_modules/flowbite/**/*.js'
 	],
   theme: {
     container: {
@@ -50,6 +51,8 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        'navigation-bar': '#539fff',
+        'nav-hover' : '#FFA34E'
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -72,5 +75,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate",'flowbite/plugin')], 
 }

@@ -6,7 +6,9 @@ import { addPost, getPost, getUserRole } from "@/lib/supabase/supabaseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import ReactJson from "react-json-view";
 import { useEffect, useState } from "react";
+import NavBar from "@/components/nav-bar";
 import { useRoleContext } from "@/context/roleContext";
+import { Role } from "@/constants/auth";
 
 export default function Home() {
   const { role, setRole } = useRoleContext();
