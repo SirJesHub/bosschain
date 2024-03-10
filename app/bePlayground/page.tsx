@@ -6,11 +6,8 @@ import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import ReactJson from "react-json-view";
 import { useEffect, useState } from "react";
 import { useRoleContext } from "@/context/roleContext";
-import {
-  createCourse,
-  getCourse,
-  getFullCourse,
-} from "@/lib/supabase/courseRequests";
+import { createCourse } from "@/lib/supabase/courseRequests";
+import { getCourse, getFullCourse } from "@/lib/supabase/enrollmentRequests";
 import { SupabaseResponse } from "@/models/requestModels";
 import { Database } from "@/types/supabase";
 
