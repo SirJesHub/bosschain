@@ -1,7 +1,46 @@
 import { ResponseStatus } from "@/constants/auth";
+import { Database } from "@/types/supabase";
 
-export interface GetUserRoleResponse {
+interface UserAuth {
+  userId: string;
+  token: string | null | undefined;
+}
+
+interface WriteRequest extends UserAuth {
+  event: any;
+}
+
+interface GetUserRoleResponse {
   data: string | null;
   error: string | null;
   status: ResponseStatus;
 }
+
+interface CreateCourseRequest extends UserAuth {
+  title: string;
+  description: string | null;
+}
+
+interface SupabaseResponse<T> {
+  data: T | null;
+  statusCode: number;
+  statusMessage: string | undefined;
+  error: string | null;
+}
+
+type FullCourseDetail = Database["public"]["Tables"]["course"]["Row"] & {
+  module: Array<ModuleLesson>;
+};
+
+type ModuleLesson = Database["public"]["Tables"]["module"]["Row"] & {
+  lesson: Array<Database["public"]["Tables"]["lesson"]["Row"]>;
+};
+
+export type {
+  UserAuth,
+  WriteRequest,
+  GetUserRoleResponse,
+  CreateCourseRequest,
+  SupabaseResponse,
+  FullCourseDetail,
+};

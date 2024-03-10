@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   graphql_public: {
     Tables: {
       [_ in never]: never;
@@ -34,6 +34,141 @@ export interface Database {
   };
   public: {
     Tables: {
+      course: {
+        Row: {
+          course_id: number;
+          created_at: string;
+          description: string | null;
+          instructor_id: string | null;
+          title: string | null;
+        };
+        Insert: {
+          course_id?: number;
+          created_at?: string;
+          description?: string | null;
+          instructor_id?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          course_id?: number;
+          created_at?: string;
+          description?: string | null;
+          instructor_id?: string | null;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_course_instructor_id_fkey";
+            columns: ["instructor_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
+      enrollment: {
+        Row: {
+          course_id: number | null;
+          created_at: string;
+          enrollment_id: number;
+          user_id: string | null;
+        };
+        Insert: {
+          course_id?: number | null;
+          created_at?: string;
+          enrollment_id?: number;
+          user_id?: string | null;
+        };
+        Update: {
+          course_id?: number | null;
+          created_at?: string;
+          enrollment_id?: number;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_enrollment_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "course";
+            referencedColumns: ["course_id"];
+          },
+          {
+            foreignKeyName: "public_enrollment_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
+      lesson: {
+        Row: {
+          content: string | null;
+          content_type: string | null;
+          created_at: string;
+          lesson_id: number;
+          module_id: number | null;
+          title: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          content_type?: string | null;
+          created_at?: string;
+          lesson_id?: number;
+          module_id?: number | null;
+          title?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          content_type?: string | null;
+          created_at?: string;
+          lesson_id?: number;
+          module_id?: number | null;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_lesson_module_id_fkey";
+            columns: ["module_id"];
+            isOneToOne: false;
+            referencedRelation: "module";
+            referencedColumns: ["module_id"];
+          },
+        ];
+      };
+      module: {
+        Row: {
+          course_id: number | null;
+          created_at: string;
+          description: string | null;
+          module_id: number;
+          title: string | null;
+        };
+        Insert: {
+          course_id?: number | null;
+          created_at?: string;
+          description?: string | null;
+          module_id?: number;
+          title?: string | null;
+        };
+        Update: {
+          course_id?: number | null;
+          created_at?: string;
+          description?: string | null;
+          module_id?: number;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_module_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "course";
+            referencedColumns: ["course_id"];
+          },
+        ];
+      };
       test: {
         Row: {
           created_at: string;
@@ -269,7 +404,7 @@ export interface Database {
       [_ in never]: never;
     };
   };
-}
+};
 
 export type Tables<
   PublicTableNameOrOptions extends

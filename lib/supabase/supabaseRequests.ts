@@ -1,17 +1,12 @@
 import { ResponseStatus } from "@/constants/auth";
 import { supabaseClient } from "./supabaseClient";
-import { GetUserRoleResponse } from "@/models/requestModels";
+import {
+  GetUserRoleResponse,
+  UserAuth,
+  WriteRequest,
+} from "@/models/requestModels";
 
-interface UserAuth {
-  userId: string;
-  token: string | null | undefined;
-}
-
-interface WriteRequest extends UserAuth {
-  event: any;
-}
-
-export const getPost = async ({ userId, token }: UserAuth) => {
+const getPost = async ({ userId, token }: UserAuth) => {
   if (!token) return [];
   const supabase = await supabaseClient(token);
   const { data } = await supabase
@@ -22,7 +17,7 @@ export const getPost = async ({ userId, token }: UserAuth) => {
   return data;
 };
 
-export const addPost = async ({ userId, token, event }: WriteRequest) => {
+const addPost = async ({ userId, token, event }: WriteRequest) => {
   if (!token) return [];
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase
@@ -39,7 +34,7 @@ export const addPost = async ({ userId, token, event }: WriteRequest) => {
   return data;
 };
 
-export const getUserRole = async ({
+const getUserRole = async ({
   userId,
   token,
 }: UserAuth): Promise<GetUserRoleResponse> => {
@@ -49,6 +44,7 @@ export const getUserRole = async ({
     const { data } = await supabase
       .from("user")
       .select("role_name")
+
       .eq("user_id", userId)
       .single();
 
@@ -64,3 +60,5 @@ export const getUserRole = async ({
     return { data: null, error: null, status: ResponseStatus.UNAUTHORIZED };
   }
 };
+
+export { getPost, addPost, getUserRole };
