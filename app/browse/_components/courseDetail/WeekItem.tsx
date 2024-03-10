@@ -25,14 +25,14 @@ type weekInfoProps = {
 };
 
 export default function WeekItem({
-  weekInfo,
+  moduleInfo,
   userProgress,
   courseId,
   filter,
   completedLessons,
   totalLessons,
 }: {
-  weekInfo: weekInfoProps;
+  moduleInfo: any;
   userProgress: any;
   courseId: number;
   filter: string;
@@ -48,14 +48,14 @@ export default function WeekItem({
   return (
     <div className="group relative w-[48vw]   transition-all duration-500   ">
       <div
-        className="cursor-pointer bg-slate-200 mb-5 p-5 rounded-2xl "
+        className="cursor-pointer bg-slate-200 mb-5 p-5 rounded-2xl"
         onClick={toggleWeek}
       >
         <button onClick={toggleWeek}>
           {showWeek ? (
             <ChevronUp
               size={30}
-              className="absolute right-7 top-5 font-2xl hover:cursor-pointer  "
+              className="absolute right-7 top-5 font-2xl hover:cursor-pointer "
             />
           ) : (
             <ChevronDown
@@ -65,7 +65,7 @@ export default function WeekItem({
           )}
         </button>
         <strong className=" font-extrabold text-lg">
-          {weekInfo.weekTitle}
+          {moduleInfo.title}
         </strong>
         <ul className="flex mt-2  text-sm">
           <li className="pr-3">Week 1</li>
@@ -73,11 +73,7 @@ export default function WeekItem({
           <li className="pr-3">4 lessons</li>
         </ul>
         <p className="mt-2 mr-4 text-sm ">
-          You will learn how the program is structured, what project management
-          is and what a project manager does, how to apply your skills from
-          previous work experience to project management roles, what types of
-          project management roles you could pursue after completing this
-          certificate, and how to search for those positions.
+          {moduleInfo.description}
         </p>
 
         {completedLessons > 0 && (
@@ -97,11 +93,11 @@ export default function WeekItem({
    `}
       >
         <div className="overflow-hidden">
-          {weekInfo.lessons.map(
-            (lesson: LessonInfoProps, index) => (
+          {moduleInfo.lesson.map(
+            (lesson:any, index:any) => (
               <LessonItem
-                key={lesson.lessonNumber}
-                userProgress={userProgress.lessons[index]}
+                key={lesson.lesson_id}
+                userProgress={userProgress.lesson[index]}
                 lesson={lesson}
                 courseId={courseId}
                 filter={filter}

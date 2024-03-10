@@ -10,18 +10,22 @@ import Progressbar from "./Progressbar";
 export default function CourseSidebar({
   courseId,
   lessonId,
-  nextLessonIdHandler
+  nextLessonIdHandler,
+  courseInfo,
+  userProgress
 }: {
+  courseInfo: any;
+  userProgress: any;
   courseId: Number;
   lessonId: Number;
   nextLessonIdHandler: Function
 }) {
   const router = useRouter();
-  const progress = userLearningData.progress;
-  const initialLessonVisibility = courseInformation.weeks.reduce(
-    (acc: any, week: any) => {
-      acc[week.weekNumber] = week.lessons.some(
-        (lesson: any) => lesson.lessonNumber == lessonId
+  const progress = userProgress;
+  const initialLessonVisibility = courseInfo.reduce(
+    (acc: any, module: any) => {
+      acc[module.module_id] = module.lesson.some(
+        (lesson: any) => lesson.lesson_id == lessonId
       );
       return acc;
     },
@@ -42,10 +46,10 @@ export default function CourseSidebar({
     let completedLessonCount: number = 0;
     let totalLessonCount: number = 0;
     let lessonProgress: { completedLesson: number; totalLesson: number }[] = [];
-    progress.map((week: any) => {
+    progress.map((module: any) => {
       let completedWeekLessonsCount: number = 0;
       let totalWeekLessonsCount: number = 0;
-      week.lessons.map((lesson: any) => {
+      module.lesson.map((lesson: any) => {
         totalWeekLessonsCount += 1;
         totalLessonCount += 1;
 
@@ -66,17 +70,16 @@ export default function CourseSidebar({
   }, [progress]);
 
   useEffect(() => {
-
     let nextLessonNumber = null;
     let foundCurrentLesson = false;
 
-    for (let week of courseInformation.weeks) {
-      for (let lesson of week.lessons) {
+    for (let module of courseInfo) {
+      for (let lesson of module.lesson) {
           if (foundCurrentLesson) {
-              nextLessonNumber = lesson.lessonNumber;
+              nextLessonNumber = lesson.lesson_id;
               break;
           }
-          if (lesson.lessonNumber == lessonId) {
+          if (lesson.lesson_id == lessonId) {
               foundCurrentLesson = true;
           }
       }
@@ -106,22 +109,22 @@ export default function CourseSidebar({
      
 
       <div className="relative z-11">
-        {courseInformation.weeks.map((week, index) => {
+        {courseInfo.map((module: any, index:any) => {
           const weeklyProgress = progress[index];
 
           return (
             <div
               className="bg-blue-300 mb-3 w-full mx-auto p-4 flex flex-wrap rounded-xl relative hover:bg-blue-400  hover:shadow-3xl transition-all duration-700 cursor-pointer"
-              key={week.weekNumber}
-              onClick={() => toggleLesson(week.weekNumber)}
+              key={module.module_id}
+              onClick={() => toggleLesson(module.module_id)}
             >
               <div className="">
                 <h1 className="text-base  mb-2">
-                  Week {week.weekNumber} : {week.weekTitle}
+                  Week {module.module_id} : {module.title}
                 </h1>
                 <h1 className="text-xs flex w-full mb-2">{`Lesson : ${lessonProgress[index].completedLesson}/${lessonProgress[index].totalLesson}`}</h1>
 
-                {lessonVisibility[week.weekNumber] === false ? (
+                {lessonVisibility[module.module_id] === false ? (
                   <ChevronDown className="absolute right-4 top-4 " />
                 ) : (
                   <ChevronUp className="absolute right-4 top-4 " />
@@ -129,36 +132,36 @@ export default function CourseSidebar({
               </div>
               <div
                 className={`grid w-full overflow-hidden transition-all duration-500 ease-in-out ${
-                  lessonVisibility[week.weekNumber]
+                  lessonVisibility[module.module_id]
                     ? "grid-rows-[1fr] opacity-100"
                     : " grid-rows-[0fr] opacity-0"
                 } `}
               >
                 <div className="overflow-hidden">
-                  {week.lessons.map((lesson, index) => {
+                  {module.lesson.map((lesson:any, index:any) => {
                     // if (lessonVisibility[week.weekNumber]) {
                     return (
                       <div
                         className={`w-full text-xs flex flex-wrap items-center p-3 mb-2  hover:bg-slate-300 transition-colors rounded-lg 
                      ${
-                       lessonId == lesson.lessonNumber
+                       lessonId == lesson.lesson_id
                          ? "bg-neutral-300"
                          : "bg-slate-100"
                      }`}
-                        key={lesson.lessonNumber}
+                        key={lesson.lesson_id}
                         onClick={() =>
                           router.push(
-                            `/browse/${courseId}/${lesson.lessonNumber}`
+                            `/browse/${courseId}/${lesson.lesson_id}`
                           )
                         }
                       >
-                        {weeklyProgress.lessons[index].status ===
+                        {weeklyProgress.lesson[index].status ===
                         "completed" ? (
                           <CheckSquare2 />
                         ) : (
                           <Square />
                         )}
-                        <p className="ml-2">{`${lesson.lessonNumber} . ${lesson.lessonTitle}`}</p>
+                        <p className="ml-2">{`${lesson.lesson_id} . ${lesson.title}`}</p>
                       </div>
                     );
                     // }

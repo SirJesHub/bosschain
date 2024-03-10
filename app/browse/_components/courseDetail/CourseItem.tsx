@@ -16,6 +16,8 @@ type LessonInfoProps = {
 
 type userProgressProps = {};
 
+
+
 export default function CourseItem({
   courseInfo,
   userProgress,
@@ -30,13 +32,13 @@ export default function CourseItem({
   return (
     <div >
       <ul>
-        {courseInfo.weeks.map((week: weekInfoProps, index: any) => {
+        {courseInfo.map((module: any, index: any) => {
           const completedLessons = userProgress[
-            week.weekNumber - 1
-          ].lessons.filter(
+            module.index
+          ].lesson.filter(
             (lesson: any) => lesson.status === "completed"
           ).length;
-          const totalLessons = userProgress[week.weekNumber - 1].lessons.length;
+          const totalLessons = userProgress[module.index].lesson.length;
           return filter === "all" ||
             (filter === "completed" && completedLessons === totalLessons) ||
             (filter === "not-started" && completedLessons === 0) ||
@@ -44,8 +46,8 @@ export default function CourseItem({
               completedLessons > 0 &&
               completedLessons < totalLessons) ? (
             <WeekItem
-              key={week.weekNumber}
-              weekInfo={week}
+              key={module.index}
+              moduleInfo={module}
               userProgress={userProgress[index]}
               courseId={courseId}
               filter={filter}
@@ -59,33 +61,3 @@ export default function CourseItem({
     </div>
   );
 }
-
-
-  /* {courseInfo.weeks.map((week: weekInfoProps, index:any) =>
-          filter === "all" ||
-          (filter === "completed" &&
-            userProgress[week.weekNumber - 1].lessons.every(
-              (lesson: any) => lesson.status === "completed"
-            )) ||
-          (filter === "not-started" &&
-            userProgress[week.weekNumber - 1].lessons.every(
-              (lesson: any) => lesson.status === "not-started"
-            )) ||
-          (filter === "in-progress" &&
-            userProgress[week.weekNumber - 1].lessons.some(
-              (lesson: any) => lesson.status === "not-started"
-            ) &&
-            userProgress[week.weekNumber - 1].lessons.some(
-              (lesson: any) => lesson.status === "completed"
-            )) ? (
-            <WeekItem
-              
-              key={week.weekNumber}
-              weekInfo={week}
-              userProgress={userProgress[index]}
-              courseId={courseId}
-              filter={filter}
-            />
-          ) : null
-        )} */
-
