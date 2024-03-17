@@ -107,6 +107,7 @@ export type Database = {
           content: string | null;
           content_type: string | null;
           created_at: string;
+          index: number | null;
           lesson_id: number;
           module_id: number | null;
           title: string | null;
@@ -115,6 +116,7 @@ export type Database = {
           content?: string | null;
           content_type?: string | null;
           created_at?: string;
+          index?: number | null;
           lesson_id?: number;
           module_id?: number | null;
           title?: string | null;
@@ -123,6 +125,7 @@ export type Database = {
           content?: string | null;
           content_type?: string | null;
           created_at?: string;
+          index?: number | null;
           lesson_id?: number;
           module_id?: number | null;
           title?: string | null;
@@ -142,6 +145,7 @@ export type Database = {
           course_id: number | null;
           created_at: string;
           description: string | null;
+          index: number | null;
           module_id: number;
           title: string | null;
         };
@@ -149,6 +153,7 @@ export type Database = {
           course_id?: number | null;
           created_at?: string;
           description?: string | null;
+          index?: number | null;
           module_id?: number;
           title?: string | null;
         };
@@ -156,6 +161,7 @@ export type Database = {
           course_id?: number | null;
           created_at?: string;
           description?: string | null;
+          index?: number | null;
           module_id?: number;
           title?: string | null;
         };

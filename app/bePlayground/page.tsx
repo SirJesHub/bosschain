@@ -6,8 +6,8 @@ import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import ReactJson from "react-json-view";
 import { useEffect, useState } from "react";
 import { useRoleContext } from "@/context/roleContext";
-import { createCourse } from "@/lib/supabase/courseRequests";
-import { getCourse, getFullCourse } from "@/lib/supabase/enrollmentRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { SupabaseResponse } from "@/models/requestModels";
 import { Database } from "@/types/supabase";
 
@@ -32,10 +32,13 @@ export default function Home() {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const course = await getFullCourse({ userId, token });
+        const course = await EnrollmentService.getFullCourse({ userId, token });
         setCourse(course); // may require frontend side to filter null -> can use Array.filter
 
-        const fullCourse = await getFullCourse({ userId, token });
+        const fullCourse = await EnrollmentService.getFullCourse({
+          userId,
+          token,
+        });
         console.log("FULL COURSE -> ", fullCourse);
 
         setLoading(false);
@@ -50,7 +53,7 @@ export default function Home() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const token = await getToken({ template: "supabase" });
-    const createdCourse = await createCourse({
+    const createdCourse = await CourseService.createCourse({
       userId,
       token,
       title: event.target[0].value,

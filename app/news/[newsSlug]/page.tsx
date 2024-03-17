@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const NewsDetailsPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const [content, setContent] = useState<string>('');
+  const [content, setContent] = useState<string>("");
 
   useEffect(() => {
     const fetchedContent = searchParams?.get("content") || "";
@@ -16,9 +16,9 @@ const NewsDetailsPage: React.FC = () => {
   }, [searchParams]);
 
   const formatDate = (isoDate: string | null): string => {
-    if (!isoDate) return '';
+    if (!isoDate) return "";
     const date = new Date(isoDate);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
   return (
@@ -33,7 +33,9 @@ const NewsDetailsPage: React.FC = () => {
             alt="News Image"
           />
         </div>
-        <div className="text-4xl font-bold mb-4">{searchParams?.get("title") || ""}</div>
+        <div className="text-4xl font-bold mb-4">
+          {searchParams?.get("title") || ""}
+        </div>
         <p className="text-lg mb-8">{searchParams?.get("description") || ""}</p>
         <div
           className="text-lg mb-8"
@@ -46,7 +48,11 @@ const NewsDetailsPage: React.FC = () => {
             <p>{`By: ${searchParams?.get("author") || ""}`}</p>
           </div>
           <Link legacyBehavior href={searchParams?.get("url") || ""} passHref>
-            <a className="text-violet-600" target="_blank" rel="noopener noreferrer">
+            <a
+              className="text-violet-600"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Read More
             </a>
           </Link>
