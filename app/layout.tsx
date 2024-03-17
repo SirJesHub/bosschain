@@ -24,8 +24,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <RoleContextProvider>
-          <body className={inter.className}><NavBar />
-          {children}
+          <body className={inter.className}>
+            <NavBar />
+            {children}
           </body>
         </RoleContextProvider>
       </html>
