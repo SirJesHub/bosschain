@@ -3,6 +3,7 @@ import {
   UserAuth,
   SupabaseResponse,
   FullCourseDetail,
+  EnrollCourseRequest,
 } from "@/models/requestModels";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
@@ -77,7 +78,44 @@ const getFullCourse = async ({
   };
 };
 
+const enrollByCourseId = async ({
+  userId,
+  token,
+  courseId,
+}: EnrollCourseRequest): Promise<
+  SupabaseResponse<Array<Database["public"]["Tables"]["enrollment"]["Row"]>>
+> => {
+  if (!token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(token);
+  const { data, error, status, statusText } = await supabase
+    .from("enrollment")
+    .insert({ user_id: userId, course_id: courseId })
+    .select();
+  if (error) {
+    console.log("[enrollByCourseId ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
 export const EnrollmentService = {
   getCourse,
   getFullCourse,
+  enrollByCourseId,
 };

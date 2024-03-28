@@ -140,6 +140,45 @@ export type Database = {
           },
         ];
       };
+      lesson_progress: {
+        Row: {
+          completed: boolean | null;
+          created_at: string;
+          enrollment_id: number | null;
+          lesson_id: number | null;
+          progress_id: number;
+        };
+        Insert: {
+          completed?: boolean | null;
+          created_at?: string;
+          enrollment_id?: number | null;
+          lesson_id?: number | null;
+          progress_id?: number;
+        };
+        Update: {
+          completed?: boolean | null;
+          created_at?: string;
+          enrollment_id?: number | null;
+          lesson_id?: number | null;
+          progress_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_lesson_progress_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "enrollment";
+            referencedColumns: ["enrollment_id"];
+          },
+          {
+            foreignKeyName: "public_lesson_progress_lesson_id_fkey";
+            columns: ["lesson_id"];
+            isOneToOne: false;
+            referencedRelation: "lesson";
+            referencedColumns: ["lesson_id"];
+          },
+        ];
+      };
       module: {
         Row: {
           course_id: number | null;
@@ -219,9 +258,38 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      enroll_user_in_course_and_create_progress_records:
+        | {
+            Args: {
+              p_user_id: number;
+              p_course_id: number;
+            };
+            Returns: undefined;
+          }
+        | {
+            Args: {
+              p_user_id: string;
+              p_course_id: number;
+            };
+            Returns: undefined;
+          };
+      hello_world: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       requesting_user_id: {
         Args: Record<PropertyKey, never>;
         Returns: string;
+      };
+      testfunction: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          course_id: number;
+          created_at: string;
+          description: string | null;
+          instructor_id: string | null;
+          title: string | null;
+        }[];
       };
     };
     Enums: {

@@ -66,6 +66,20 @@ export default function Home() {
     return <p>Loading...</p>;
   }
 
+  const enrollUser = async (event: any) => {
+    event.preventDefault();
+    const token = await getToken({ template: "supabase" });
+    const createdCourse = await EnrollmentService.enrollByCourseId({
+      userId,
+      token,
+      courseId: event.target[0].value as number,
+    });
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <UserButton afterSignOutUrl="/" />
@@ -95,6 +109,12 @@ export default function Home() {
           <form onSubmit={handleSubmit}>
             <Input placeholder="course title [IF WANT TO TEST DESCRIPTION -> NEED TO CREATE A FORM]" />
             <Button>Add course</Button>
+          </form>
+          <h1>Student functions</h1>
+          <h3>Enroll the user in a course</h3>
+          <form onSubmit={enrollUser}>
+            <Input placeholder="course id" />
+            <Button>Enroll</Button>
           </form>
         </div>
       ) : (

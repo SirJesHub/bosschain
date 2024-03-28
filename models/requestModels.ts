@@ -28,6 +28,10 @@ interface SupabaseResponse<T> {
   error: string | null;
 }
 
+interface EnrollCourseRequest extends UserAuth {
+  courseId: number;
+}
+
 type FullCourseDetail = Database["public"]["Tables"]["course"]["Row"] & {
   module: Array<ModuleLesson>;
 };
@@ -43,4 +47,5 @@ export type {
   CreateCourseRequest,
   SupabaseResponse,
   FullCourseDetail,
+  EnrollCourseRequest,
 };
