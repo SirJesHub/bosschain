@@ -25,7 +25,7 @@ const getCourse = async ({
   const supabase = await supabaseClient(token);
   const { data, error, status, statusText } = await supabase
     .from("enrollment")
-    .select(`course (course_id, created_at, title, description, instructor_id)`)
+    .select(`course (*)`)
     .eq("user_id", userId);
   if (error) {
     console.log("[getCourese ERROR]: ", error);

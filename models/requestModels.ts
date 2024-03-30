@@ -10,6 +10,11 @@ interface WriteRequest extends UserAuth {
   event: any;
 }
 
+interface ImageUploadRequest extends UserAuth {
+  courseId: number;
+  file: File;
+}
+
 interface GetUserRoleResponse {
   data: string | null;
   error: string | null;
@@ -48,4 +53,5 @@ export type {
   SupabaseResponse,
   FullCourseDetail,
   EnrollCourseRequest,
+  ImageUploadRequest,
 };
