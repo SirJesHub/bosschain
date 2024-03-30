@@ -9,7 +9,7 @@ import {
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
 
-const uploadCourseImage = async ({
+const uploadFile = async ({
   token,
   userId,
   courseId,
@@ -52,6 +52,6 @@ const getImageList = async ({
 };
 
 export const BucketService = {
-  uploadCourseImage,
+  uploadFile,
   getImageList,
 };

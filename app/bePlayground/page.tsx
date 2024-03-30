@@ -105,7 +105,7 @@ export default function Home() {
     if (file) {
       console.log("uploading");
       const token = await getToken({ template: "supabase" });
-      await BucketService.uploadCourseImage({
+      await BucketService.uploadFile({
         token,
         userId,
         courseId: 3,
