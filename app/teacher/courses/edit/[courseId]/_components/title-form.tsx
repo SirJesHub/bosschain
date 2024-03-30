@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 import toast from "react-hot-toast";
-import { updateCourseTitle } from "@/lib/supabase/enrollmentRequests";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import {
   Form,
   FormControl,
@@ -49,7 +49,7 @@ export const TitleForm = ({
       if (!token) {
         throw new Error("Token is missing");
       }
-      const data = await updateCourseTitle({
+      const data = await EnrollmentService.updateCourseTitle({
         courseId: Number(courseId),
         userId,
         title: values.title,

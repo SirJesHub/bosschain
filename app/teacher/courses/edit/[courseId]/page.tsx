@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Banner } from "@/components/banner";
 import { TitleForm } from "./_components/title-form";
 import ReactJson from "react-json-view";
-import { getCourseById } from "@/lib/supabase/enrollmentRequests";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRoleContext } from "@/context/roleContext";
 import { SupabaseResponse } from "@/models/requestModels";
@@ -25,7 +25,7 @@ const CourseIdPage = () => {
           const token = await getToken({ template: "supabase" });
           setToken(token || "");
           const courseId = window.location.pathname.split("/").pop() || "";
-          const courseData = await getCourseById({ userId, courseId, token });
+          const courseData = await EnrollmentService.getCourseById({ userId, courseId, token });
           setCourse(courseData);
         }
       } catch (error) {

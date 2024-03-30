@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { createCourse } from "@/lib/supabase/courseRequests"; // Import createCourse function
+import { CourseService } from "@/lib/supabase/courseRequests"; // Import createCourse function
 import { useRoleContext } from "@/context/roleContext";
 import { Role } from "@/constants/auth";
 import { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import ReactJson from "react-json-view";
-import { getCourse, getFullCourse } from "@/lib/supabase/enrollmentRequests";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { SupabaseResponse } from "@/models/requestModels";
 import { Database } from "@/types/supabase";
 import { useSearchParams } from "next/navigation";
@@ -64,10 +64,10 @@ const CreatePage = () => {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const course = await getFullCourse({ userId, token });
+        const course = await EnrollmentService.getFullCourse({ userId, token });
         setCourse(course); // may require frontend side to filter null -> can use Array.filter
 
-        const fullCourse = await getFullCourse({ userId, token });
+        const fullCourse = await EnrollmentService.getFullCourse({ userId, token });
         console.log("FULL COURSE -> ", fullCourse);
       } catch (error) {
         console.log("[ERROR DURING PAGE LOAD]: ", error);
@@ -83,7 +83,7 @@ const CreatePage = () => {
     try {
       const token = await getToken({ template: "supabase" });
       //const token = "";
-      const response = await createCourse({
+      const response = await CourseService.createCourse({
         userId: userId,
         token: token,
         title: values.title,
