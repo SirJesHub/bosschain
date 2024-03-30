@@ -1,9 +1,16 @@
 import { supabaseClient } from "./supabaseClient";
-import { CreateCourseRequest, SupabaseResponse } from "@/models/requestModels";
+import {
+  GetUserRoleResponse,
+  UserAuth,
+  WriteRequest,
+  CreateCourseRequest,
+  SupabaseResponse,
+  FullCourseDetail,
+} from "@/models/requestModels";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
 
-export const createCourse = async ({
+const createCourse = async ({
   userId,
   token,
   title,
@@ -42,4 +49,43 @@ export const createCourse = async ({
     statusMessage: statusText,
     error: null,
   };
+};
+
+// For obtaining individual course details
+const getFullCurrentCourse = async (
+  userAuth: UserAuth,
+  courseId: any,
+): Promise<any> => {
+  if (!userAuth.token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(userAuth.token);
+  const { data, error, status, statusText } = await supabase
+    .from("course")
+    .select(`*,module (*, lesson(*))`)
+    .eq("course_id", courseId);
+  if (error) {
+    console.log("[getFullCourese ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data[0],
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
+export const CourseService = {
+  createCourse,
+  getFullCurrentCourse,
 };

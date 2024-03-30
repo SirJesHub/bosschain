@@ -10,6 +10,11 @@ interface WriteRequest extends UserAuth {
   event: any;
 }
 
+interface ImageUploadRequest extends UserAuth {
+  courseId: number;
+  file: File;
+}
+
 interface GetUserRoleResponse {
   data: string | null;
   error: string | null;
@@ -28,6 +33,10 @@ interface SupabaseResponse<T> {
   error: string | null;
 }
 
+interface EnrollCourseRequest extends UserAuth {
+  courseId: number;
+}
+
 type FullCourseDetail = Database["public"]["Tables"]["course"]["Row"] & {
   module: Array<ModuleLesson>;
 };
@@ -43,4 +52,6 @@ export type {
   CreateCourseRequest,
   SupabaseResponse,
   FullCourseDetail,
+  EnrollCourseRequest,
+  ImageUploadRequest,
 };
