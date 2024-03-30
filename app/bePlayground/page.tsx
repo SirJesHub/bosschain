@@ -42,6 +42,7 @@ export default function Home() {
 
         const course = await EnrollmentService.getFullCourse({ userId, token });
         setCourse(course); // may require frontend side to filter null -> can use Array.filter
+        console.log("course ->", course);
 
         const fullCourse = await EnrollmentService.getFullCourse({
           userId,

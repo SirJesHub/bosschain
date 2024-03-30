@@ -36,32 +36,35 @@ export type Database = {
     Tables: {
       course: {
         Row: {
-          course_id: number
-          cover_image: string | null
-          created_at: string
-          description: string | null
-          instructor_id: string | null
-          is_published: boolean | null
-          title: string | null
-        }
+          category: string | null;
+          course_id: number;
+          cover_image: string | null;
+          created_at: string;
+          description: string | null;
+          instructor_id: string | null;
+          is_published: boolean | null;
+          title: string | null;
+        };
         Insert: {
-          course_id?: number
-          cover_image?: string | null
-          created_at?: string
-          description?: string | null
-          instructor_id?: string | null
-          is_published?: boolean | null
-          title?: string | null
-        }
+          category?: string | null;
+          course_id?: number;
+          cover_image?: string | null;
+          created_at?: string;
+          description?: string | null;
+          instructor_id?: string | null;
+          is_published?: boolean | null;
+          title?: string | null;
+        };
         Update: {
-          course_id?: number
-          cover_image?: string | null
-          created_at?: string
-          description?: string | null
-          instructor_id?: string | null
-          is_published?: boolean | null
-          title?: string | null
-        }
+          category?: string | null;
+          course_id?: number;
+          cover_image?: string | null;
+          created_at?: string;
+          description?: string | null;
+          instructor_id?: string | null;
+          is_published?: boolean | null;
+          title?: string | null;
+        };
         Relationships: [
           {
             foreignKeyName: "public_course_instructor_id_fkey"
@@ -110,67 +113,35 @@ export type Database = {
       }
       lesson: {
         Row: {
-          content: string | null
-          content_type: string | null
-          created_at: string
-          description: string | null
-          index: number | null
-          lesson_id: number
-          module_id: number | null
-          title: string | null
-        }
+          content: string | null;
+          content_type: string | null;
+          created_at: string;
+          description: string | null;
+          index: number | null;
+          lesson_id: number;
+          module_id: number | null;
+          title: string | null;
+        };
         Insert: {
-          content?: string | null
-          content_type?: string | null
-          created_at?: string
-          description?: string | null
-          index?: number | null
-          lesson_id?: number
-          module_id?: number | null
-          title?: string | null
-        }
+          content?: string | null;
+          content_type?: string | null;
+          created_at?: string;
+          description?: string | null;
+          index?: number | null;
+          lesson_id?: number;
+          module_id?: number | null;
+          title?: string | null;
+        };
         Update: {
-          content?: string | null
-          content_type?: string | null
-          created_at?: string
-          description?: string | null
-          index?: number | null
-          lesson_id?: number
-          module_id?: number | null
-          title?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_lesson_module_id_fkey"
-            columns: ["module_id"]
-            isOneToOne: false
-            referencedRelation: "module"
-            referencedColumns: ["module_id"]
-          },
-        ]
-      }
-      lesson_progress: {
-        Row: {
-          completed: boolean | null
-          created_at: string
-          enrollment_id: number | null
-          lesson_id: number | null
-          progress_id: number
-        }
-        Insert: {
-          completed?: boolean | null
-          created_at?: string
-          enrollment_id?: number | null
-          lesson_id?: number | null
-          progress_id?: number
-        }
-        Update: {
-          completed?: boolean | null
-          created_at?: string
-          enrollment_id?: number | null
-          lesson_id?: number | null
-          progress_id?: number
-        }
+          content?: string | null;
+          content_type?: string | null;
+          created_at?: string;
+          description?: string | null;
+          index?: number | null;
+          lesson_id?: number;
+          module_id?: number | null;
+          title?: string | null;
+        };
         Relationships: [
           {
             foreignKeyName: "public_lesson_progress_enrollment_id_fkey"
@@ -186,33 +157,72 @@ export type Database = {
             referencedRelation: "lesson"
             referencedColumns: ["lesson_id"]
           },
-        ]
-      }
+        ];
+      };
+      lesson_progress: {
+        Row: {
+          completed: boolean | null;
+          created_at: string;
+          enrollment_id: number | null;
+          lesson_id: number | null;
+          progress_id: number;
+        };
+        Insert: {
+          completed?: boolean | null;
+          created_at?: string;
+          enrollment_id?: number | null;
+          lesson_id?: number | null;
+          progress_id?: number;
+        };
+        Update: {
+          completed?: boolean | null;
+          created_at?: string;
+          enrollment_id?: number | null;
+          lesson_id?: number | null;
+          progress_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_lesson_progress_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "enrollment";
+            referencedColumns: ["enrollment_id"];
+          },
+          {
+            foreignKeyName: "public_lesson_progress_lesson_id_fkey";
+            columns: ["lesson_id"];
+            isOneToOne: false;
+            referencedRelation: "lesson";
+            referencedColumns: ["lesson_id"];
+          },
+        ];
+      };
       module: {
         Row: {
-          course_id: number | null
-          created_at: string
-          description: string | null
-          index: number | null
-          module_id: number
-          title: string | null
-        }
+          course_id: number | null;
+          created_at: string;
+          description: string | null;
+          index: number | null;
+          module_id: number;
+          title: string | null;
+        };
         Insert: {
-          course_id?: number | null
-          created_at?: string
-          description?: string | null
-          index?: number | null
-          module_id?: number
-          title?: string | null
-        }
+          course_id?: number | null;
+          created_at?: string;
+          description?: string | null;
+          index?: number | null;
+          module_id?: number;
+          title?: string | null;
+        };
         Update: {
-          course_id?: number | null
-          created_at?: string
-          description?: string | null
-          index?: number | null
-          module_id?: number
-          title?: string | null
-        }
+          course_id?: number | null;
+          created_at?: string;
+          description?: string | null;
+          index?: number | null;
+          module_id?: number;
+          title?: string | null;
+        };
         Relationships: [
           {
             foreignKeyName: "public_module_course_id_fkey"
@@ -269,32 +279,33 @@ export type Database = {
     Functions: {
       enroll_user_in_course_and_create_progress_records: {
         Args: {
-          p_user_id: string
-          p_course_id: number
-        }
-        Returns: undefined
-      }
+          p_user_id: string;
+          p_course_id: number;
+        };
+        Returns: undefined;
+      };
       hello_world: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       requesting_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
       testfunction: {
-        Args: Record<PropertyKey, never>
+        Args: Record<PropertyKey, never>;
         Returns: {
-          course_id: number
-          cover_image: string | null
-          created_at: string
-          description: string | null
-          instructor_id: string | null
-          is_published: boolean | null
-          title: string | null
-        }[]
-      }
-    }
+          category: string | null;
+          course_id: number;
+          cover_image: string | null;
+          created_at: string;
+          description: string | null;
+          instructor_id: string | null;
+          is_published: boolean | null;
+          title: string | null;
+        }[];
+      };
+    };
     Enums: {
       [_ in never]: never
     }
@@ -442,10 +453,10 @@ export type Database = {
       }
       foldername: {
         Args: {
-          name: string
-        }
-        Returns: string[]
-      }
+          name: string;
+        };
+        Returns: string[];
+      };
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -478,15 +489,16 @@ export type Database = {
       [_ in never]: never
     }
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -504,7 +516,7 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
@@ -512,6 +524,7 @@ export type Tables<
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
     | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -525,7 +538,7 @@ export type TablesInsert<
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
@@ -533,6 +546,7 @@ export type TablesInsert<
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
     | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
@@ -546,7 +560,7 @@ export type TablesUpdate<
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
@@ -554,6 +568,7 @@ export type TablesUpdate<
 
 export type Enums<
   PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
     | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
@@ -563,4 +578,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;
