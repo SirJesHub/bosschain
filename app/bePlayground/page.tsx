@@ -34,6 +34,7 @@ export default function Home() {
 
         const course = await getFullCourse({ userId, token });
         setCourse(course); // may require frontend side to filter null -> can use Array.filter
+        console.log("course ->", course);
 
         const fullCourse = await getFullCourse({ userId, token });
         console.log("FULL COURSE -> ", fullCourse);

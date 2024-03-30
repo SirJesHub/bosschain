@@ -1,8 +1,16 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-
+"use client";
+import { useEffect, useState } from "react";
+import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
+import NavBar from "@/components/nav-bar";
+import { useRoleContext } from "@/context/roleContext";
+import { Role } from "@/constants/auth";
+import {
+  getAllTeacherCourse,
+  getCourseById,
+  getFullCourse,
+} from "@/lib/supabase/enrollmentRequests";
 
 // Define the type for a course
 interface Course {
@@ -13,44 +21,79 @@ interface Course {
   createdAt: Date;
 }
 
-const CoursesPage = async () => {
-  const { userId } = auth();
+const CoursesPage = () => {
+  const [courses, setCourses] = useState<Course[]>([]); // State to store fetched courses
+  const [loading, setLoading] = useState<boolean>(true); // State to track loading status
+  const { role } = useRoleContext();
+  const { user, isSignedIn } = useUser();
+  const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
+  const [userId, setUserId] = useState<string>("");
 
-  if (!userId) {
-    return redirect("/");
+  useEffect(() => {
+    if (isSignedIn) {
+      setUserId(user.id);
+    }
+  }, [isSignedIn, user]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchCourses();
+    }
+  }, [userId]);
+
+  const fetchCourses = async () => {
+    try {
+      setLoading(true); // Set loading to true when fetching courses
+      const token = await getToken({ template: "supabase" });
+      const { data } = await getAllTeacherCourse({ userId, token });
+      console.log(data);
+      if (data) {
+        const formattedCourses: Course[] = data.map((course) => ({
+          id: course?.course_id || 0, // Use a default value if course is null
+          title: course?.title || "", // Ensure title is not null
+          price: 0, // You need to determine how to get the price data
+          isPublished: course?.is_published || false, // Ensure is_published is not null
+          createdAt: course ? new Date(course.created_at) : new Date(), // Convert string to Date object
+        }));
+
+        setCourses(formattedCourses);
+      } else {
+        setCourses([]); // Set empty array if no data is returned
+      }
+    } catch (error) {
+      console.log("[ERROR DURING FETCHING COURSES]: ", error);
+    } finally {
+      setLoading(false); // Set loading to false when fetching is complete
+    }
+  };
+
+  if (!isSignedIn) {
+    return <p>Loading...</p>;
   }
 
-  // Mock data instead of querying from the database
-  const mockCourses: Course[] = [
-    { id: 1, title: "Course 1", price: 99.99, isPublished: true, createdAt: new Date() },
-    { id: 2, title: "Course 2", price: 149.99, isPublished: false, createdAt: new Date() },
-    { id: 3, title: "Course 3", price: 79.99, isPublished: true, createdAt: new Date() },
-    { id: 4, title: "Course 4", price: 129.99, isPublished: true, createdAt: new Date() },
-    { id: 5, title: "Course 5", price: 199.99, isPublished: false, createdAt: new Date() },
-    { id: 6, title: "Course 6", price: 69.99, isPublished: true, createdAt: new Date() },
-    { id: 7, title: "Course 7", price: 159.99, isPublished: false, createdAt: new Date() },
-    { id: 8, title: "Course 8", price: 119.99, isPublished: true, createdAt: new Date() },
-    { id: 9, title: "Course 9", price: 89.99, isPublished: false, createdAt: new Date() },
-    { id: 10, title: "Course 10", price: 149.99, isPublished: true, createdAt: new Date() },
-    { id: 11, title: "Course 11", price: 109.99, isPublished: true, createdAt: new Date() },
-    { id: 12, title: "Course 12", price: 169.99, isPublished: false, createdAt: new Date() },
-    { id: 13, title: "Course 13", price: 129.99, isPublished: true, createdAt: new Date() },
-    { id: 14, title: "Course 14", price: 79.99, isPublished: true, createdAt: new Date() },
-    { id: 15, title: "Course 15", price: 189.99, isPublished: false, createdAt: new Date() },
-    { id: 16, title: "Course 16", price: 99.99, isPublished: true, createdAt: new Date() },
-    { id: 17, title: "Course 17", price: 139.99, isPublished: false, createdAt: new Date() },
-    { id: 18, title: "Course 18", price: 119.99, isPublished: true, createdAt: new Date() },
-    { id: 19, title: "Course 19", price: 69.99, isPublished: false, createdAt: new Date() },
-    { id: 20, title: "Course 20", price: 159.99, isPublished: true, createdAt: new Date() },
-  ];
-  
-  
+  // Render loading indicator while fetching courses
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  return ( 
+  if (!courses.length) {
+    return <p>No courses found</p>;
+  }
+
+  // If the user is not a teacher, display a message
+  if (role !== "teacher") {
+    return (
+      <div className="p-6 text-center">
+        <p>Sign up to be a teacher to view this page</p>
+      </div>
+    );
+  }
+
+  return (
     <div className="p-6">
-      <DataTable columns={columns} data={mockCourses} />
+      <DataTable columns={columns} data={courses} />
     </div>
   );
-}
+};
 
 export default CoursesPage;

@@ -1,8 +1,5 @@
 import { supabaseClient } from "./supabaseClient";
-import {
-  CreateCourseRequest,
-  SupabaseResponse,
-} from "@/models/requestModels";
+import { CreateCourseRequest, SupabaseResponse } from "@/models/requestModels";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
 

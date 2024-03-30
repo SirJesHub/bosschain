@@ -7,6 +7,7 @@ import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import Layout from "@/components/layout/layout";
 import { RoleContextProvider } from "@/context/roleContext";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +25,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <RoleContextProvider>
-          <body className={inter.className}><NavBar />
-          {children}
+          <body className={inter.className}>
+            <NavBar />
+            <Toaster />
+            {children}
           </body>
         </RoleContextProvider>
       </html>
