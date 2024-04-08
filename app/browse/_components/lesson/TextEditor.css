@@ -14,22 +14,22 @@ body {
   /* Base theme */
   .bn-container[data-color-scheme] {
     --bn-colors-editor-text: #222222;
-    --bn-colors-editor-background: #edecec;
-    --bn-colors-menu-text: #ffffff;
-    --bn-colors-menu-background: #9b0000;
+    --bn-colors-editor-background: #ececec;
+    --bn-colors-menu-text: #000000;
+    --bn-colors-menu-background: #ffffff;
     --bn-colors-tooltip-text: #ffffff;
-    --bn-colors-tooltip-background: #b00000;
+    --bn-colors-tooltip-background: #3a77e0;
     --bn-colors-hovered-text: #ffffff;
-    --bn-colors-hovered-background: #b00000;
+    --bn-colors-hovered-background: #3a77e0;
     --bn-colors-selected-text: #ffffff;
-    --bn-colors-selected-background: #c50000;
-    --bn-colors-disabled-text: #9b0000;
-    --bn-colors-disabled-background: #7d0000;
-    --bn-colors-shadow: #640000;
-    --bn-colors-border: #870000;
+    --bn-colors-selected-background: #3a77e0;
+    --bn-colors-disabled-text: #3a77e0;
+    --bn-colors-disabled-background: #3a77e0;
+    --bn-colors-shadow: #296fe8;
+    --bn-colors-border: #3a77e0;
     --bn-colors-side-menu: #bababa;
     --bn-color-highlight-colors: #ffffff;
-    --bn-border-radius: 20px;
+    --bn-border-radius: 5px;
     --bn-font-family: Helvetica Neue, sans-serif;
   }
 

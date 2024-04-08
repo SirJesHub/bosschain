@@ -19,20 +19,20 @@ export default function CourseCard({
   name,
 }: courseProps) {
   return (
-    <div className="group relative">
+    <div className="group relative h-full">
       <div className="cursor-pointer transition duration shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 h-full flex flex-col">
-      <div className="flex-grow">
-        <Image
-          src={"/YouTube-Thumbnail-Dimensions.webp"}
-          alt="course image"
-          width={400}
-          height={400}
-          className="w-full rounded-md"
-        />
-        <div className="p-2">
-          <h2 className="font-bold">{name}</h2>
-          <h3>Creator: Siraprop Jesdapiban</h3>
-        </div>
+        <div className="flex-grow ">
+          <Image
+            src={"/YouTube-Thumbnail-Dimensions.webp"}
+            alt="course image"
+            width={400}
+            height={400}
+            className="w-full rounded-md"
+          />
+          <div className="p-2 h-full">
+            <h2 className="font-bold">{name}</h2>
+            <h3>Creator: Siraprop Jesdapiban</h3>
+          </div>
         </div>
 
         {/* <p>

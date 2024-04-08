@@ -28,16 +28,16 @@ export default function WeekItem({
   moduleInfo,
   userProgress,
   courseId,
-  filter,
   completedLessons,
   totalLessons,
+  enrollment,
 }: {
   moduleInfo: any;
-  userProgress: any;
+  enrollment: any;
   courseId: number;
-  filter: string;
-  completedLessons: number;
-  totalLessons: number;
+  userProgress?: any;
+  completedLessons?: number;
+  totalLessons?: number;
 }) {
   const [showWeek, setShowWeek] = useState(false);
 
@@ -46,9 +46,9 @@ export default function WeekItem({
   };
 
   return (
-    <div className="group relative w-[48vw]   transition-all duration-500   ">
+    <div className="group relative w-full transition-all duration-500">
       <div
-        className="cursor-pointer bg-slate-200 mb-5 p-5 rounded-2xl"
+        className="cursor-pointer bg-slate-200 mb-5 p-5 rounded-md"
         onClick={toggleWeek}
       >
         <button onClick={toggleWeek}>
@@ -65,18 +65,12 @@ export default function WeekItem({
           )}
         </button>
         <strong className=" font-extrabold text-lg">
-          {moduleInfo.title}
+          {`Module ${moduleInfo.index + 1} : ${moduleInfo.title}`}
         </strong>
-        <ul className="flex mt-2  text-sm">
-          <li className="pr-3">Week 1</li>
-          <li className="pr-3">3 hours to complete</li>
-          <li className="pr-3">4 lessons</li>
-        </ul>
-        <p className="mt-2 mr-4 text-sm ">
-          {moduleInfo.description}
-        </p>
+        <ul className="flex mt-2  text-sm"></ul>
+        <p className="mt-2 mr-4 text-sm ">{`${moduleInfo.description}`}</p>
 
-        {completedLessons > 0 && (
+        {enrollment && (
           <WeekProgressbar
             completedLessons={completedLessons}
             totalLessons={totalLessons}
@@ -93,18 +87,33 @@ export default function WeekItem({
    `}
       >
         <div className="overflow-hidden">
-          {moduleInfo.lesson.map(
-            (lesson:any, index:any) => (
-              <LessonItem
-                key={lesson.lesson_id}
-                userProgress={userProgress.lesson[index]}
-                lesson={lesson}
-                courseId={courseId}
-                filter={filter}
-              />
-            )
-            // ) : null,
-          )}
+          {enrollment &&
+            moduleInfo.lesson.map(
+              (lesson: any, index: any) => (
+                <LessonItem
+                  key={lesson.lesson_id}
+                  userProgress={
+                    userProgress.lesson[index].lesson_progress[0].completed
+                  }
+                  lesson={lesson}
+                  courseId={courseId}
+                />
+              )
+              // ) : null,
+            )}
+
+          {!enrollment &&
+            moduleInfo.lesson.map(
+              (lesson: any, index: any) => (
+                <LessonItem
+                  key={lesson.lesson_id}
+                  lesson={lesson}
+                  courseId={courseId}
+                />
+              )
+
+              // ) : null,
+            )}
         </div>
       </div>
     </div>

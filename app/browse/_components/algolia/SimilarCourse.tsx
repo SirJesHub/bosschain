@@ -18,29 +18,43 @@ type ItemProps = {
 
 function RelatedItem({ item }: { item: ItemProps }) {
   return (
-    <Link href={`/browse/${item.objectID}`}>
-      <article>
-        <Image
-          src={"/course_photo.jpeg"}
-          alt="course image"
-          width={300}
-          height={300}
-        />
-        <h1>{item.name}</h1>
-        <h2>{item.objectID}</h2>
-      </article>
-    </Link>
+    <div className="w-full my-5 shadow-lg overflow-hidden rounded-md ">
+      <Link href={`/browse/${item.objectID}`}>
+        <div className="text-wrap">
+          <Image
+            src={"/YouTube-Thumbnail-Dimensions.webp"}
+            alt="course image"
+            width={300}
+            height={300}
+            className="w-full rounded-md"
+          />
+          <div className="p-2 ">
+            <h1 className="text-sm">{item.name}</h1>
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 }
 
-export default function RecommendComponent({ objectId }: { objectId: string }) {
+export default function SimilarCourse({ objectId }: { objectId: number }) {
   return (
-    <RelatedProducts
-      recommendClient={recommendClient}
-      indexName={index}
-      objectIDs={[`${objectId}`]}
-      itemComponent={RelatedItem}
-      maxRecommendations={5}
-    />
+    <div>
+      <h2 className="font-md text-md text-blue-600">Related Course</h2>
+      <RelatedProducts
+        classNames={{
+          root: "w-[20vw]",
+          title: "hidden",
+          container: "w-full",
+          list: "w-full",
+          item: "overflow-auto w-full",
+        }}
+        recommendClient={recommendClient}
+        indexName={index}
+        objectIDs={[`${objectId}`]}
+        itemComponent={RelatedItem}
+        maxRecommendations={3}
+      />
+    </div>
   );
 }

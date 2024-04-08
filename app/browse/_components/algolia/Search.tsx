@@ -5,6 +5,7 @@ import {
   Hits,
   Configure,
   RefinementList,
+  Pagination
 } from "react-instantsearch";
 import algoliasearch from "@/node_modules/algoliasearch";
 import { index, appId, apiKey, userToken } from "../../../../helper";
@@ -43,9 +44,11 @@ export default function Search() {
         enableReRanking={true}
         facetFilters={`category:${selectedCategory}`}
       />
+      
       <SearchBox
         placeholder="Search for Courses"
         searchAsYouType={false}
+
  
 
         classNames={{
@@ -77,7 +80,19 @@ export default function Search() {
         classNames={{
           root: "m-10 ",
           list: "w-[80vw] mx-auto grid gap-10 grid-cols-[repeat(auto-fill,minmax(340px,1fr))]",
+         
         }}
+      />
+      <Pagination
+      classNames={{
+        root: "h-10 ",
+        list: "w-96 mx-auto flex justify-between",
+        item:"  h-10  flex justify-center border-grey border-2 rounded-lg items-center m-1 hover:bg-slate-100",
+        selectedItem: "bg-blue-500 w-10 flex justify-center rounded-lg text-white hover:bg-blue-500",
+        disabledItem: "hover:bg-slate-100",
+        link:"flex justify-center w-10"
+        
+      }}
       />
     </InstantSearch>
   );

@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import aa from "search-insights";
 import { index, appId, apiKey, userToken } from "../../../../helper";
 import { Router } from "lucide-react";
+import { getEnrollment, createEnrollment } from "@/lib/supabase/courseRequests";
+import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 
 aa("init", {
   appId: appId,
@@ -12,43 +14,51 @@ aa("init", {
 });
 
 type EnrollHandlerParams = {
-  objectId: number;
+  courseId: number;
   queryID: string;
 };
 
-export default function Card({ objectId }: { objectId: any }) {
-  const [isEnrolled, setIsEnrolled] = useState<boolean>(true);
-
-  objectId = objectId.toString();
+export default function Card({
+  courseId,
+  enrollmentData,
+  enrollmentHandler,
+}: {
+  courseId: any;
+  enrollmentData: any;
+  enrollmentHandler: Function;
+}) {
+  courseId = courseId.toString();
   const searchParams = useSearchParams();
   const queryID: any = searchParams.get("queryID");
-  const router = useRouter();
 
-  function enrollHandler({ objectId, queryID }: EnrollHandlerParams) {
+  const enrollEventHandler = async ({
+    courseId,
+    queryID,
+  }: EnrollHandlerParams) => {
     aa("convertedObjectIDsAfterSearch", {
       userToken: userToken,
       index: index,
       eventName: "Course Enrolled",
       queryID: queryID,
-      objectIDs: [`${objectId}`],
+      objectIDs: [`${courseId}`],
     });
-    setIsEnrolled(true);
-  }
+    enrollmentHandler();
+  };
 
   return (
     <div>
-      {!isEnrolled && (
+      {!enrollmentData && (
         <button
-          className="bg-white text-blue-500 py-2 px-3 rounded-2xl "
-          onClick={() => enrollHandler({ objectId, queryID })}
+          className="bg-blue-600 text-slate-100 py-2 px-5 rounded-xl shadow-xl"
+          onClick={() => enrollEventHandler({ courseId, queryID })}
         >
-          ENROLL THIS COURSE
+         ENROLL THIS COURSE
         </button>
       )}
-      {isEnrolled && (
-        <p className="bg-white text-blue-500 py-2 px-3 rounded-2xl w-fit ">
-          Already enrolled
-        </p>
+      {enrollmentData && (
+        <div className="bg-blue-600 text-slate-100 py-2 px-5 rounded-xl w-fit font-semibold">
+          <p>Already Enrolled</p>
+        </div>
       )}
       {/* <button onClick={() => router.push(`/browse/${objectId}/e`)}>
         RESUME LEARNING

@@ -31,7 +31,7 @@
 //       },
 //     ],
 //   };
-
+//change module_id to moduleIndex
 export let userLearningData = {
   username: "exampleUser",
   progress: [
@@ -41,12 +41,19 @@ export let userLearningData = {
         { lesson_id: 0, status: "not-started" },
         { lesson_id: 1, status: "completed" },
         { lesson_id: 2, status: "not-started" },
-        
+        { lesson_id: 3, status: "completed" },
       ],
     },
     {
       module_id: 1,
       lesson: [
+        { lesson_id: 4, status: "completed" },
+      ],
+    },
+    {
+      module_id: 2,
+      lesson: [
+        { lesson_id: 5, status: "completed" },
       ],
     },
   ],

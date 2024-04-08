@@ -10,6 +10,7 @@ import {
   createCourse,
   getCourse,
   getFullCourse,
+  getProgress
 } from "@/lib/supabase/courseRequests";
 import { SupabaseResponse } from "@/models/requestModels";
 import { Database } from "@/types/supabase";
