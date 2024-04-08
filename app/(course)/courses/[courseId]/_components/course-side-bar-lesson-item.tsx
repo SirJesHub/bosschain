@@ -15,7 +15,7 @@ export default function CourseSidebarLessonItem({
   module_id: number;
   lessonProgress?: string;
   title: string;
-  currentLessonIndex: number;
+  currentLessonIndex: number|undefined;
   lessonIndex: number;
   enrollmentData:any
 }) {

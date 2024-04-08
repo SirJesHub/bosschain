@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import TextEditor from "@/app/browse/_components/lesson/TextEditor";
-import { getLessonContent } from "@/lib/supabase/courseRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import NextVideo from "next-video";
@@ -26,7 +26,7 @@ export default function page({
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
       setUserAuth(userAuth)
-      const lessonContent = await getLessonContent(
+      const lessonContent = await CourseService.getLessonContent(
         userAuth,
         moduleId,
         lessonIndex

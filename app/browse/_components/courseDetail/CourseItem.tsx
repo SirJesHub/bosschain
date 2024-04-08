@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import { render } from "react-dom";
 import WeekItem from "./WeekItem";
 import { MouseEventHandler } from "react";
 

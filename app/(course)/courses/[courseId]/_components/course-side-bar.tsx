@@ -17,7 +17,7 @@ export default function courseSidebar({
   courseData: any;
   courseId: number;
   userProgress?: any;
-  lessonIndex: number | undefined;
+  lessonIndex: number ;
   lessonProgress?: any;
   moduleId: number;
   enrollmentData: any;

@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import aa from "search-insights";
 import { index, appId, apiKey, userToken } from "../../../../helper";
 import { Router } from "lucide-react";
-import { getEnrollment, createEnrollment } from "@/lib/supabase/courseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 
 aa("init", {

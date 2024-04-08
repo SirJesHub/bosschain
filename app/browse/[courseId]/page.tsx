@@ -18,16 +18,7 @@ import { SupabaseResponse } from "@/models/requestModels";
 import { redirect } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
-import {
-  createCourse,
-  getCourse,
-  getFullCourse,
-  getFullCurrentCourse,
-  getProgress,
-  getEnrollment,
-  createEnrollment,
-  getCoverImage,
-} from "@/lib/supabase/courseRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import { Database } from "@/types/supabase";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 
@@ -76,7 +67,7 @@ export default function CourseDetailPage({
       const userAuth = { userId: userId, token: token };
       try {
         try {
-          const courseData = await getFullCurrentCourse(userAuth, courseId);
+          const courseData = await CourseService.getFullCurrentCourse(userAuth, courseId);
 
           // 1.Course Validity Check
           if (!courseData.data) {
@@ -95,10 +86,10 @@ export default function CourseDetailPage({
         }
 
         try {
-          const enrollment = await getEnrollment(userAuth, courseId);
+          const enrollment = await CourseService.getEnrollment(userAuth, courseId);
           // 3. Course Enrollment check
           if (enrollment.data) {
-            const progress = await getProgress(
+            const progress = await CourseService.getProgress(
               userAuth,
               courseId,
               enrollment.data.enrollment_id
@@ -118,7 +109,7 @@ export default function CourseDetailPage({
           );
         }
 
-        const CoverImage = await getCoverImage(userAuth, courseId);
+        const CoverImage = await CourseService.getCoverImage(userAuth, courseId);
         if (CoverImage) {
           setImageCoverUrl(CoverImage);
         }
@@ -138,10 +129,10 @@ export default function CourseDetailPage({
     try {
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
-      const enrollment = await createEnrollment(userAuth, courseId);
+      const enrollment = await CourseService.createEnrollment(userAuth, courseId);
 
       if (enrollment) {
-        const progress = await getProgress(
+        const progress = await CourseService.getProgress(
           userAuth,
           courseId,
           enrollment.data.enrollment_id

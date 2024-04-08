@@ -1,16 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  getProgress,
-  createCourse,
-  getCourse,
-  getFullCourse,
-  getFullCurrentCourse,
-  getLessonContent,
-  updateAllCourse,
-  insertCourseAlgolia,
-  updateProgress,
-  getEnrollment,
+  CourseService
 } from "@/lib/supabase/courseRequests";
 import NextCourseButton from "./_components/next-lesson-button";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
@@ -37,7 +28,7 @@ export default function layout({
   const [progress, setProgress] = useState<any>();
   const [lessonIndex, setLessonIndex] = useState<number>(-1);
   const [moduleIndex, setModuleIndex] = useState<number>(-1);
-  const [moduleId, setModuleId] = useState<number | undefined>();
+  const [moduleId, setModuleId] = useState<number>(-1);
   const pathName = usePathname();
   const [nextLessonIndex, setNextLessonIndex] = useState<number>();
   const [nextModuleId, setNextModuleId] = useState<number>();
@@ -101,7 +92,10 @@ export default function layout({
 
         if (indexModule !== null) {
           extractedModuleNumber = parseInt(indexModule[1], 10);
-          setModuleId(extractedModuleNumber);
+          if(extractedModuleNumber){
+            setModuleId(extractedModuleNumber);
+          }
+      
         }
       }
 
@@ -110,7 +104,7 @@ export default function layout({
       setUserAuth(userAuth);
 
       try {
-        const courseData = await getFullCurrentCourse(userAuth, courseId);
+        const courseData = await CourseService.getFullCurrentCourse(userAuth, courseId);
 
         // 1.Course Validity Check
         if (!courseData.data) {
@@ -125,11 +119,11 @@ export default function layout({
           console.log("course is not published");
           return router.push("/browse");
         }
-        const enrollment = await getEnrollment(userAuth, courseId);
+        const enrollment = await CourseService.getEnrollment(userAuth, courseId);
 
         // 3. Course Enrollment check
         if (enrollment.data) {
-          const progress = await getProgress(
+          const progress = await CourseService.getProgress(
             userAuth,
             courseId,
             enrollment.data.enrollment_id
@@ -266,14 +260,14 @@ export default function layout({
 
   const lessonCompletionHandler = async () => {
     if (!lessonCompletion) {
-      await updateProgress(userAuth, enrollmentData.enrollment_id, lessonId);
+      await CourseService.updateProgress(userAuth, enrollmentData.enrollment_id, lessonId);
       toast.success("Lesson completed");
 
-      const enrollment = await getEnrollment(userAuth, courseId);
+      const enrollment = await CourseService.getEnrollment(userAuth, courseId);
 
       // 3. Course Enrollment check
       // if (enrollment.data) {
-        const progress = await getProgress(
+        const progress = await CourseService.getProgress(
           userAuth,
           courseId,
           enrollmentData.enrollment_id
@@ -313,7 +307,7 @@ export default function layout({
       {!isLoading && (
         <div className="col-span-3 row-span-1 border-2 border-gray-200 rounded-md mr-4 mt-4 pl-3 pr-3 flex flex-col justify-around">
           <LessonInfo title={courseData.title} />
-          {enrollmentData && (
+          {enrollmentData &&  completedLessonCount && totalLessonCount&& (
             <Progressbar
               completedLessonCount={completedLessonCount}
               totalLessonCount={totalLessonCount}
@@ -321,7 +315,7 @@ export default function layout({
           )}
         </div>
       )}
-      {!isLoading && courseData && (
+      {!isLoading && courseData &&(
         <div className="col-span-3 row-span-4 overflow-auto mr-4 border-2 ">
           <CourseSidebar
             courseData={courseData.module}
