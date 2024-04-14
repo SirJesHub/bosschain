@@ -6,9 +6,7 @@ import { columns } from "./_components/columns";
 import NavBar from "@/components/nav-bar";
 import { useRoleContext } from "@/context/roleContext";
 import { Role } from "@/constants/auth";
-import {
-  EnrollmentService
-} from "@/lib/supabase/enrollmentRequests";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 
 // Define the type for a course
 interface Course {
@@ -43,7 +41,10 @@ const CoursesPage = () => {
     try {
       setLoading(true); // Set loading to true when fetching courses
       const token = await getToken({ template: "supabase" });
-      const { data } = await EnrollmentService.getAllTeacherCourse({ userId, token });
+      const { data } = await EnrollmentService.getAllTeacherCourse({
+        userId,
+        token,
+      });
       console.log(data);
       if (data) {
         const formattedCourses: Course[] = data.map((course) => ({

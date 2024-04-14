@@ -38,7 +38,7 @@ const createCourse = async ({
     })
     .select();
   if (error) {
-    console.log("[createCourese ERROR]: ", error);
+    console.log("[createCourse ERROR]: ", error);
     return {
       data: null,
       statusCode: status,
@@ -75,7 +75,7 @@ const getFullCurrentCourse = async (
     .order("index", { ascending: true, referencedTable: "module" })
     .order("index", { ascending: true, referencedTable: "module.lesson" });
   if (error) {
-    console.log("[getFullCourese ERROR]: ", error);
+    console.log("[getFullCourse ERROR]: ", error);
     return {
       data: null,
       statusCode: status,

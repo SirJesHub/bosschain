@@ -1,3 +1,5 @@
+"use client";
+
 import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +8,8 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
+import { useAuth, useUser } from "@clerk/nextjs";
 
 import {
   Form,
@@ -17,31 +21,41 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { ChaptersList } from "./chapters-list"; // Import ChaptersList component
 
-// Define the type for a Chapter
-export interface Chapter {
-  id: string;
+import { ModulesList } from "./modules-list";
+
+interface Module {
+  module_id: string;
   title: string;
-  content: string;
-  isPublished: boolean; // Add the isPublished property
+  isPublished: boolean;
   isFree: boolean;
 }
 
-interface ChapterFormProps {
-  initialData: Chapter[];
+interface ModulesFormProps {
+  initialData: {
+    modules: Module[]; // Add modules property
+  };
   courseId: string;
+  userId: string; // Add userId property
+  token: string; // Add token property
 }
 
 const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const ChaptersForm = ({ initialData, courseId }: ChapterFormProps) => {
+export const ModulesForm = ({
+  initialData,
+  courseId,
+  userId,
+  token, // Add userId and token here
+}: ModulesFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const toggleCreating = () => setIsCreating((current) => !current);
+  const toggleCreating = () => {
+    setIsCreating((current) => !current);
+  };
 
   const router = useRouter();
 
@@ -53,28 +67,67 @@ export const ChaptersForm = ({ initialData, courseId }: ChapterFormProps) => {
   });
 
   const { isSubmitting, isValid } = form.formState;
+  const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // Placeholder for actual API call
-      // await axios.post(`/api/courses/${courseId}/chapters`, values);
-      toast.success("Chapter created");
-      toggleCreating();
-      router.refresh();
+      const token = await getToken({ template: "supabase" });
+      //const token = "";
+      const response = await EnrollmentService.createModule({
+        userId: userId,
+        token: token,
+        title: values.title,
+        description: "",
+        courseId: Number(courseId),
+      });
+
+      if (
+        response.error ==
+        'duplicate key value violates unique constraint "unique_module_title"'
+      ) {
+        console.log("[updateModuleTitle ERROR]: ", response.error);
+        toast.error("Title Already Exists. Please Choose a New Title"); // Display error message to user
+        return;
+      }
+
+      if (response.error) {
+        console.log(response.error);
+        toast.error("Something went wrong. Please try again"); // Display error message to user
+        return;
+      }
+
+      if (response.error) {
+        console.log(response.error);
+        toast.error("Something went wrong. Please try again"); // Display error message to user
+        return;
+      }
+
+      if (
+        response.data &&
+        response.data.length > 0 &&
+        response.data[0].module_id
+      ) {
+        const moduleId = response.data[0].module_id;
+        toast.success("Module created successfully");
+        setIsCreating(false);
+      } else {
+        toast.error("Failed to create module");
+      }
     } catch {
       toast.error("Something went wrong");
     }
   };
 
-  const onReorder = async (updateData: { id: string; position: number }[]) => {
+  const onReorder = async (
+    updateData: { module_id: string; position: number }[],
+  ) => {
     try {
       setIsUpdating(true);
 
-      // Placeholder for actual API call
-      // await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
-      //   list: updateData
-      // });
-      toast.success("Chapters reordered");
+      await axios.put(`/api/courses/${courseId}/modules/reorder`, {
+        list: updateData,
+      });
+      toast.success("Modules reordered");
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -84,25 +137,25 @@ export const ChaptersForm = ({ initialData, courseId }: ChapterFormProps) => {
   };
 
   const onEdit = (id: string) => {
-    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+    router.push(`/teacher/courses/${courseId}/modules/${id}`);
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
       {isUpdating && (
         <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-m flex items-center justify-center">
           <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
         </div>
       )}
       <div className="font-medium flex items-center justify-between">
-        Course chapters
+        Course modules
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a chapter
+              Add a module
             </>
           )}
         </Button>
@@ -135,27 +188,28 @@ export const ChaptersForm = ({ initialData, courseId }: ChapterFormProps) => {
           </form>
         </Form>
       )}
-      {!isCreating && (
+      {!isCreating && initialData.modules && (
         <div
           className={cn(
             "text-sm mt-2",
-            !initialData.length && "text-slate-500 italic",
+            !initialData.modules.length && "text-slate-500 italic",
           )}
         >
-          {initialData.length ? (
-            <ChaptersList
-              onEdit={onEdit}
-              onReorder={onReorder}
-              items={initialData}
-            />
-          ) : (
-            "No chapters"
-          )}
+          {!initialData.modules.length && "No modules"}
+          <ModulesList
+            items={initialData.modules} // Make sure items property is included
+            onEdit={onEdit}
+            onReorder={onReorder}
+            courseId={courseId} // Pass courseId
+            userId={userId} // Pass userId
+            token={token} // Pass token
+          />
         </div>
       )}
+
       {!isCreating && (
         <p className="text-xs text-muted-foreground mt-4">
-          Drag and drop to reorder the chapters
+          Drag and drop to reorder the modules
         </p>
       )}
     </div>

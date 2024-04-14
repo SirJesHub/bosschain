@@ -15,6 +15,13 @@ interface ImageUploadRequest extends UserAuth {
   file: File;
 }
 
+interface VideoUploadRequest extends UserAuth {
+  courseId: number;
+  moduleId: number;
+  lessonId: number;
+  file: File;
+}
+
 interface GetUserRoleResponse {
   data: string | null;
   error: string | null;
@@ -24,6 +31,18 @@ interface GetUserRoleResponse {
 interface CreateCourseRequest extends UserAuth {
   title: string;
   description: string | null;
+}
+
+interface CreateModuleRequest extends UserAuth {
+  title: string;
+  description: string | null;
+  courseId: number;
+}
+
+interface CreateLessonRequest extends UserAuth {
+  title: string;
+  description: string | null;
+  moduleId: number;
 }
 
 interface SupabaseResponse<T> {
@@ -54,4 +73,7 @@ export type {
   FullCourseDetail,
   EnrollCourseRequest,
   ImageUploadRequest,
+  CreateModuleRequest,
+  CreateLessonRequest,
+  VideoUploadRequest,
 };
