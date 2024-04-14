@@ -67,7 +67,10 @@ const CreatePage = () => {
         const course = await EnrollmentService.getFullCourse({ userId, token });
         setCourse(course); // may require frontend side to filter null -> can use Array.filter
 
-        const fullCourse = await EnrollmentService.getFullCourse({ userId, token });
+        const fullCourse = await EnrollmentService.getFullCourse({
+          userId,
+          token,
+        });
         console.log("FULL COURSE -> ", fullCourse);
       } catch (error) {
         console.log("[ERROR DURING PAGE LOAD]: ", error);
@@ -113,7 +116,7 @@ const CreatePage = () => {
       ) {
         const courseId = response.data[0].course_id;
         toast.success("Course created successfully");
-        window.location.href = `/teacher/courses/edit/${courseId}`;
+        window.location.href = `/teacher/courses/${courseId}`;
       } else {
         toast.error("Failed to create course");
       }
@@ -171,9 +174,10 @@ const CreatePage = () => {
               </Button>
 
               <br />
-              {course?.data?.map((row) => (
+
+              {/*course?.data?.map((row) => (
                 <ReactJson src={row || {}} key={row?.course_id} />
-              ))}
+              ))*/}
             </div>
           </form>
         </Form>

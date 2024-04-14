@@ -35,7 +35,7 @@ const createCourse = async ({
     })
     .select();
   if (error) {
-    console.log("[createCourese ERROR]: ", error);
+    console.log("[createCourse ERROR]: ", error);
     return {
       data: null,
       statusCode: status,
@@ -69,7 +69,7 @@ const getFullCurrentCourse = async (
     .select(`*,module (*, lesson(*))`)
     .eq("course_id", courseId);
   if (error) {
-    console.log("[getFullCourese ERROR]: ", error);
+    console.log("[getFullCourse ERROR]: ", error);
     return {
       data: null,
       statusCode: status,

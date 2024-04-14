@@ -5,6 +5,7 @@ import {
   FullCourseDetail,
   EnrollCourseRequest,
   ImageUploadRequest,
+  VideoUploadRequest,
 } from "@/models/requestModels";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
@@ -31,6 +32,30 @@ const uploadFile = async ({
   }
 };
 
+const uploadVideoFile = async ({
+  token,
+  userId,
+  courseId,
+  moduleId,
+  lessonId,
+  file,
+}: VideoUploadRequest) => {
+  if (!token) return console.log("Upload image fail - no token detected");
+  const targetPath = courseId + "/" + moduleId + "/" + lessonId + "/video";
+  const supabase = await supabaseClient(token);
+  const { data, error } = await supabase.storage
+    .from("course_assets")
+    .upload(targetPath, file, {
+      upsert: true,
+    });
+  if (data) {
+    console.log("upload done");
+    // getImages({ token, folderPath: targetPath });
+  } else {
+    console.log("[Upload lesson video error] ", error);
+  }
+};
+
 const getImageList = async ({
   token,
   folderPath = "",
@@ -54,4 +79,5 @@ const getImageList = async ({
 export const BucketService = {
   uploadFile,
   getImageList,
+  uploadVideoFile,
 };
