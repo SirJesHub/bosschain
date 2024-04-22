@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  createCourse,
-  getCourse,
-  getFullCourse,
-  getFullCurrentCourse,
-  getLessonContent,
-  updateAllCourse,
-  insertCourseAlgolia,
+ CourseService
 } from "@/lib/supabase/courseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 
@@ -27,7 +21,7 @@ export default function Demo({
     const initializePage = async () => {
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
-      const courseDetail = await getFullCurrentCourse(userAuth, courseId);
+      const courseDetail = await CourseService.getFullCurrentCourse(userAuth, courseId);
     //   if (courseDetail.data) {
         console.log(courseDetail.data)
         setCourseData(courseDetail.data);

@@ -5,7 +5,6 @@ import TextEditor from "@/app/browse/_components/lesson/TextEditor";
 import { CourseService } from "@/lib/supabase/courseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
-import NextVideo from "next-video";
 import Wildlife_Sample from "@/videos/Wildlife_Sample.mp4.json";
 import MuxUploader from "@mux/mux-uploader-react";
 
@@ -52,7 +51,7 @@ export default function page({
       )}
       {contentType === "video" && (
         <div className="w-75% overflow-hidden">
-          <NextVideo src={Wildlife_Sample} accentColor="#539FFF" />
+          Please put some video here
         </div>
       )}
     </div>

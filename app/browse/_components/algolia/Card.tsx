@@ -28,7 +28,7 @@ export default function Card({
 }) {
   courseId = courseId.toString();
   const searchParams = useSearchParams();
-  const queryID: any = searchParams.get("queryID");
+  const queryID: any = searchParams?.get("queryID") ?? "No token";
 
   const enrollEventHandler = async ({
     courseId,
@@ -51,7 +51,7 @@ export default function Card({
           className="bg-blue-600 text-slate-100 py-2 px-5 rounded-xl shadow-xl"
           onClick={() => enrollEventHandler({ courseId, queryID })}
         >
-         ENROLL THIS COURSE
+          ENROLL THIS COURSE
         </button>
       )}
       {enrollmentData && (
