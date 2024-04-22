@@ -128,7 +128,8 @@ export default function CourseSidebar({
                 <h1 className="text-base mb-2">
                   Module {module.index} : {module.title}
                 </h1>
-                <h1 className="text-xs flex w-full mb-2">{`Lesson : ${lessonProgressState[index].completedLesson}/${lessonProgressState[index].totalLesson}`}</h1>
+                {/* IMPORTANT!!!! : Not sure what this is so comment for now */}
+                {/* <h1 className="text-xs flex w-full mb-2">{`Lesson : ${lessonProgressState[index].completedLesson}/${lessonProgressState[index].totalLesson}`}</h1> */}
                 {!lessonVisibility[module.module_id] ? (
                   <ChevronDown className="absolute right-4 top-4 " />
                 ) : (

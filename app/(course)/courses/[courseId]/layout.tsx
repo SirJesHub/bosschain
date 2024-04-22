@@ -233,8 +233,8 @@ export default function layout({
     let moduleIndex = null;
     let lessonId = null;
 
-    for (let module of courseData.data.module) {
-      for (let lesson of module.lesson) {
+    for (let moduleVariable of courseData.data.module) {
+      for (let lesson of moduleVariable.lesson) {
         if (foundCurrentLesson) {
           nextLessonNumber = lesson.index;
           nextModuleId = lesson.module_id;
@@ -242,7 +242,7 @@ export default function layout({
         }
         if (lesson.index === lessonIndex) {
           lessonId = lesson.lesson_id;
-          moduleIndex = module.index;
+          moduleIndex = moduleVariable.index;
           foundCurrentLesson = true;
         }
       }
