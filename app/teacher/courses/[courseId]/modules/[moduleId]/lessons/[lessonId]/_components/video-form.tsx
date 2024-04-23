@@ -2,8 +2,6 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { BucketService } from "@/lib/supabase/BucketRequests";
 import Form from "react-bootstrap/Form";
 import { useAuth, useUser } from "@clerk/nextjs";
-import Dropzone from "react-dropzone-uploader";
-import "react-dropzone-uploader/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -131,7 +129,7 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
           </Button>
         )}
       </div>
-      {isEditing && (
+      {/* {isEditing && (
         <div className="mt-2">
           <Dropzone
             getUploadParams={getUploadParams}
@@ -147,7 +145,7 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
             }}
           />
         </div>
-      )}
+      )} */}
       {!isEditing && (
         <div className="flex justify-center">
           <video
