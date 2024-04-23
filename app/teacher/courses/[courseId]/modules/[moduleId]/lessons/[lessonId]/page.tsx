@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Banner } from "@/components/banner";
-import ReactJson from "react-json-view";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRoleContext } from "@/context/roleContext";
@@ -28,7 +27,7 @@ const LessonIdPage = () => {
   const [file, setFile] = useState<File>();
   const [isLoading, setIsLoading] = useState(true); // State for loading status
   const [queryParam, setQueryParam] = useState<string>(
-    `?timestamp=${new Date().getTime()}`,
+    `?timestamp=${new Date().getTime()}`
   ); // temporary hack to trigger reload image
 
   useEffect(() => {
@@ -105,10 +104,10 @@ const LessonIdPage = () => {
         // Success case, handle as needed
         console.log(
           "Lesson is now",
-          newPublishStatus ? "published" : "unpublished",
+          newPublishStatus ? "published" : "unpublished"
         );
         toast.success(
-          `Lesson is now ${newPublishStatus ? "published" : "unpublished"}`,
+          `Lesson is now ${newPublishStatus ? "published" : "unpublished"}`
         );
         const lessonData = await EnrollmentService.getLessonById({
           userId,

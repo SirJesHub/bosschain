@@ -3,7 +3,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Banner } from "@/components/banner";
 import { TitleForm } from "./_components/title-form";
-import ReactJson from "react-json-view";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRoleContext } from "@/context/roleContext";

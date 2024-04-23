@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
-import ReactJson from "react-json-view";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRoleContext } from "@/context/roleContext";
 import { CourseService } from "@/lib/supabase/courseRequests";
@@ -138,9 +137,6 @@ export default function Home() {
           <br />
           Course of this user: {userId}
           <br />
-          {/* {course?.data?.map((row) => (
-            <ReactJson src={row || {}} key={row?.course_id} />
-          ))} */}
           <br />
           <br />
           <h1 className="text-3xl font-medium text-sky-700">
