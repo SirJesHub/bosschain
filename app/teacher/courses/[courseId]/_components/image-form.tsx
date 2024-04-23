@@ -2,8 +2,6 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { BucketService } from "@/lib/supabase/BucketRequests";
 import Form from "react-bootstrap/Form";
 import { useAuth, useUser } from "@clerk/nextjs";
-import Dropzone from "react-dropzone-uploader";
-import "react-dropzone-uploader/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -124,7 +122,7 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, courseId }) => {
       </div>
       {isEditing && (
         <div className="mt-2">
-          <Dropzone
+          {/* <Dropzone
             getUploadParams={getUploadParams}
             onChangeStatus={handleChangeStatus}
             maxFiles={1}
@@ -136,7 +134,7 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, courseId }) => {
               dropzone: { width: 400, height: 200 },
               dropzoneActive: { borderColor: "green" },
             }}
-          />
+          /> */}
         </div>
       )}
       {!isEditing && (
