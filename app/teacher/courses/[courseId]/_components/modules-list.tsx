@@ -57,26 +57,30 @@ export const ModulesList = ({
     fetchData();
   }, [courseId, userId, token]);
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
-    const items = Array.from(modules);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const updatedModules = Array.from(modules);
+    const [reorderedModule] = updatedModules.splice(result.source.index, 1);
+    updatedModules.splice(result.destination.index, 0, reorderedModule);
 
-    const startIndex = Math.min(result.source.index, result.destination.index);
-    const endIndex = Math.max(result.source.index, result.destination.index);
+    console.log("Updated Modules after reorder:", updatedModules);
 
-    const updatedModules = items.slice(startIndex, endIndex + 1);
+    setModules(updatedModules);
 
-    setModules(items);
-
-    const bulkUpdateData = updatedModules.map((module) => ({
+    const bulkUpdateData = updatedModules.map((module, index) => ({
       module_id: module.module_id,
-      position: items.findIndex((item) => item.module_id === module.module_id),
+      position: index,
     }));
 
-    onReorder(bulkUpdateData);
+    try {
+      await onReorder(bulkUpdateData);
+      console.log("Modules reordered successfully");
+    } catch (error) {
+      console.error("Error reordering modules:", error);
+      // Rollback the changes if there's an error
+      setModules(modules);
+    }
   };
 
   if (!isMounted) {
