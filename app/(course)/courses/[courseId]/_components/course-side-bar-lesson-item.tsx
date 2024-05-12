@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { CheckSquare2, Square, BookmarkCheck, Bookmark  } from "lucide-react";
+import { CheckSquare2, Square, BookmarkCheck, Bookmark } from "lucide-react";
 
 export default function CourseSidebarLessonItem({
   courseId,
@@ -15,9 +15,9 @@ export default function CourseSidebarLessonItem({
   module_id: number;
   lessonProgress?: string;
   title: string;
-  currentLessonIndex: number|undefined;
+  currentLessonIndex: number | undefined;
   lessonIndex: number;
-  enrollmentData:any
+  enrollmentData: any;
 }) {
   return (
     <div>
@@ -33,8 +33,7 @@ export default function CourseSidebarLessonItem({
           key={lessonIndex}
         >
           {lessonProgress ? <BookmarkCheck /> : <Bookmark />}
-          <p className="ml-2">{`${lessonIndex+1} . ${title}`}</p>
-          
+          <p className="ml-2">{`${lessonIndex + 1} . ${title}`}</p>
         </div>
       </Link>
     </div>

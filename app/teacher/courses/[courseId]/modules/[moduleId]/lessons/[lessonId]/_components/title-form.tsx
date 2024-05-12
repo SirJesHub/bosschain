@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 
 interface TitleFormProps {
   initialData: { title: string } | null;
-  lessonId: string;
+  lessonId: number;
   token: string;
   userId: string;
   onTitleUpdate: (updatedTitle: string) => void; // Callback function to handle title update

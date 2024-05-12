@@ -9,31 +9,30 @@ import Wildlife_Sample from "@/videos/Wildlife_Sample.mp4.json";
 import MuxUploader from "@mux/mux-uploader-react";
 
 export default function page({
-  params: { courseId, moduleId, lessonIndex} 
+  params: { courseId, moduleId, lessonIndex },
 }: {
-  params: { courseId: number; moduleId: number; lessonIndex: number }, 
+  params: { courseId: number; moduleId: number; lessonIndex: number };
 }) {
   const [content, setContent] = useState<string>();
   const [contentType, setContentType] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
   const userId = maybeUserId || "";
-  const [userAuth, setUserAuth] = useState<any>()
+  const [userAuth, setUserAuth] = useState<any>();
 
   useEffect(() => {
     const pageInitialized = async () => {
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
-      setUserAuth(userAuth)
+      setUserAuth(userAuth);
       const lessonContent = await CourseService.getLessonContent(
         userAuth,
         moduleId,
-        lessonIndex
+        lessonIndex,
       );
       if (lessonContent.data) {
         setContent(lessonContent.data.content);
         setContentType(lessonContent.data.content_type);
-     
       } else {
         console.log("Lesson Content Not Found");
       }
@@ -50,9 +49,7 @@ export default function page({
         </div>
       )}
       {contentType === "video" && (
-        <div className="w-75% overflow-hidden">
-          Please put some video here
-        </div>
+        <div className="w-75% overflow-hidden">Please put some video here</div>
       )}
     </div>
   );

@@ -30,10 +30,9 @@ export default function CourseItem({
   enrollment: any;
   enrollmentHandler: MouseEventHandler<HTMLButtonElement>;
 }) {
-
   function calculateLessonProgress(module: any, index: number) {
     const completedLessons = progress[index].lesson.filter(
-      (lesson: any) => lesson.lesson_progress[0].completed === true
+      (lesson: any) => lesson.lesson_progress[0].completed === true,
     ).length;
     const totalLessons = progress[index].lesson.length;
     return { completedLessons, totalLessons };
@@ -42,7 +41,7 @@ export default function CourseItem({
   function shouldRenderWeekItem(
     filter: string,
     completedLessons: number,
-    totalLessons: number
+    totalLessons: number,
   ) {
     switch (filter) {
       case "completed":
@@ -62,7 +61,7 @@ export default function CourseItem({
       const renderedModules = courseInfo.map((module: any, index: number) => {
         const { completedLessons, totalLessons } = calculateLessonProgress(
           module,
-          index
+          index,
         );
         return shouldRenderWeekItem(filter, completedLessons, totalLessons) ? (
           <WeekItem
@@ -79,14 +78,12 @@ export default function CourseItem({
         );
       });
       const allFalse = renderedModules.every(
-        (element: any) => element === false
+        (element: any) => element === false,
       );
       if (allFalse) {
         return (
           <div className=" m-auto flex flex-col items-center justify-start bg-gray-100 rounded-xl h-screen">
-            <h1 className="font-medium text-xl m-10">
-            Are you a quitter?! 😲
-            </h1>
+            <h1 className="font-medium text-xl m-10">Are you a quitter?! 😲</h1>
             <p className="text-center m-5 ">
               You have not completed any courses yet so there are none listed
               here. Complete what you start! A quitter never wins and a winner
@@ -131,9 +128,7 @@ export default function CourseItem({
 
   return (
     <div>
-      <ul>
-        {Item()}
-      </ul>
+      <ul>{Item()}</ul>
     </div>
   );
 }

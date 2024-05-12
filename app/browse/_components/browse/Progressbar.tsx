@@ -17,10 +17,10 @@ export default function Progressbar({
     setLoading(false);
   }, [completedLessonCount, totalLessonCount]);
   return (
-    <div className="h-8 flex justify-around items-center text-blue-600 font-bold">
+    <div className="h-5 flex justify-between items-center text-blue-600 font-bold">
       {!loading && (
         <>
-          <div className="h-3 rounded-full bg-gray-100 w-4/5 ">
+          <div className="h-2 rounded-full bg-gray-100 w-4/5 ">
             <div
               className={`bg-blue-500 h-full  rounded-full`}
               style={{ width: `${progress}%` }}

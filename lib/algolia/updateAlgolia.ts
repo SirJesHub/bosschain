@@ -12,7 +12,7 @@ import { Database } from "@/types/supabase";
 import { index } from "@/helper";
 import algoliasearch from "algoliasearch";
 
-const updateAllCourse = async (userAuth: UserAuth) : Promise<any>=> {
+const updateAllCourse = async (userAuth: UserAuth): Promise<any> => {
   if (!userAuth.token)
     return {
       data: null,
@@ -24,7 +24,6 @@ const updateAllCourse = async (userAuth: UserAuth) : Promise<any>=> {
   const { data, error, status, statusText } = await supabase
     .from("course")
     .select("*");
- 
 
   if (error) {
     console.log("[updateAllCourse ERROR]: ", error);
@@ -42,7 +41,7 @@ const updateAllCourse = async (userAuth: UserAuth) : Promise<any>=> {
     // const indexAL = algolia.initIndex("bosschain");
     // const result = await indexAL.saveObjects(data);
     // console.log("result", result);
-    console.log(data)
+    console.log(data);
     return {
       data: data,
       statusCode: status,

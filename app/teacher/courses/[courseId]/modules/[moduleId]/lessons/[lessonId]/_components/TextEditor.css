@@ -1,0 +1,46 @@
+body {
+    font-family: sans-serif;
+    -webkit-font-smoothing: auto;
+    -moz-font-smoothing: auto;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    
+    background-color: white !important;
+  }
+  
+  /* Base theme */
+  .bn-container[data-color-scheme] {
+    --bn-colors-editor-text: #222222;
+    --bn-colors-editor-background: #ececec;
+    --bn-colors-menu-text: #000000;
+    --bn-colors-menu-background: #ffffff;
+    --bn-colors-tooltip-text: #ffffff;
+    --bn-colors-tooltip-background: #3a77e0;
+    --bn-colors-hovered-text: #ffffff;
+    --bn-colors-hovered-background: #3a77e0;
+    --bn-colors-selected-text: #ffffff;
+    --bn-colors-selected-background: #3a77e0;
+    --bn-colors-disabled-text: #3a77e0;
+    --bn-colors-disabled-background: #3a77e0;
+    --bn-colors-shadow: #296fe8;
+    --bn-colors-border: #3a77e0;
+    --bn-colors-side-menu: #bababa;
+    --bn-color-highlight-colors: #ffffff;
+    --bn-border-radius: 5px;
+    --bn-font-family: Helvetica Neue, sans-serif;
+  }
+
+ .bn-block-group{
+    padding-top: 40px;
+ }
+  
+  
+  /* Changes for dark mode */
+  .bn-container[data-color-scheme="dark"] {
+    --bn-colors-editor-text: #000000;
+    --bn-colors-editor-background: #eeeeee;
+    --bn-colors-side-menu: #ffffff;
+  }

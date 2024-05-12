@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
- CourseService
-} from "@/lib/supabase/courseRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 
 export default function Demo({
@@ -21,18 +19,16 @@ export default function Demo({
     const initializePage = async () => {
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
-      const courseDetail = await CourseService.getFullCurrentCourse(userAuth, courseId);
-    //   if (courseDetail.data) {
-        console.log(courseDetail.data)
-        setCourseData(courseDetail.data);
-    //   }
+      const courseDetail = await CourseService.getFullCurrentCourse(
+        userAuth,
+        courseId,
+      );
+      //   if (courseDetail.data) {
+      console.log(courseDetail.data);
+      setCourseData(courseDetail.data);
+      //   }
     };
     initializePage();
   }, [courseId]);
-  return (
-    <div>
-        { courseData &&  <p>{courseData.description}</p>}
-     
-    </div>
-  );
+  return <div>{courseData && <p>{courseData.description}</p>}</div>;
 }
