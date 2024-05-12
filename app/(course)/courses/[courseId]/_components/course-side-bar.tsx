@@ -12,16 +12,16 @@ export default function courseSidebar({
   lessonProgress,
   moduleId,
   enrollmentData,
-  lessonLengths
+  lessonLengths,
 }: {
   courseData: any;
   courseId: number;
   userProgress?: any;
-  lessonIndex: number ;
+  lessonIndex: number;
   lessonProgress?: any;
   moduleId: number;
   enrollmentData: any;
-  lessonLengths:any;
+  lessonLengths: any;
 }) {
   const [lessonVisibility, setLessonVisibility] = useState();
 
@@ -32,11 +32,11 @@ export default function courseSidebar({
     const initialLessonVisibility = courseData.reduce(
       (acc: any, module: any) => {
         acc[module.module_id] = module.lesson.some(
-          (lesson: any) => lesson.index == lessonIndex
+          (lesson: any) => lesson.index == lessonIndex,
         );
         return acc;
       },
-      {}
+      {},
     );
     setLessonVisibility(initialLessonVisibility);
   }, []);

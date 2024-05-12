@@ -98,7 +98,7 @@ export default function WeekItem({
                   lesson={lesson}
                   courseId={courseId}
                 />
-              )
+              ),
               // ) : null,
             )}
 
@@ -110,7 +110,7 @@ export default function WeekItem({
                   lesson={lesson}
                   courseId={courseId}
                 />
-              )
+              ),
 
               // ) : null,
             )}

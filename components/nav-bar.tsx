@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function NavBar() {
   return (
     <>
-      <nav className="bg-navigation-bar border-gray-200 dark:bg-gray-900">
+      <nav className="bg-navigation-bar border-gray-200 dark:bg-gray-900 fixed top-0 z-10 w-full">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
           <Link
             href="/"
@@ -42,7 +42,7 @@ export default function NavBar() {
               </li>
               <li>
                 <Link
-                  href="/crypto"
+                  href="/browse"
                   className="text-white font-salsa relative hover:bg-gray-100 md:hover:bg-orange-300 md:p-5 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Explore Crypto World

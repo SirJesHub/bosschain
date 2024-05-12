@@ -44,7 +44,7 @@ export default function TrendingCourseCategory({
 
       setIsLeftVisible(translate > 0);
       setIsRightVisible(
-        translate + container.clientWidth < container.scrollWidth
+        translate + container.clientWidth < container.scrollWidth,
       );
     });
     observer.observe(containerRef.current);
@@ -59,12 +59,8 @@ export default function TrendingCourseCategory({
   };
 
   return (
-    <div
-      className="overflow-x-hidden px-[10vw] pr-[10vw]"
-    >
-      <div
-        className="sticky"
-      >
+    <div className="overflow-x-hidden relative w-full border-2 border-transparent rounded-xl bg-white p-2">
+      <div className="sticky">
         <div
           ref={containerRef}
           className="relative overflow-x-hidden
@@ -146,7 +142,7 @@ export default function TrendingCourseCategory({
                       "Edge",
                       edge,
                       "Width:",
-                      width
+                      width,
                     );
                     if (newTranslate + width >= edge) {
                       return edge - width;

@@ -2,8 +2,6 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { BucketService } from "@/lib/supabase/BucketRequests";
 import Form from "react-bootstrap/Form";
 import { useAuth, useUser } from "@clerk/nextjs";
-import Dropzone from "react-dropzone-uploader";
-import "react-dropzone-uploader/dist/styles.css";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -39,7 +37,7 @@ const NoDropzoneLayout: React.FC<DropzoneProps> = ({
 
 interface VideoFormProps {
   userId: string;
-  courseId: string;
+  courseId: number;
 }
 
 const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
@@ -131,23 +129,7 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
           </Button>
         )}
       </div>
-      {isEditing && (
-        <div className="mt-2">
-          <Dropzone
-            getUploadParams={getUploadParams}
-            onChangeStatus={handleChangeStatus}
-            maxFiles={1}
-            multiple={false}
-            canCancel={false}
-            LayoutComponent={NoDropzoneLayout}
-            inputContent="Click to Choose a File"
-            styles={{
-              dropzone: { width: 400, height: 200 },
-              dropzoneActive: { borderColor: "green" },
-            }}
-          />
-        </div>
-      )}
+      {isEditing && <div className="mt-2"></div>}
       {!isEditing && (
         <div className="flex justify-center">
           <video

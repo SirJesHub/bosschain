@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  CourseService
-} from "@/lib/supabase/courseRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import NextCourseButton from "./_components/next-lesson-button";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import { userLearningData } from "@/app/browse/_components/mockData/userLearningData";
@@ -44,35 +42,6 @@ export default function layout({
   const [lessonLengths, setLessonLengths] = useState<any>();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (pathName) {
-  //     const index: RegExpMatchArray | null = pathName.match(/lessons\/(\d+)/);
-  //     if (index !== null) {
-  //       const extractedLessonNumber: number = parseInt(index[1], 10);
-  //       setLessonIndex(extractedLessonNumber);
-  //     }
-  //   }
-  //   if (pathName) {
-  //     const index = pathName.match(/modules\/(\d+)/);
-  //     if (index !== null) {
-  //       const extractedModuleNumber = parseInt(index[1], 10);
-  //       setModuleId(extractedModuleNumber);
-  //     }
-  //   }
-  // }, [pathName && []]);
-
-  // useEffect(() => {
-  //   const initializePage = async () => {
-  //     const token = await getToken({ template: "supabase" });
-  //     const userAuth = { userId: userId, token: token };
-  //     const enrollment = await getEnrollment(userAuth, courseId);
-  //     if (enrollment.data) {
-  //       setEnrollmentId(enrollment.data.enrollment_id);
-  //     }
-  //   };
-  //   initializePage();
-  // }, []);
-
   useEffect(() => {
     const initializePage = async () => {
       let extractedLessonNumber;
@@ -92,10 +61,9 @@ export default function layout({
 
         if (indexModule !== null) {
           extractedModuleNumber = parseInt(indexModule[1], 10);
-          if(extractedModuleNumber){
+          if (extractedModuleNumber) {
             setModuleId(extractedModuleNumber);
           }
-      
         }
       }
 
@@ -104,7 +72,10 @@ export default function layout({
       setUserAuth(userAuth);
 
       try {
-        const courseData = await CourseService.getFullCurrentCourse(userAuth, courseId);
+        const courseData = await CourseService.getFullCurrentCourse(
+          userAuth,
+          courseId,
+        );
 
         // 1.Course Validity Check
         if (!courseData.data) {
@@ -119,14 +90,17 @@ export default function layout({
           console.log("course is not published");
           return router.push("/browse");
         }
-        const enrollment = await CourseService.getEnrollment(userAuth, courseId);
+        const enrollment = await CourseService.getEnrollment(
+          userAuth,
+          courseId,
+        );
 
         // 3. Course Enrollment check
         if (enrollment.data) {
           const progress = await CourseService.getProgress(
             userAuth,
             courseId,
-            enrollment.data.enrollment_id
+            enrollment.data.enrollment_id,
           );
 
           if (progress.data) {
@@ -141,7 +115,7 @@ export default function layout({
                 moduleIndex,
                 nextLessonNumber,
                 nextModuleId,
-                extractedLessonNumber
+                extractedLessonNumber,
               );
 
               setNextModuleId(nextModuleId);
@@ -260,26 +234,30 @@ export default function layout({
 
   const lessonCompletionHandler = async () => {
     if (!lessonCompletion) {
-      await CourseService.updateProgress(userAuth, enrollmentData.enrollment_id, lessonId);
+      await CourseService.updateProgress(
+        userAuth,
+        enrollmentData.enrollment_id,
+        lessonId,
+      );
       toast.success("Lesson completed");
 
       const enrollment = await CourseService.getEnrollment(userAuth, courseId);
 
       // 3. Course Enrollment check
       // if (enrollment.data) {
-        const progress = await CourseService.getProgress(
-          userAuth,
-          courseId,
-          enrollmentData.enrollment_id
-        );
-        setProgress(progress.data);
-        const { completedLessonCount, totalLessonCount, lessonProgress } =
-          calculateLessonProgress(progress.data);
+      const progress = await CourseService.getProgress(
+        userAuth,
+        courseId,
+        enrollmentData.enrollment_id,
+      );
+      setProgress(progress.data);
+      const { completedLessonCount, totalLessonCount, lessonProgress } =
+        calculateLessonProgress(progress.data);
 
-        setCompletedLessonCount(completedLessonCount);
-        setTotalLessonCount(totalLessonCount);
-        setLessonProgress(lessonProgress);
-        setLessonCompletion(true)
+      setCompletedLessonCount(completedLessonCount);
+      setTotalLessonCount(totalLessonCount);
+      setLessonProgress(lessonProgress);
+      setLessonCompletion(true);
       // }
 
       // if (nextModuleId && nextLessonIndex) {
@@ -293,7 +271,7 @@ export default function layout({
   const nextLessonHandler = async () => {
     if (nextModuleId && nextLessonIndex) {
       router.push(
-        `/courses/${courseId}/modules/${nextModuleId}/lessons/${nextLessonIndex}`
+        `/courses/${courseId}/modules/${nextModuleId}/lessons/${nextLessonIndex}`,
       );
     }
   };
@@ -307,7 +285,7 @@ export default function layout({
       {!isLoading && (
         <div className="col-span-3 row-span-1 border-2 border-gray-200 rounded-md mr-4 mt-4 pl-3 pr-3 flex flex-col justify-around">
           <LessonInfo title={courseData.title} />
-          {enrollmentData &&  completedLessonCount && totalLessonCount&& (
+          {enrollmentData && completedLessonCount && totalLessonCount && (
             <Progressbar
               completedLessonCount={completedLessonCount}
               totalLessonCount={totalLessonCount}
@@ -315,8 +293,8 @@ export default function layout({
           )}
         </div>
       )}
-      {!isLoading && courseData &&(
-        <div className="col-span-3 row-span-4 overflow-auto mr-4 border-2 ">
+      {!isLoading && courseData && (
+        <div className="col-span-3 row-span-4 overflow-x-hidden mr-4 border-2">
           <CourseSidebar
             courseData={courseData.module}
             courseId={courseId}

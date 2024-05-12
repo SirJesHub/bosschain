@@ -9,6 +9,7 @@ import {
 } from "@/models/requestModels";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Database } from "@/types/supabase";
+import { orderColumns } from "@tanstack/react-table";
 
 // get courses enrolled by a particular user
 const getCourse = async ({
@@ -116,6 +117,89 @@ const enrollByCourseId = async ({
   };
 };
 
+const getLatestAccessEnrollment = async (userAuth: UserAuth): Promise<any> => {
+  if (!userAuth.token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(userAuth.token);
+  const { data, error, status, statusText } = await supabase
+    .from("enrollment")
+    .select(
+      `*,  course_id(title, course_id, description,cover_image,is_published,category, instructor_id(*))`,
+    )
+    .order("last_access", { ascending: false })
+    .eq("user_id", userAuth.userId);
+
+  // module => course =>
+  //   const { data, error, status, statusText } = await supabase
+  // .from("module")
+  // .select(`module_id, index, lesson(index, lesson_progress(completed, enrollment_id))`)
+  // .eq("course_id", courseId)
+  // .eq("lesson.lesson_progress.enrollment_id", enrollmentId)
+  // .order("index", { ascending: true })
+  // .order("index", { ascending: true, referencedTable: "lesson" });
+  if (error) {
+    console.log("[getAllEnrollment ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
+const getAllEnrollment = async (userAuth: UserAuth): Promise<any> => {
+  if (!userAuth.token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(userAuth.token);
+  const { data, error, status, statusText } = await supabase
+    .from("enrollment")
+    .select(
+      `*,  course_id(title, course_id, description,cover_image,is_published,category, instructor_id(*))`,
+    )
+    .eq("user_id", userAuth.userId);
+
+  // module => course =>
+  //   const { data, error, status, statusText } = await supabase
+  // .from("module")
+  // .select(`module_id, index, lesson(index, lesson_progress(completed, enrollment_id))`)
+  // .eq("course_id", courseId)
+  // .eq("lesson.lesson_progress.enrollment_id", enrollmentId)
+  // .order("index", { ascending: true })
+  // .order("index", { ascending: true, referencedTable: "lesson" });
+  if (error) {
+    console.log("[getAllEnrollment ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
 const getCourseById = async ({
   userId,
   courseId,
@@ -200,7 +284,7 @@ const getLessonById = async ({
   userId,
   lessonId,
   token,
-}: UserAuth & { lessonId: string }): Promise<SupabaseResponse<Array<any>>> => {
+}: UserAuth & { lessonId: number }): Promise<SupabaseResponse<Array<any>>> => {
   if (!token)
     return {
       data: null,
@@ -1118,4 +1202,6 @@ export const EnrollmentService = {
   deleteModule,
   deleteLesson,
   updateCourseLastUpdateAt,
+  getAllEnrollment,
+  getLatestAccessEnrollment,
 };

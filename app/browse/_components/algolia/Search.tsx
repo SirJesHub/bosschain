@@ -5,7 +5,7 @@ import {
   Hits,
   Configure,
   RefinementList,
-  Pagination
+  Pagination,
 } from "react-instantsearch";
 import algoliasearch from "@/node_modules/algoliasearch";
 import { index, appId, apiKey, userToken } from "../../../../helper";
@@ -26,8 +26,6 @@ export default function Search() {
     console.log(`[category:${value}]`);
   };
 
- 
-
   return (
     <InstantSearch
       searchClient={searchClient}
@@ -44,26 +42,48 @@ export default function Search() {
         enableReRanking={true}
         facetFilters={`category:${selectedCategory}`}
       />
-      
-      <SearchBox
-        placeholder="Search for Courses"
-        searchAsYouType={false}
-
- 
-
-        classNames={{
-          root: "ml-[10vw] mt-10 mb-5 border-black ",
-          form: "w-3/12 flex justify-items-center ",
-          input:
-            " w-4/5 text-md pl-5 h-10 rounded-3xl border-solid border-black border-solid border-2  mr-1 ",
-          submit:
-            "bg-blue-500 hover:bg-blue-700 text-white font-bold w-2/12 h-10 rounded-full ",
-          submitIcon: "w-full h-2/5",
-          resetIcon: "",
-          reset: "hidden",
-        }}
-      />
-      <TrendingCourseCategory TrendingCourseHandler={TrendingCourseHandler} />
+      <div className="bg-gradient-to-b from-blue-800 to-blue-300">
+        <div className="h-[200px] flex font  ">
+          <div className=" flex flex-col  items-center w-4/5  m-auto gap-10 ">
+            <SearchBox
+              placeholder="Courses, categories or teacher"
+              searchAsYouType={false}
+              classNames={{
+                root: "w-4/5 ",
+                // form: "w-3/12 flex justify-items-center ",
+                input:
+                  " w-4/5 text-2xl font-light h-10 pl-2 border-solid  border-solid border-b-2  mr-1 bg-transparent text-white outline-none placeholder-white ",
+                submit:
+                  "bg-blue-500 hover:bg-blue-600 text-white font-bold w-2/12 h-10 rounded-full ",
+                submitIcon: "w-full h-2/5 font-bold",
+                resetIcon: "",
+                reset: "hidden",
+              }}
+            />
+            <TrendingCourseCategory
+              TrendingCourseHandler={TrendingCourseHandler}
+            />
+          </div>
+        </div>
+        <Hits
+          hitComponent={Hit}
+          classNames={{
+            root: "m-10 ",
+            list: "w-[80vw] mx-auto grid gap-10 grid-cols-[repeat(auto-fill,minmax(340px,1fr))]",
+          }}
+        />
+        <Pagination
+          classNames={{
+            root: "h-10 pt-20 bg-transparent",
+            list: "w-96 mx-auto flex justify-between",
+            item: "  h-10  flex justify-center border-grey border-2 rounded-lg items-center m-1 hover:bg-slate-100",
+            selectedItem:
+              "bg-blue-500 w-10 flex justify-center rounded-lg text-white hover:bg-blue-500",
+            disabledItem: "hover:bg-slate-100",
+            link: "flex justify-center w-10",
+          }}
+        />
+      </div>
       {/* <RefinementList
         attribute="category"
         classNames={{
@@ -74,26 +94,7 @@ export default function Search() {
           checkbox: "hidden",
           count: "hidden",
         }}
-      /> */}
-      <Hits
-        hitComponent={Hit}
-        classNames={{
-          root: "m-10 ",
-          list: "w-[80vw] mx-auto grid gap-10 grid-cols-[repeat(auto-fill,minmax(340px,1fr))]",
-         
-        }}
-      />
-      <Pagination
-      classNames={{
-        root: "h-10 ",
-        list: "w-96 mx-auto flex justify-between",
-        item:"  h-10  flex justify-center border-grey border-2 rounded-lg items-center m-1 hover:bg-slate-100",
-        selectedItem: "bg-blue-500 w-10 flex justify-center rounded-lg text-white hover:bg-blue-500",
-        disabledItem: "hover:bg-slate-100",
-        link:"flex justify-center w-10"
-        
-      }}
-      />
+      />  */}
     </InstantSearch>
   );
 }
