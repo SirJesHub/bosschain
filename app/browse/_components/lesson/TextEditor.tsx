@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Block, BlockNoteEditor } from "@blocknote/core";
-import { BlockNoteView, useBlockNote } from "@blocknote/react";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/react/style.css";
 import "./TextEditor.css";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
@@ -55,20 +56,17 @@ export default function TextEditor({
     }
   }
 
-  const editor: BlockNoteEditor = useBlockNote({
-    editable: false,
+  const editor: BlockNoteEditor = useCreateBlockNote({
     initialContent: blocks,
-    uploadFile,
+    // uploadFile,
 
-    onEditorContentChange: (editor) =>
-      // Converts the editor's contents to an array of Block objects.
-      // JSON.stringify(editor.topLevelBlocks)
-      // setBlocks()
-      setBlocks(editor.topLevelBlocks),
+    // Converts the editor's contents to an array of Block objects.
+    // JSON.stringify(editor.topLevelBlocks)
+    // setBlocks()
   });
   return (
     <div>
-      <BlockNoteView editor={editor} theme="light" />
+      <BlockNoteView editor={editor} editable={false} theme="light" />
     </div>
   );
 }

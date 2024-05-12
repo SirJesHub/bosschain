@@ -43,8 +43,8 @@ export default function NavBar() {
               </li>
               <li>
                 <Link
-                  href="/crypto"
-                  className="text-white font-salsa relative md:p-5 dark:text-white md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  href="/browse"
+                  className="text-white font-salsa relative hover:bg-gray-100 md:hover:bg-orange-300 md:p-5 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Explore Crypto World
                   <div className="absolute inset-x-0 bottom-0 h-5 bg-orange-300 transform origin-bottom scale-y-0 transition-transform duration-300 hover:scale-y-100 md:hover:text-blue-500" />

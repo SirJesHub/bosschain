@@ -37,7 +37,7 @@ const NoDropzoneLayout: React.FC<DropzoneProps> = ({
 
 interface VideoFormProps {
   userId: string;
-  courseId: string;
+  courseId: number;
 }
 
 const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {

@@ -42,35 +42,6 @@ export default function layout({
   const [lessonLengths, setLessonLengths] = useState<any>();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (pathName) {
-  //     const index: RegExpMatchArray | null = pathName.match(/lessons\/(\d+)/);
-  //     if (index !== null) {
-  //       const extractedLessonNumber: number = parseInt(index[1], 10);
-  //       setLessonIndex(extractedLessonNumber);
-  //     }
-  //   }
-  //   if (pathName) {
-  //     const index = pathName.match(/modules\/(\d+)/);
-  //     if (index !== null) {
-  //       const extractedModuleNumber = parseInt(index[1], 10);
-  //       setModuleId(extractedModuleNumber);
-  //     }
-  //   }
-  // }, [pathName && []]);
-
-  // useEffect(() => {
-  //   const initializePage = async () => {
-  //     const token = await getToken({ template: "supabase" });
-  //     const userAuth = { userId: userId, token: token };
-  //     const enrollment = await getEnrollment(userAuth, courseId);
-  //     if (enrollment.data) {
-  //       setEnrollmentId(enrollment.data.enrollment_id);
-  //     }
-  //   };
-  //   initializePage();
-  // }, []);
-
   useEffect(() => {
     const initializePage = async () => {
       let extractedLessonNumber;
@@ -323,7 +294,7 @@ export default function layout({
         </div>
       )}
       {!isLoading && courseData && (
-        <div className="col-span-3 row-span-4 overflow-auto mr-4 border-2 ">
+        <div className="col-span-3 row-span-4 overflow-x-hidden mr-4 border-2">
           <CourseSidebar
             courseData={courseData.module}
             courseId={courseId}

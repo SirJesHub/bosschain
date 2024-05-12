@@ -1,8 +1,8 @@
 "use client";
-import CourseCard from "../_components/CourseCard";
+import CourseCard from "./CourseCard";
 import { TrendingItems } from "@algolia/recommend-react";
 import recommend from "@algolia/recommend";
-import { index, appId, apiKey, userToken } from "../../../helper";
+import { index, appId, apiKey, userToken } from "../../helper";
 import Link from "next/link";
 import Image from "next/image";
 

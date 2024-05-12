@@ -59,7 +59,7 @@ export default function TrendingCourseCategory({
   };
 
   return (
-    <div className="overflow-x-hidden px-[10vw] pr-[10vw]">
+    <div className="overflow-x-hidden relative w-full border-2 border-transparent rounded-xl bg-white p-2">
       <div className="sticky">
         <div
           ref={containerRef}

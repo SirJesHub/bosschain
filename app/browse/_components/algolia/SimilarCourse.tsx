@@ -22,7 +22,7 @@ function RelatedItem({ item }: { item: ItemProps }) {
       <Link href={`/browse/${item.objectID}`}>
         <div className="text-wrap">
           <Image
-            src={"/YouTube-Thumbnail-Dimensions.webp"}
+            src={"/online-course-cover.webp"}
             alt="course image"
             width={300}
             height={300}
