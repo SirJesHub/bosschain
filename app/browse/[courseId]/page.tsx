@@ -67,7 +67,10 @@ export default function CourseDetailPage({
       const userAuth = { userId: userId, token: token };
       try {
         try {
-          const courseData = await CourseService.getFullCurrentCourse(userAuth, courseId);
+          const courseData = await CourseService.getFullCurrentCourse(
+            userAuth,
+            courseId,
+          );
 
           // 1.Course Validity Check
           if (!courseData.data) {
@@ -86,13 +89,16 @@ export default function CourseDetailPage({
         }
 
         try {
-          const enrollment = await CourseService.getEnrollment(userAuth, courseId);
+          const enrollment = await CourseService.getEnrollment(
+            userAuth,
+            courseId,
+          );
           // 3. Course Enrollment check
           if (enrollment.data) {
             const progress = await CourseService.getProgress(
               userAuth,
               courseId,
-              enrollment.data.enrollment_id
+              enrollment.data.enrollment_id,
             );
             console.log(progress.data);
             if (progress.data) {
@@ -105,11 +111,14 @@ export default function CourseDetailPage({
         } catch (error) {
           console.log(
             "[ERROR while fetching enrollment and progress]: ",
-            error
+            error,
           );
         }
 
-        const CoverImage = await CourseService.getCoverImage(userAuth, courseId);
+        const CoverImage = await CourseService.getCoverImage(
+          userAuth,
+          courseId,
+        );
         if (CoverImage) {
           setImageCoverUrl(CoverImage);
         }
@@ -129,13 +138,16 @@ export default function CourseDetailPage({
     try {
       const token = await getToken({ template: "supabase" });
       const userAuth = { userId: userId, token: token };
-      const enrollment = await CourseService.createEnrollment(userAuth, courseId);
+      const enrollment = await CourseService.createEnrollment(
+        userAuth,
+        courseId,
+      );
 
       if (enrollment) {
         const progress = await CourseService.getProgress(
           userAuth,
           courseId,
-          enrollment.data.enrollment_id
+          enrollment.data.enrollment_id,
         );
 
         setEnrollmentData(enrollment.data);

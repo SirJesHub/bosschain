@@ -32,17 +32,18 @@ export default function CourseSidebar({
   const router = useRouter();
   const [progress, setProgress] = useState(userProgress);
   const [courseData, setCourseData] = useState(courseInfo);
-  const [lessonProgressState, setLessonProgressState] = useState(lessonProgress)
-  const [courseIdState, setCourseIdState] = useState(courseId)
+  const [lessonProgressState, setLessonProgressState] =
+    useState(lessonProgress);
+  const [courseIdState, setCourseIdState] = useState(courseId);
   const initialLessonVisibility = courseInfo.reduce((acc: any, module: any) => {
     acc[module.module_id] = module.lesson.some(
-      (lesson: any) => lesson.index == lessonIndex
+      (lesson: any) => lesson.index == lessonIndex,
     );
     return acc;
   }, {});
   // const [isLoading, setIsLoading] = useState(true);
   const [lessonVisibility, setLessonVisibility] = useState(
-    initialLessonVisibility
+    initialLessonVisibility,
   );
   // const [completedLessonCount, setCompletedLessonCount] = useState<number>(0);
   // const [totalLessonCount, setTotalLessonCount] = useState<number>(0);
@@ -147,23 +148,26 @@ export default function CourseSidebar({
                   {module.lesson.map((lesson: any, index: any) => {
                     // if (lessonVisibility[week.weekNumber]) {
                     return (
-                      <Link href ={`/courses/${courseId}/modules/${lesson.module_id}/lessons/${lesson.index}`}>
-                      <div
-                        className={`w-full text-xs flex flex-wrap items-center p-3 mb-2  hover:bg-slate-300 transition-colors rounded-lg 
+                      <Link
+                        href={`/courses/${courseId}/modules/${lesson.module_id}/lessons/${lesson.index}`}
+                      >
+                        <div
+                          className={`w-full text-xs flex flex-wrap items-center p-3 mb-2  hover:bg-slate-300 transition-colors rounded-lg 
                      ${
                        lessonIndex == lesson.index
                          ? "bg-neutral-300"
                          : "bg-slate-100"
                      }`}
-                        key={lesson.index}
-                      >
-                        {weeklyProgress.lesson[index].status == "completed" ? (
-                          <CheckSquare2 />
-                        ) : (
-                          <Square />
-                        )}
-                        <p className="ml-2">{`${lesson.index} . ${lesson.title}`}</p>
-                      </div>
+                          key={lesson.index}
+                        >
+                          {weeklyProgress.lesson[index].status ==
+                          "completed" ? (
+                            <CheckSquare2 />
+                          ) : (
+                            <Square />
+                          )}
+                          <p className="ml-2">{`${lesson.index} . ${lesson.title}`}</p>
+                        </div>
                       </Link>
                     );
                     // }

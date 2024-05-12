@@ -8,10 +8,10 @@ export default function Progressbar({
   totalLessonCount: number;
 }) {
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState<number|undefined>();
+  const [progress, setProgress] = useState<number | undefined>();
   useEffect(() => {
     const progress = Math.round(
-      (completedLessonCount / totalLessonCount) * 100
+      (completedLessonCount / totalLessonCount) * 100,
     );
     setProgress(progress);
     setLoading(false);

@@ -54,9 +54,11 @@ export default function ModuleItem({
             {`Lessons : ${completedLessonCount}/${totalLessonCount}`}
           </h1>
         )}
-        {!enrollmentData &&  <h1 className="text-xs flex w-full mb-2 mx-4">
+        {!enrollmentData && (
+          <h1 className="text-xs flex w-full mb-2 mx-4">
             {`${totalLessonCount} Lessons `}
-          </h1>}
+          </h1>
+        )}
         {!lessonVisibility ? (
           <ChevronDown className="absolute right-4 top-4" />
         ) : (

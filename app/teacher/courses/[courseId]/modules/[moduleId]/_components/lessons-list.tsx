@@ -57,26 +57,30 @@ export const LessonsList = ({
     fetchData();
   }, [moduleId, userId, token]);
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
-    const items = Array.from(lessons);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const updatedLessons = Array.from(lessons);
+    const [reorderedLesson] = updatedLessons.splice(result.source.index, 1);
+    updatedLessons.splice(result.destination.index, 0, reorderedLesson);
 
-    const startIndex = Math.min(result.source.index, result.destination.index);
-    const endIndex = Math.max(result.source.index, result.destination.index);
+    console.log("Updated Lessons after reorder:", updatedLessons);
 
-    const updatedLessons = items.slice(startIndex, endIndex + 1);
+    setLessons(updatedLessons);
 
-    setLessons(items);
-
-    const bulkUpdateData = updatedLessons.map((lesson) => ({
+    const bulkUpdateData = updatedLessons.map((lesson, index) => ({
       lesson_id: lesson.lesson_id,
-      position: items.findIndex((item) => item.lesson_id === lesson.lesson_id),
+      position: index,
     }));
 
-    onReorder(bulkUpdateData);
+    try {
+      await onReorder(bulkUpdateData);
+      console.log("Lessons reordered successfully");
+    } catch (error) {
+      console.error("Error reordering lessons:", error);
+      // Rollback the changes if there's an error
+      setLessons(lessons);
+    }
   };
 
   if (!isMounted) {

@@ -247,7 +247,8 @@ const getModuleByCourseId = async ({
   const { data, error, status, statusText } = await supabase
     .from("module")
     .select(`*`)
-    .eq("course_id", courseId);
+    .eq("course_id", courseId)
+    .order("index", { ascending: true });
   if (error) {
     console.log("[getModuleByCourseId ERROR]: ", error);
     return {
@@ -281,7 +282,8 @@ const getLessonByModuleId = async ({
   const { data, error, status, statusText } = await supabase
     .from("lesson")
     .select(`*`)
-    .eq("module_id", moduleId);
+    .eq("module_id", moduleId)
+    .order("index", { ascending: true });
   if (error) {
     console.log("[getLessonByModuleId ERROR]: ", error);
     return {
@@ -702,6 +704,7 @@ const createModule = async ({
   title,
   description,
   courseId,
+  index,
 }: CreateModuleRequest): Promise<SupabaseResponse<Array<any>>> => {
   if (!token)
     return {
@@ -717,6 +720,7 @@ const createModule = async ({
       title,
       description: description,
       course_id: courseId,
+      index: index,
     })
     .select();
   if (error) {
@@ -742,6 +746,7 @@ const createLesson = async ({
   title,
   description,
   moduleId,
+  index,
 }: CreateLessonRequest): Promise<SupabaseResponse<Array<any>>> => {
   if (!token)
     return {
@@ -757,6 +762,7 @@ const createLesson = async ({
       title,
       description: description,
       module_id: moduleId,
+      index: index,
     })
     .select();
   if (error) {
@@ -1092,6 +1098,160 @@ const updateCourseLastUpdateAt = async ({
   };
 };
 
+const getLatestModuleIndex = async ({
+  userId,
+  token,
+  courseId,
+}: UserAuth & { courseId: string }): Promise<SupabaseResponse<Array<any>>> => {
+  if (!token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(token);
+  const { data, error, status, statusText } = await supabase
+    .from("module")
+    .select("index")
+    .eq("course_id", courseId)
+    .order("index", { ascending: false });
+  if (error) {
+    console.log("[getLatestModuleIndex ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
+const getLatestLessonIndex = async ({
+  userId,
+  token,
+  moduleId,
+}: UserAuth & { moduleId: string }): Promise<SupabaseResponse<Array<any>>> => {
+  if (!token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(token);
+  const { data, error, status, statusText } = await supabase
+    .from("lesson")
+    .select("index")
+    .eq("module_id", moduleId)
+    .order("index", { ascending: false });
+  if (error) {
+    console.log("[getLatestLessonIndex ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
+const moduleIndexReorder = async ({
+  token,
+  userId,
+  req,
+}: {
+  token: string;
+  userId: string;
+  req: { module_id: string; position: number }[];
+}): Promise<void> => {
+  if (!token) {
+    throw new Error("Where is your Clerk token?!!");
+  }
+
+  const supabase = await supabaseClient(token);
+
+  try {
+    const updatePromises = req.map(async (item) => {
+      console.log(
+        "Updating module with id:",
+        item.module_id,
+        "to index:",
+        item.position,
+      );
+
+      const { error } = await supabase
+        .from("module")
+        .update({ index: item.position })
+        .eq("module_id", item.module_id);
+      if (error) {
+        throw new Error(`Failed to update module with id ${item.module_id}`);
+      }
+
+      console.log("Module updated successfully");
+    });
+
+    await Promise.all(updatePromises);
+  } catch (error) {
+    console.error("Error updating module indexes:", error);
+    throw error;
+  }
+};
+
+const lessonIndexReorder = async ({
+  token,
+  userId,
+  req,
+}: {
+  token: string;
+  userId: string;
+  req: { lesson_id: string; position: number }[];
+}): Promise<void> => {
+  if (!token) {
+    throw new Error("Where is your Clerk token?!!");
+  }
+
+  const supabase = await supabaseClient(token);
+
+  try {
+    const updatePromises = req.map(async (item) => {
+      console.log(
+        "Updating lesson with id:",
+        item.lesson_id,
+        "to index:",
+        item.position,
+      );
+
+      const { error } = await supabase
+        .from("lesson")
+        .update({ index: item.position })
+        .eq("lesson_id", item.lesson_id);
+      if (error) {
+        throw new Error(`Failed to update lesson with id ${item.lesson_id}`);
+      }
+
+      console.log("Lesson updated successfully");
+    });
+
+    await Promise.all(updatePromises);
+  } catch (error) {
+    console.error("Error updating lesson indexes:", error);
+    throw error;
+  }
+};
+
 export const EnrollmentService = {
   getCourse,
   getFullCourse,
@@ -1118,4 +1278,8 @@ export const EnrollmentService = {
   deleteModule,
   deleteLesson,
   updateCourseLastUpdateAt,
+  getLatestModuleIndex,
+  getLatestLessonIndex,
+  moduleIndexReorder,
+  lessonIndexReorder,
 };

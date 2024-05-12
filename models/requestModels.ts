@@ -37,12 +37,14 @@ interface CreateModuleRequest extends UserAuth {
   title: string;
   description: string | null;
   courseId: number;
+  index: number;
 }
 
 interface CreateLessonRequest extends UserAuth {
   title: string;
   description: string | null;
   moduleId: number;
+  index: number;
 }
 
 interface SupabaseResponse<T> {

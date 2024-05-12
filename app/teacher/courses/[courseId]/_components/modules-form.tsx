@@ -73,13 +73,40 @@ export const ModulesForm = ({
     try {
       const token = await getToken({ template: "supabase" });
       //const token = "";
-      const response = await EnrollmentService.createModule({
-        userId: userId,
-        token: token,
-        title: values.title,
-        description: "",
-        courseId: Number(courseId),
+
+      console.log(courseId);
+
+      let moduleIndexList = await EnrollmentService.getLatestModuleIndex({
+        userId,
+        token,
+        courseId,
       });
+
+      console.log(moduleIndexList);
+
+      let response: any = undefined;
+
+      if (moduleIndexList.data !== null && moduleIndexList.data.length > 0) {
+        response = await EnrollmentService.createModule({
+          userId: userId,
+          token: token,
+          title: values.title,
+          description: "",
+          courseId: Number(courseId),
+          index: moduleIndexList.data[0]?.index + 1, // Use optional chaining (?.) to access properties safely
+        });
+      } else {
+        console.log("moduleIndexList.data is null or empty.");
+
+        response = await EnrollmentService.createModule({
+          userId: userId,
+          token: token,
+          title: values.title,
+          description: "",
+          courseId: Number(courseId),
+          index: 0, // Use optional chaining (?.) to access properties safely
+        });
+      }
 
       if (
         response.error ==
@@ -124,13 +151,21 @@ export const ModulesForm = ({
     try {
       setIsUpdating(true);
 
-      await axios.put(`/api/courses/${courseId}/modules/reorder`, {
-        list: updateData,
+      console.log("Updating modules with:", updateData);
+
+      const response = await EnrollmentService.moduleIndexReorder({
+        userId: userId,
+        token: token,
+        req: updateData,
       });
+
+      console.log("Reorder response:", response);
+
       toast.success("Modules reordered");
       router.refresh();
-    } catch {
+    } catch (error) {
       toast.error("Something went wrong");
+      console.error("Error reordering modules:", error);
     } finally {
       setIsUpdating(false);
     }

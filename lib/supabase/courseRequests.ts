@@ -56,7 +56,7 @@ const createCourse = async ({
 
 const getFullCurrentCourse = async (
   userAuth: UserAuth,
-  courseId: any
+  courseId: any,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -69,7 +69,7 @@ const getFullCurrentCourse = async (
   const { data, error, status, statusText } = await supabase
     .from("course")
     .select(
-      `*,module(*, lesson(title,content_type,index,module_id,lesson_id,created_at,description))`
+      `*,module(*, lesson(title,content_type,index,module_id,lesson_id,created_at,description))`,
     )
     .eq("course_id", courseId)
     .order("index", { ascending: true, referencedTable: "module" })
@@ -94,7 +94,7 @@ const getFullCurrentCourse = async (
 const getLessonContent = async (
   userAuth: UserAuth,
   moduleId: Number,
-  lessonIndex: Number
+  lessonIndex: Number,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -153,7 +153,7 @@ const updateAllCourse = async (userAuth: UserAuth): Promise<any> => {
     }));
     const algolia = algoliasearch(
       "4EIO37Y3KT",
-      "4f7dc9c296db73db48a82ab8dc9f190b"
+      "4f7dc9c296db73db48a82ab8dc9f190b",
     );
     const course_data = {
       objectID: 6,
@@ -180,18 +180,18 @@ const insertCourseAlgolia = async (
   created_at: string,
   title: string | null,
   description: string | null,
-  instructor_id: string|null,
+  instructor_id: string | null,
 ): Promise<any> => {
   const algolia = algoliasearch(
     "4EIO37Y3KT",
-    "4f7dc9c296db73db48a82ab8dc9f190b"
+    "4f7dc9c296db73db48a82ab8dc9f190b",
   );
   const course_data = {
-    objectID:  courseId ,
-    created_at:  created_at ,
-    description:  description ,
-    instructor_id:  instructor_id ,
-    title:  title ,
+    objectID: courseId,
+    created_at: created_at,
+    description: description,
+    instructor_id: instructor_id,
+    title: title,
   };
   if (course_data) {
     const indexAL = algolia.initIndex("bosschain");
@@ -204,7 +204,7 @@ const insertCourseAlgolia = async (
 
 const getProgress = async (
   userAuth: UserAuth,
-  courseId:number,
+  courseId: number,
   enrollmentId: any,
 ): Promise<any> => {
   if (!userAuth.token)
@@ -215,13 +215,15 @@ const getProgress = async (
       error: "Where is your Clerk token?!!",
     };
   const supabase = await supabaseClient(userAuth.token);
- const { data, error, status, statusText } = await supabase
-  .from("module")
-  .select(`module_id, index, lesson(index, lesson_progress(completed, enrollment_id))`)
-  .eq("course_id", courseId)
-  .eq("lesson.lesson_progress.enrollment_id", enrollmentId)
-  .order("index", { ascending: true })
-  .order("index", { ascending: true, referencedTable: "lesson" });
+  const { data, error, status, statusText } = await supabase
+    .from("module")
+    .select(
+      `module_id, index, lesson(index, lesson_progress(completed, enrollment_id))`,
+    )
+    .eq("course_id", courseId)
+    .eq("lesson.lesson_progress.enrollment_id", enrollmentId)
+    .order("index", { ascending: true })
+    .order("index", { ascending: true, referencedTable: "lesson" });
   // const { data, error, status, statusText } = await supabase
   // .from("module")
   // .select(`module_id, index, lesson(index, lesson_progress(completed, enrollment_id))`)
@@ -248,8 +250,8 @@ const getProgress = async (
 
 const updateProgress = async (
   userAuth: UserAuth,
-  enrollment_id:any,
-  lesson_id:number
+  enrollment_id: any,
+  lesson_id: number,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -259,13 +261,13 @@ const updateProgress = async (
       error: "Where is your Clerk token?!!",
     };
   const supabase = await supabaseClient(userAuth.token);
-  console.log(enrollment_id, lesson_id)
+  console.log(enrollment_id, lesson_id);
   const { data, error, status, statusText } = await supabase
-  .from("lesson_progress")
-  .update({completed:true})
-  .eq("enrollment_id", enrollment_id)
-  .eq("lesson_id", lesson_id)
-  .select()
+    .from("lesson_progress")
+    .update({ completed: true })
+    .eq("enrollment_id", enrollment_id)
+    .eq("lesson_id", lesson_id)
+    .select();
   if (error) {
     console.log("[getProgress ERROR]: ", error);
     return {
@@ -283,10 +285,9 @@ const updateProgress = async (
   };
 };
 
-
 const getEnrollment = async (
   userAuth: UserAuth,
-  courseId:number
+  courseId: number,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -297,10 +298,10 @@ const getEnrollment = async (
     };
   const supabase = await supabaseClient(userAuth.token);
   const { data, error, status, statusText } = await supabase
-  .from("enrollment")
-  .select("*")
-  .eq("course_id", courseId)
-  .eq("user_id", userAuth.userId)
+    .from("enrollment")
+    .select("*")
+    .eq("course_id", courseId)
+    .eq("user_id", userAuth.userId);
   if (error) {
     console.log("[getProgress ERROR]: ", error);
     return {
@@ -320,7 +321,7 @@ const getEnrollment = async (
 
 const createEnrollment = async (
   userAuth: UserAuth,
-  courseId:number
+  courseId: number,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -331,9 +332,9 @@ const createEnrollment = async (
     };
   const supabase = await supabaseClient(userAuth.token);
   const { data, error, status, statusText } = await supabase
-  .from("enrollment")
-  .insert({user_id:userAuth.userId, course_id:courseId})
-  .select()
+    .from("enrollment")
+    .insert({ user_id: userAuth.userId, course_id: courseId })
+    .select();
   if (error) {
     console.log("[createProgress ERROR]: ", error);
     return {
@@ -353,7 +354,7 @@ const createEnrollment = async (
 
 const getCoverImage = async (
   userAuth: UserAuth,
-  courseId:number
+  courseId: number,
 ): Promise<any> => {
   if (!userAuth.token)
     return {
@@ -363,17 +364,14 @@ const getCoverImage = async (
       error: "Where is your Clerk token?!!",
     };
   const supabase = await supabaseClient(userAuth.token);
-  const {data} = supabase
-  .storage
-  .from("course_cover_image")
-  .getPublicUrl("longtunman.jpeg")
+  const { data } = supabase.storage
+    .from("course_cover_image")
+    .getPublicUrl("longtunman.jpeg");
   return {
     data: data,
     error: null,
   };
 };
-
-
 
 export const CourseService = {
   getProgress,
@@ -387,4 +385,3 @@ export const CourseService = {
   getCoverImage,
   updateProgress,
 };
-

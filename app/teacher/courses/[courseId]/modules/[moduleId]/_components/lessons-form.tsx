@@ -74,14 +74,37 @@ export const LessonsForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const token = await getToken({ template: "supabase" });
-      //const token = "";
-      const response = await EnrollmentService.createLesson({
-        userId: userId,
-        token: token,
-        title: values.title,
-        description: "",
-        moduleId: Number(moduleId),
+
+      const lessonIndexList = await EnrollmentService.getLatestLessonIndex({
+        userId,
+        token,
+        moduleId,
       });
+
+      let response: any = undefined;
+
+      //const token = "";
+      if (lessonIndexList.data !== null && lessonIndexList.data.length > 0) {
+        response = await EnrollmentService.createLesson({
+          userId: userId,
+          token: token,
+          title: values.title,
+          description: "",
+          moduleId: Number(moduleId),
+          index: lessonIndexList.data[0]?.index + 1,
+        });
+      } else {
+        console.log("lessonIndexList.data is null or empty.");
+
+        response = await EnrollmentService.createLesson({
+          userId: userId,
+          token: token,
+          title: values.title,
+          description: "",
+          moduleId: Number(moduleId),
+          index: 0,
+        });
+      }
 
       if (
         response.error ==
@@ -126,10 +149,21 @@ export const LessonsForm = ({
     try {
       setIsUpdating(true);
 
+      console.log("Updating lessons with:", updateData);
+
+      const response = await EnrollmentService.lessonIndexReorder({
+        userId: userId,
+        token: token,
+        req: updateData,
+      });
+
+      console.log("Reorder response:", response);
+
       toast.success("Lessons reordered");
       router.refresh();
-    } catch {
+    } catch (error) {
       toast.error("Something went wrong");
+      console.error("Error reordering lessons:", error);
     } finally {
       setIsUpdating(false);
     }

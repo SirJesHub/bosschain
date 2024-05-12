@@ -46,7 +46,7 @@ export default function TrendingCourse() {
         classNames={{
           root: "m-10",
           list: "w-[80vw] mx-auto grid gap-10 grid-cols-3",
-          item:"",
+          item: "",
           title: "hidden",
         }}
       />

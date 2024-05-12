@@ -10,7 +10,7 @@ export default function ButtonFilter({
   const [clickedValue, setClickedValue] = useState("all");
   const buttonHandler = (value: string) => {
     filterHandler(value);
-    setClickedValue(value)
+    setClickedValue(value);
   };
 
   return (
