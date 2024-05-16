@@ -45,6 +45,9 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageUrlList, setImageUrlList] = useState<Array<String>>([]);
+  const [file, setFile] = useState<File>();
+  const [loading, setLoading] = useState(false);
   const [queryParam, setQueryParam] = useState<string>(
     `?timestamp=${new Date().getTime()}`,
   ); // temporary hack to trigger reload image
@@ -95,6 +98,40 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, courseId }) => {
     }
   };
 
+  const saveFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      setFile(fileList[0]);
+    } else {
+      console.log("No file is chosen");
+    }
+  };
+
+  const uploadImage = async () => {
+    console.log("start upload");
+    setLoading(true);
+    if (file) {
+      console.log("uploading");
+      const token = await getToken({ template: "supabase" });
+      await BucketService.uploadFile({
+        token,
+        userId,
+        courseId: Number(courseId),
+        file,
+      });
+      setQueryParam(`?timestamp=${new Date().getTime()}`);
+      setLoading(false);
+      toast.success("Image updated successfully!");
+      toggleEdit();
+    } else {
+      console.log("There is no file selected");
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   const handleSubmit = (
     files: Array<{ meta: any }>,
     allFiles: Array<{ remove: () => void }>,
@@ -120,7 +157,22 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, courseId }) => {
           </Button>
         )}
       </div>
-      {isEditing && <div className="mt-2"></div>}
+      {isEditing && (
+        <div className="mt-2">
+          <Form.Group>
+            <Form.Control
+              type="file"
+              onChange={(e) => saveFile(e as ChangeEvent<HTMLInputElement>)}
+            ></Form.Control>
+            <button
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              onClick={uploadImage}
+            >
+              Save image
+            </button>
+          </Form.Group>
+        </div>
+      )}
       {!isEditing && (
         <div className="flex justify-center">
           <img

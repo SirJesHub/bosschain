@@ -23,6 +23,9 @@ import content from "@/app/browse/_components/lesson/Content";
 import Stack from "@mui/material/Stack";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Quiz from "react-quiz-component";
+import QuizForm from "./_components/QuizForm";
+import { QuizComponentForm } from "./_components/quiz-form";
 
 const LessonIdPage = ({
   params: { lessonId, courseId, moduleId },
@@ -43,6 +46,7 @@ const LessonIdPage = ({
   ); // temporary hack to trigger reload image
   const [lessonContent, setLessonContent] = useState<any>();
   const [isModified, setIsModified] = useState<boolean>(false);
+  const [result, setResult] = useState<any>(); // Define result state
 
   useEffect(() => {
     const initializePage = async () => {
@@ -97,6 +101,13 @@ const LessonIdPage = ({
     setLesson((prevLesson: SupabaseResponse<any[]> | undefined) => ({
       ...prevLesson!,
       data: [{ ...(prevLesson?.data?.[0] ?? {}), title: updatedTitle }],
+    }));
+  };
+
+  const handleQuizContentUpdate = (updatedQuizContent: string) => {
+    setLesson((prevLesson: SupabaseResponse<any[]> | undefined) => ({
+      ...prevLesson!,
+      data: [{ ...(prevLesson?.data?.[0] ?? {}), content: updatedQuizContent }],
     }));
   };
 
@@ -220,6 +231,12 @@ const LessonIdPage = ({
     setIsModified(value);
   };
 
+  const handleSubmit = (formData: any) => {
+    // Handle form submission here, formData contains the quiz data
+    console.log("Quiz data:", formData);
+    setResult(formData); // Set the result state
+  };
+
   if (isLoading) {
     // Render skeleton loading UI while data is being fetched
     return (
@@ -235,6 +252,33 @@ const LessonIdPage = ({
         </div>
       </div>
     );
+  }
+
+  const renderCustomResultPage = (obj: any) => {
+    console.log(obj);
+    return (
+      <div>
+        This is a custom result page. You can use obj to render your custom
+        result page
+      </div>
+    );
+  };
+
+  const setQuizResult = (obj: any) => {
+    console.log(obj);
+    // YOUR LOGIC GOES HERE
+  };
+
+  const quiz = lesson?.data?.[0]?.content;
+
+  let parsedQuiz = {};
+
+  if (Object(parsedQuiz).length > 0) {
+    try {
+      parsedQuiz = JSON.parse(quiz);
+    } catch (error) {
+      console.error("Error parsing quiz JSON:", error);
+    }
   }
 
   return (
@@ -331,7 +375,24 @@ const LessonIdPage = ({
             {lessonContent.content_type === "video" && (
               <VideoForm userId={userId} courseId={courseId} />
             )}
-            {lessonContent.content_type === "quiz" && <h1>Quiz maker</h1>}
+            {lessonContent.content_type === "quiz" && (
+              <QuizComponentForm
+                initialData={{ content: lesson?.data?.[0]?.content || "" }}
+                lessonId={lessonId}
+                token={token}
+                userId={userId}
+                onQuizContentUpdate={handleQuizContentUpdate} // Pass the callback function
+              />
+            )}
+          </div>
+          <div>
+            {Object.keys(parsedQuiz).length > 0 && (
+              <Quiz
+                quiz={parsedQuiz}
+                showDefaultResult={true}
+                onComplete={setQuizResult}
+              />
+            )}
           </div>
         </div>
       </div>
