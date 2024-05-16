@@ -48,14 +48,14 @@ export default function Card({
     <div>
       {!enrollmentData && (
         <button
-          className="bg-blue-600 text-slate-100 py-2 px-5 rounded-xl shadow-xl"
+          className="bg-gradient-to-br hover:scale-105 cursor-pointer from-blue-800 to-blue-500 hover:from-blue-500 hover:to-blue-800 hover:shadow-2xl transition-all duration-500 text-white font-semibold px-10 py-4 rounded-lg w-fit"
           onClick={() => enrollEventHandler({ courseId, queryID })}
         >
           ENROLL THIS COURSE
         </button>
       )}
       {enrollmentData && (
-        <div className="bg-blue-600 text-slate-100 py-2 px-5 rounded-xl w-fit font-semibold">
+        <div className="bg-gradient-to-br hover:scale-105 from-blue-800 to-blue-500 hover:from-blue-500 hover:to-blue-800 hover:shadow-2xl transition-all duration-500 text-white font-semibold px-10 py-4 rounded-lg w-fit">
           <p>Already Enrolled</p>
         </div>
       )}

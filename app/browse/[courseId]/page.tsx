@@ -17,10 +17,12 @@ import CourseIntroductionSkeleton from "../_components/courseDetail/CourseIntrod
 import { SupabaseResponse } from "@/models/requestModels";
 import { redirect } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import { EnrollCourseRequest } from "@/models/requestModels";
 
 import { CourseService } from "@/lib/supabase/courseRequests";
 import { Database } from "@/types/supabase";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
+import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 
 type courseDataProps = {
   name: string;
@@ -59,6 +61,10 @@ export default function CourseDetailPage({
   const [enrollmentData, setEnrollmentData] = useState<any>();
   const [progress, setProgress] = useState<any>();
   const [ImageCoverUrl, setImageCoverUrl] = useState<string>();
+
+  const [queryParam, setQueryParam] = useState<string>(
+    `?timestamp=${new Date().getTime()}`,
+  ); // temporary hack to trigger reload image
   const router = useRouter();
 
   useEffect(() => {
@@ -75,14 +81,14 @@ export default function CourseDetailPage({
           // 1.Course Validity Check
           if (!courseData.data) {
             console.log("course is not found");
-            return router.push("/browse");
+            return router.push("/course-not-found");
           }
           setCourseData(courseData.data);
 
           // 2.Course Publishment check
           if (!courseData.data.is_published) {
             console.log("course is not published");
-            return router.push("/browse");
+            return router.push("/course-not-found");
           }
         } catch (error) {
           console.log("[ERROR while fetching courseData]: ", error);
@@ -95,6 +101,11 @@ export default function CourseDetailPage({
           );
           // 3. Course Enrollment check
           if (enrollment.data) {
+            const lastAccessResponse = EnrollmentService.updateLastAccess(
+              userAuth,
+              enrollment.data.enrollment_id,
+            );
+            console.log(lastAccessResponse);
             const progress = await CourseService.getProgress(
               userAuth,
               courseId,
@@ -166,19 +177,23 @@ export default function CourseDetailPage({
   };
 
   return (
-    <div className="">
+    <div className="h-full pt-[68px]">
       <Toaster position="top-center" />
       <div className="bg-gradient-to-br from-blue-300 to-blue-800 min-h-[280px] text-slate-100 font-medium mb-5 flex">
         {!loading && courseData && (
           <div className="grid grid-cols-12 gap-4">
-            <Image
-              src={"/longtunman.jpeg"}
+            <img
+              src={
+                process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
+                "" +
+                courseId +
+                "/course/cover" +
+                queryParam
+              }
               alt="course cover"
-              width={100}
-              height={100}
               className="rounded-xl self-center col-start-2 col-span-2 w-full my-10"
             />
-            <div className=" flex flex-col col-span-6 justify-around h-full">
+            <div className=" flex flex-col col-span-6 justify-around h-full justify-items-start items-start">
               <div>
                 <h1 className="w-[50vw] mx-5 transition-all duration-1000 text-3xl">
                   {courseData.title}
@@ -229,6 +244,7 @@ export default function CourseDetailPage({
           {!loading && <SimilarCourse objectId={courseId} />}
         </div>
       </div>
+      <footer className="h-screen "></footer>
     </div>
   );
 }

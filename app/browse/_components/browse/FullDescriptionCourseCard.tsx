@@ -28,6 +28,9 @@ export default function FullDescriptionCourseCard({
   const [isLoading, setIsLoading] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<number>(0);
   const [totalLessons, setTotalLessons] = useState<number>(0);
+  const [queryParam, setQueryParam] = useState<string>(
+    `?timestamp=${new Date().getTime()}`,
+  ); // temporary hack to trigger reload image
 
   useEffect(() => {
     const initializePage = async () => {
@@ -65,12 +68,24 @@ export default function FullDescriptionCourseCard({
       <Link href={`/browse/${course_id}`}>
         <div className="bg-red-300 overflow-hidden h-3/6 relative">
           {cover_image && (
-            <Image
-              className=" object-cover shadow-xl  "
-              src={cover_image}
+            // <Image
+            //   className=" object-cover shadow-xl  "
+            //   src={cover_image}
+            //   alt="course image"
+            //   layout="fill"
+            //   objectFit="cover"
+            // />
+
+            <img
+              className="absolute inset-0 object-cover w-full h-full shadow-xl"
+              src={
+                process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
+                "" +
+                course_id +
+                "/course/cover" +
+                queryParam
+              }
               alt="course image"
-              layout="fill"
-              objectFit="cover"
             />
           )}
           {!cover_image && (

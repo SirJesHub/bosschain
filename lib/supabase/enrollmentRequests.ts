@@ -385,6 +385,86 @@ const getLessonByModuleId = async ({
   };
 };
 
+const updateLastAccess = async (
+  userAuth: UserAuth,
+  enrollment_id: number,
+): Promise<any> => {
+  if (!userAuth.token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+
+  const currentDateISO = new Date().toISOString();
+  console.log(currentDateISO);
+  const supabase = await supabaseClient(userAuth.token);
+  const { data, error, status, statusText } = await supabase
+    .from("enrollment")
+    .update({ last_access: currentDateISO })
+    .eq("enrollment_id", enrollment_id)
+    .select();
+  if (error) {
+    console.log("[updateLastAccess ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data,
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
+const getLessonDataByIndex = async (
+  userAuth: UserAuth,
+  moduleId: number,
+  lessonIndex: number,
+): Promise<any> => {
+  if (!userAuth.token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(userAuth.token);
+  const { data, error, status, statusText } = await supabase
+    .from("lesson")
+    .select(
+      `created_at,
+    description,
+    index,
+    is_published,
+    lesson_id,
+    module_id,
+    title`,
+    )
+    .eq("index", lessonIndex)
+    .eq("module_id", moduleId);
+  if (error) {
+    console.log("[getLessonDataByIndex ERROR]: ", error);
+    return {
+      data: null,
+      statusCode: status,
+      statusMessage: statusText,
+      error: error.message,
+    };
+  }
+  return {
+    data: data[0],
+    statusCode: status,
+    statusMessage: statusText,
+    error: null,
+  };
+};
+
 const getAllTeacherCourse = async ({
   userId,
   token,
@@ -1368,4 +1448,6 @@ export const EnrollmentService = {
   getLatestLessonIndex,
   moduleIndexReorder,
   lessonIndexReorder,
+  getLessonDataByIndex,
+  updateLastAccess,
 };

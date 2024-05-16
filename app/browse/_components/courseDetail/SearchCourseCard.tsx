@@ -12,7 +12,7 @@ type courseProps = {
   name: string;
 };
 
-export default function CourseCard({
+export default function SearchCourseCard({
   created_at,
   desc,
   objectID,
@@ -25,7 +25,7 @@ export default function CourseCard({
   ); // temporary hack to trigger reload image
   return (
     <div className="group relative h-[300px] bg-white rounded-lg">
-      <div className="cursor-pointer transition duration shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 flex flex-col h-full z-20">
+      <div className="cursor-pointer transition duration shadow-xl -z-10 rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 flex flex-col h-full">
         {/* before zoom */}
         <div className="h-4/6 rounded-md bg-slate-200 relative overflow-hidden">
           <img
@@ -43,7 +43,7 @@ export default function CourseCard({
         {/* Description */}
         <div className="p-2 flex flex-col flex-grow ">
           <div>
-            <h2 className="font-bold line-clamp-2">{name}</h2>
+            <h2 className="font-bold">{name}</h2>
             <h3 className="text-sm font-semibold my-1 line-clamp-2">
               • {category}
             </h3>
@@ -51,7 +51,7 @@ export default function CourseCard({
         </div>
       </div>
 
-      <div className="group opacity-0 absolute top-0 trasition duration-200 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:opacity-100 h-[450px] z-40">
+      <div className="group opacity-0 absolute top-0 trasition duration-200 z-20 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:opacity-100 h-[450px]">
         {/* <Image
           className="cursor-pointer object-cover transition duration shadow-xl rounded-t-md w-full"
           src={"/online-course-cover.webp"}

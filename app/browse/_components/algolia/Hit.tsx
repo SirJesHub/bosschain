@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Highlight } from "react-instantsearch";
 import Image from "next/image";
-import CourseCard from "../courseDetail/CourseCard";
+import SearchCourseCard from "../courseDetail/SearchCourseCard";
 
 type HitProps = {
   category: string;
@@ -28,7 +28,7 @@ export default function Hit({
       href={`/browse/${hit.objectID}?queryID=${hit.__queryID}`}
       onClick={() => sendEvent("click", hit, "Course Clicked")}
     >
-      <CourseCard
+      <SearchCourseCard
         key={hit.objectID}
         name={hit.name}
         category={hit.category}

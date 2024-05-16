@@ -13,6 +13,7 @@ export default function courseSidebar({
   moduleId,
   enrollmentData,
   lessonLengths,
+  currentModuleId,
 }: {
   courseData: any;
   courseId: number;
@@ -22,22 +23,22 @@ export default function courseSidebar({
   moduleId: number;
   enrollmentData: any;
   lessonLengths: any;
+  currentModuleId: number;
 }) {
   const [lessonVisibility, setLessonVisibility] = useState();
 
   useEffect(() => {
-    // console.log("courseData from csb:", courseData);
-    // console.log("userProgress from csb:", userProgress);
-    // console.log("lesssonProgress from csb:", lessonProgress);
+    console.log("courseData from csb:", courseData);
+    console.log("userProgress from csb:", userProgress);
+    console.log("lesssonProgress from csb:", lessonProgress);
     const initialLessonVisibility = courseData.reduce(
       (acc: any, module: any) => {
-        acc[module.module_id] = module.lesson.some(
-          (lesson: any) => lesson.index == lessonIndex,
-        );
+        acc[module.module_id] = module.module_id === currentModuleId;
         return acc;
       },
       {},
     );
+    console.log("43", initialLessonVisibility);
     setLessonVisibility(initialLessonVisibility);
   }, []);
 
@@ -59,11 +60,12 @@ export default function courseSidebar({
   };
 
   return (
-    <div className=" border-gray-200 rounded-md w-fit">
+    <div className=" border-gray-200 rounded-md w-full">
       {lessonVisibility &&
         courseData.map((module: any, index: any) => {
           if (enrollmentData) {
             const weeklyProgress = userProgress[index];
+
             return (
               <div>
                 <div>
@@ -81,6 +83,7 @@ export default function courseSidebar({
                     weeklyProgress={weeklyProgress}
                     completedLessonCount={lessonProgress[index].completedLesson}
                     totalLessonCount={lessonLengths[index].lesson_length}
+                    currentModuleId={currentModuleId}
                   />
                 </div>
               </div>
@@ -101,6 +104,7 @@ export default function courseSidebar({
                     moduleId={moduleId}
                     totalLessonCount={lessonLengths[index].lesson_length}
                     enrollmentData={enrollmentData}
+                    currentModuleId={currentModuleId}
                   />
                 </div>
               </div>

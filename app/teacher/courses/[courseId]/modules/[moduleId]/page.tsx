@@ -166,7 +166,7 @@ const ModuleIdPage = () => {
   }
 
   return (
-    <div>
+    <div className="h-full pt-[68px]">
       {!module?.data?.[0]?.is_published && (
         <Banner label="This module is unpublished. It will not be visible to the students." />
       )}

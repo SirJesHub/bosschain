@@ -12,9 +12,35 @@ body {
 }
 
 /* Base theme */
+
+.bn-container{
+  height: 100%;
+
+
+}
+
+.ProseMirror {
+  /* min-height: 100%; */
+  height:100%;
+  margin-bottom: 5px;
+  padding-right: 0px;
+
+}
+
+.bn-block-group{
+  height:100%;
+ /* min-height: 100%; */
+  overflow: scroll ;
+  padding-right: 50px;
+ 
+}
+
+
+
 .bn-container[data-color-scheme] {
+
   --bn-colors-editor-text: #222222;
-  --bn-colors-editor-background: #ececec;
+  --bn-colors-editor-background: #ffffff;
   --bn-colors-menu-text: #000000;
   --bn-colors-menu-background: #ffffff;
   --bn-colors-tooltip-text: #ffffff;
