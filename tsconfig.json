@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["video.d.ts", "video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "courseDummyData.js", "app/browse/_components/Accordion.jsx", "app/browse/_components/lesson/TextEditor.tsx", "app/teacher/courses/_components/columns.test.js"],
+  "include": ["video.d.ts", "video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "courseDummyData.js", "app/browse/_components/Accordion.jsx", "app/browse/_components/lesson/TextEditor.tsx", "app/teacher/courses/_components/columns.test.js", "app/teacher/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/QuizFormResult.js"],
   "exclude": ["node_modules"]
 }

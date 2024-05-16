@@ -13,8 +13,7 @@ interface DropzoneProps {
   files: any[]; // Adjust the type according to your files array
   dropzoneProps: {
     ref: React.RefObject<HTMLDivElement>;
-    className: string;
-    style?: React.CSSProperties; // Make style property optional
+    className: string; // Make style property optional
   };
 }
 
@@ -25,9 +24,9 @@ const NoDropzoneLayout: React.FC<DropzoneProps> = ({
   files,
   dropzoneProps,
 }) => {
-  const { ref, className, style } = dropzoneProps;
+  const { ref, className } = dropzoneProps;
   return (
-    <div ref={ref} className={className} style={style || {}}>
+    <div ref={ref} className={className}>
       {previews}
       {input}
       {files.length > 0 && submitButton}
@@ -45,6 +44,9 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageUrlList, setImageUrlList] = useState<Array<String>>([]);
+  const [file, setFile] = useState<File>();
+  const [loading, setLoading] = useState(false);
   const [queryParam, setQueryParam] = useState<string>(
     `?timestamp=${new Date().getTime()}`,
   ); // temporary hack to trigger reload video
@@ -112,6 +114,42 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
     allFiles.forEach((f) => f.remove());
   };
 
+  const saveFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      setFile(fileList[0]);
+    } else {
+      console.log("No file is chosen");
+    }
+  };
+
+  const uploadVideo = async () => {
+    console.log("start upload");
+    setLoading(true);
+    if (file) {
+      console.log("uploading");
+      const token = await getToken({ template: "supabase" });
+      await BucketService.uploadVideoFile({
+        token,
+        userId,
+        courseId: Number(courseId),
+        moduleId: Number(moduleId),
+        lessonId: Number(lessonId),
+        file,
+      });
+      setQueryParam(`?timestamp=${new Date().getTime()}`);
+      setLoading(false);
+      toast.success("Video updated successfully!");
+      toggleEdit();
+    } else {
+      console.log("There is no file selected");
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
@@ -129,7 +167,22 @@ const VideoForm: React.FC<VideoFormProps> = ({ userId, courseId }) => {
           </Button>
         )}
       </div>
-      {isEditing && <div className="mt-2"></div>}
+      {isEditing && (
+        <div className="mt-2">
+          <Form.Group>
+            <Form.Control
+              type="file"
+              onChange={(e) => saveFile(e as ChangeEvent<HTMLInputElement>)}
+            ></Form.Control>
+            <button
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              onClick={uploadVideo}
+            >
+              Save video
+            </button>
+          </Form.Group>
+        </div>
+      )}
       {!isEditing && (
         <div className="flex justify-center">
           <video
