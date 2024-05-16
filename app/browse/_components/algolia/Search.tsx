@@ -38,13 +38,13 @@ export default function Search() {
         clickAnalytics={true}
         enablePersonalization={true}
         userToken={userToken}
-        hitsPerPage={12}
+        // hitsPerPage={12}
         enableReRanking={true}
         facetFilters={`category:${selectedCategory}`}
       />
       {/* <div className=""> */}
-      <div className=" flex font bg-white sticky top-16 z-30 pt-10">
-        <div className=" flex flex-col  items-center w-4/5  mx-auto gap-5 ">
+      <div className="flex font bg-white sticky top-16 z-30 pt-10">
+        <div className="flex flex-col items-center w-4/5 mx-auto gap-5">
           <SearchBox
             placeholder="Courses title, categories"
             searchAsYouType={false}
@@ -56,7 +56,7 @@ export default function Search() {
               submit:
                 "bg-blue-400 hover:bg-blue-500 transition-1000 text-white font-bold w-2/12 h-10 rounded-r-full shadow-md border-2 border-blue-400 ",
               submitIcon: "w-full h-3/5 font-bold hover:text-white",
-              resetIcon: "",
+              resetIcon: "hidden",
               reset: "hidden",
             }}
           />

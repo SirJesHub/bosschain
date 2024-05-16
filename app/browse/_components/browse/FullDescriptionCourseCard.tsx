@@ -66,37 +66,18 @@ export default function FullDescriptionCourseCard({
   return (
     <div className="h-full  bg-gray-50 rounded-lg overflow-hidden hover:opacity-90 hover:shadow-sm">
       <Link href={`/browse/${course_id}`}>
-        <div className="bg-red-300 overflow-hidden h-3/6 relative">
-          {cover_image && (
-            // <Image
-            //   className=" object-cover shadow-xl  "
-            //   src={cover_image}
-            //   alt="course image"
-            //   layout="fill"
-            //   objectFit="cover"
-            // />
-
-            <img
-              className="absolute inset-0 object-cover w-full h-full shadow-xl"
-              src={
-                process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
-                "" +
-                course_id +
-                "/course/cover" +
-                queryParam
-              }
-              alt="course image"
-            />
-          )}
-          {!cover_image && (
-            <Image
-              className=" object-cover  shadow-xl  "
-              src={"/YouTube-Thumbnail-Dimensions.webp"}
-              alt="course image"
-              layout="fill"
-              objectFit="cover"
-            />
-          )}
+        <div className="bg-slate-200 overflow-hidden h-3/6 relative">
+          <img
+            className="absolute inset-0 object-cover w-full h-full shadow-xl"
+            src={
+              process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
+              "" +
+              course_id +
+              "/course/cover" +
+              queryParam
+            }
+            alt="course image"
+          />
         </div>
 
         <div className="p-2 h-3/6 relative ">

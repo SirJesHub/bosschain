@@ -316,6 +316,7 @@ const LessonIdPage = ({
           {/* <VideoForm userId={userId} courseId={courseId} /> */}
         </div>
       </div>
+
       {/* <div className="rounded-md p-4 box-border m-6 h-full bg-red-600 py-10"> */}
       <div className=" mx-6  bg-slate-100 rounded-md">
         {/* <p>Is Modified: {isModified ? "true" : "false"}</p>
