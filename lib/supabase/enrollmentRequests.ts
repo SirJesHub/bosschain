@@ -1416,6 +1416,56 @@ const lessonIndexReorder = async ({
   }
 };
 
+const updateLessonQuiz = async ({
+  lessonId,
+  content,
+  token,
+  userId, // Add userId to the function parameters
+}: {
+  lessonId: number;
+  content: string;
+  token: string;
+  userId: string; // Accept userId as a parameter
+}): Promise<
+  SupabaseResponse<Database["public"]["Tables"]["course"]["Row"]>
+> => {
+  if (!token)
+    return {
+      data: null,
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: ReasonPhrases.UNAUTHORIZED,
+      error: "Where is your Clerk token?!!",
+    };
+  const supabase = await supabaseClient(token);
+  const {
+    data: lessonData,
+    error: lessonError,
+    status: lessonStatus,
+    statusText: lessonStatusText,
+  } = await supabase
+    .from("lesson")
+    .update({ content }) // Update the title
+    .eq("lesson_id", lessonId) // Match the course ID
+    .single(); // Only update a single row
+
+  if (lessonError) {
+    console.log("[updateLessonQuiz ERROR]: ", lessonError);
+    return {
+      data: null,
+      statusCode: lessonStatus,
+      statusMessage: lessonStatusText,
+      error: lessonError.message,
+    };
+  }
+
+  return {
+    data: lessonData,
+    statusCode: lessonStatus,
+    statusMessage: lessonStatusText,
+    error: null,
+  };
+};
+
 export const EnrollmentService = {
   getCourse,
   getFullCourse,
@@ -1448,6 +1498,7 @@ export const EnrollmentService = {
   getLatestLessonIndex,
   moduleIndexReorder,
   lessonIndexReorder,
+  updateLessonQuiz,
   getLessonDataByIndex,
   updateLastAccess,
 };
