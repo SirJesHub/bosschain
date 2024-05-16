@@ -26,16 +26,28 @@ export default function Card({
   enrollmentData: any;
   enrollmentHandler: Function;
 }) {
+  const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
+  const userId = maybeUserId || "";
+  const [userAuth, setUserAuth] = useState<any>();
   courseId = courseId.toString();
   const searchParams = useSearchParams();
   const queryID: any = searchParams?.get("queryID") ?? "No token";
+
+  useEffect(() => {
+    const pageInitialized = async () => {
+      const token = await getToken({ template: "supabase" });
+      const userAuth = { userId: userId, token: token };
+      setUserAuth(userAuth);
+    };
+    pageInitialized();
+  }, []);
 
   const enrollEventHandler = async ({
     courseId,
     queryID,
   }: EnrollHandlerParams) => {
     aa("convertedObjectIDsAfterSearch", {
-      userToken: userToken,
+      userToken: userAuth.userId,
       index: index,
       eventName: "Course Enrolled",
       queryID: queryID,

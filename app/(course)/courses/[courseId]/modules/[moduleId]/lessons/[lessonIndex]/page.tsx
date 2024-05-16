@@ -41,7 +41,7 @@ export default function page({
         const dateString = "2024-05-12T18:16:03.180482+00:00";
         const date = new Date(lessonData.data.created_at);
         const formattedDate = date.toDateString();
-
+        console.log(lessonData.data);
         setLessonData(() => ({
           ...lessonData.data,
           created_at: formattedDate,
@@ -100,17 +100,20 @@ export default function page({
           <div className="pr-3 pl-4 pt-2">
             <div className="border-gray-200 border-2 rounded-md">
               <video
+                src={
+                  process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
+                  "" +
+                  courseId +
+                  "/" +
+                  moduleId +
+                  "/" +
+                  lessonData.lesson_id +
+                  "/video" +
+                  queryParam
+                }
                 className="w-full rounded-md aspect-video shadow-sm "
                 controls
-              >
-                <source
-                  src={
-                    "https://uemuqiskvetslcirjqdw.supabase.co/storage/v1/object/public/course_assets/47/course/testVideo.mp4"
-                  }
-                  type="video/mp4"
-                />
-                Your browser does not support the video tag.
-              </video>
+              />
             </div>
             <div className="ml-2">
               {lessonData.title && (
