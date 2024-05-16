@@ -59,7 +59,7 @@ export default function TrendingCourseCategory({
   };
 
   return (
-    <div className="overflow-x-hidden relative w-full border-2 border-transparent rounded-xl bg-white p-2">
+    <div className="overflow-x-hidden relative w-full border-2 border-transparent rounded-xl bg-blue-400 p-2">
       <div className="sticky">
         <div
           ref={containerRef}
@@ -72,7 +72,7 @@ export default function TrendingCourseCategory({
           >
             <button
               key={"all"}
-              className={`bg-slate-200 text-sm h-full rounded-xl whitespace-nowrap p-2 hover:bg-slate-400 transition-colors duration-1000 ${clickedValue == "" ? "bg-slate-500" : "bg-slate-200"}`}
+              className={` text-sm h-full rounded-xl whitespace-nowrap p-2  transition-colors duration-5000 ${clickedValue == "" ? "bg-blue-800 text-white" : "hover:bg-slate-200 bg-white"}`}
               onClick={() => {
                 categoryButtonHandler("");
               }}
@@ -82,7 +82,7 @@ export default function TrendingCourseCategory({
             {recommendations.map((recommendation) => (
               <button
                 key={recommendation.facetValue}
-                className={`text-sm h-full rounded-xl whitespace-nowrap p-2 hover:bg-slate-400 transition-colors duration-1000 ${clickedValue == recommendation.facetValue ? "bg-slate-500" : "bg-slate-200"}`}
+                className={`text-sm h-full  rounded-xl whitespace-nowrap p-2 transition-colors duration-5000 ${clickedValue == recommendation.facetValue ? "bg-blue-800 text-white" : "hover:bg-slate-200 bg-white"}`}
                 onClick={() => {
                   categoryButtonHandler(recommendation.facetValue);
                 }}
@@ -102,7 +102,7 @@ export default function TrendingCourseCategory({
             top-1/2
             -translate-y-1/2
             bg-gradient-to-r 
-            from-white 
+            from-blue-400 
             from-50% 
             to-transparent 
             w-24 
@@ -110,7 +110,7 @@ export default function TrendingCourseCategory({
             flex"
             >
               <button
-                className="bg-white w-auto"
+                className="bg-blue-400 w-auto"
                 onClick={() => {
                   setTranslate((translate) => {
                     const newTranslate = translate - TRANSLATE_AMOUNT;
@@ -125,7 +125,7 @@ export default function TrendingCourseCategory({
           )}
 
           {isRightVisible && (
-            <div className="absolute top-1/2 -translate-y-1/2 right-0 bg-gradient-to-l from-white from-50% to-transparent w-24 h-full  flex justify-end ">
+            <div className="absolute top-1/2 -translate-y-1/2 right-0 bg-gradient-to-l from-blue-400 from-50% to-transparent w-24 h-full  flex justify-end ">
               <button
                 className="w-auto"
                 onClick={() => {

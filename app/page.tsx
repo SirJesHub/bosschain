@@ -1,13 +1,34 @@
 "use client";
 
-import React from "react";
+import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import TrendingCourse from "../components/ui/TrendingCourse";
 import AnimateOnScroll from "@/components/ui/animateOnScroll";
+import Link from "next/link";
 
 export default function page() {
+  const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
+  const userId = maybeUserId || "";
+  const [userAuth, setUserAuth] = useState<any>();
+  useEffect(() => {
+    const initializePage = async () => {
+      const token = await getToken({ template: "supabase" });
+      console.log(token);
+      const userAuth = { userId: userId, token: token };
+      if (!userAuth) {
+        console.log("not login");
+      } else {
+        console.log("you have login");
+        setUserAuth(userAuth);
+      }
+    };
+
+    initializePage();
+  }, []);
+
   return (
-    <div className="bg-blue-600 h-full box-border w-full">
+    <div className="bg-blue-600 h-full box-border w-full overflow-x-hidden">
       <div className="bg-gradient-to-r from-black to-blue-700  h-full p-10 flex flex-row text-blue-900">
         <div className="w-1/2 p-10 text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-blue-500 flex flex-col justify-center items-start">
           <h2 className="text-lg font-semibold mb-8">• Welcome to Bosschain</h2>
@@ -20,9 +41,11 @@ export default function page() {
             Explore our platform for comprehensive education on cryptocurrency
             and blockchain technology fundamentals.
           </h1>
-          <button className="bg-gradient-to-br hover:scale-105 from-blue-800 to-blue-500 hover:from-blue-500 hover:to-blue-800 hover:shadow-2xl transition-all duration-500 text-white font-semibold px-10 py-4 rounded-lg">
-            Get Started
-          </button>
+          <Link href="/sign-in">
+            <button className="bg-gradient-to-br hover:scale-105 from-blue-800 to-blue-500 hover:from-blue-500 hover:to-blue-800 hover:shadow-2xl transition-all duration-500 text-white font-semibold px-10 py-4 rounded-lg">
+              Get Started
+            </button>
+          </Link>
         </div>
 
         <div className=" w-1/2 my-auto">

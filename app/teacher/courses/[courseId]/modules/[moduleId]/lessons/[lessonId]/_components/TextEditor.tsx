@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BlockNoteView } from "@blocknote/mantine";
 import toast from "react-hot-toast";
 import { useCreateBlockNote } from "@blocknote/react";
-import "@blocknote/react/style.css";
+import "@blocknote/mantine/style.css";
 import "./TextEditor.css";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { supabaseClient } from "../../../../../../../../../lib/supabase/supabaseClient";
@@ -114,22 +114,29 @@ export default function TextEditor({
   // }
 
   return (
-    <div className="h-3/4 overflow-hidden">
-      <div className="font-medium flex items-center justify-between">
-        Article
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit article
-            </>
-          )}
-        </Button>
+    <div className="h-full flex flex-col flex-grow">
+      <div className="sticky top-16 z-40 bg-white  rounded  overflow-hidden">
+        <div className="font-medium flex items-center justify-between bg-slate-100 py-3 px-3 rounded-md  border border-gray-200">
+          Article
+          <div className=" flex flex-row gap-5">
+            <Button onClick={toggleEdit} variant="ghost">
+              {isEditing ? (
+                <>Cancel</>
+              ) : (
+                <>
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit article
+                </>
+              )}
+            </Button>
+            <Button disabled={!isModified} onClick={saveChanges}>
+              Save
+            </Button>
+          </div>
+        </div>
       </div>
 
-      <div className="overflow-scroll">
+      <div className=" rounded-md flex-grow  ">
         <BlockNoteView
           className=""
           editor={editor}
@@ -149,12 +156,6 @@ export default function TextEditor({
             setBlocks(editor.document);
           }}
         />
-
-        <div className="flex items-center gap-x-2 mt-5">
-          <Button disabled={!isModified} onClick={saveChanges}>
-            Save
-          </Button>
-        </div>
       </div>
     </div>
   );

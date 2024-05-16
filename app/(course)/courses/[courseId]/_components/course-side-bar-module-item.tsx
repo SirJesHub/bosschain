@@ -17,6 +17,7 @@ export default function ModuleItem({
   module_id,
   moduleId,
   enrollmentData,
+  currentModuleId,
 }: {
   lessonVisibility: boolean;
   index: number;
@@ -32,6 +33,7 @@ export default function ModuleItem({
   lessonProgress?: any;
   completedLessonCount?: any;
   totalLessonCount?: any;
+  currentModuleId: number;
 }) {
   const [lessonVisibilityState, setLessonVisibilityState] =
     useState(lessonVisibility);
@@ -88,6 +90,7 @@ export default function ModuleItem({
                     lessonIndex={lesson.index}
                     title={lesson.title}
                     enrollmentData={enrollmentData}
+                    currentModuleId={currentModuleId}
                   />
                 </div>
               );
@@ -101,6 +104,7 @@ export default function ModuleItem({
                     lessonIndex={lesson.index}
                     title={lesson.title}
                     enrollmentData={enrollmentData}
+                    currentModuleId={currentModuleId}
                   />
                 </div>
               );

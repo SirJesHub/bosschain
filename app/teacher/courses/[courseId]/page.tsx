@@ -219,7 +219,7 @@ const CourseIdPage = () => {
   }
 
   return (
-    <div>
+    <div className="h-full pt-[68px]">
       {!course?.data?.[0]?.is_published && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
       )}

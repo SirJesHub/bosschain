@@ -86,17 +86,6 @@ const LessonIdPage = ({
     initializePage();
   }, [isSignedIn, user]);
 
-  // const lessonId = window.location.pathname.split("/").pop() || "";
-  // const pathParts = window.location.pathname.split("/");
-  // const courseIdIndex = pathParts.indexOf("courses") + 1;
-  // const courseId = pathParts[courseIdIndex];
-
-  // const modulePathParts = window.location.pathname.split("/");
-  // const moduleIndex = modulePathParts.indexOf("modules");
-  // const moduleId = modulePathParts[moduleIndex + 1];
-
-  // Callback function to handle title update
-
   const handleTitleUpdate = (updatedTitle: string) => {
     setLesson((prevLesson: SupabaseResponse<any[]> | undefined) => ({
       ...prevLesson!,
@@ -282,7 +271,7 @@ const LessonIdPage = ({
   }
 
   return (
-    <div>
+    <div className="pt-[68px]">
       {!lesson?.data?.[0]?.is_published && (
         <Banner label="This lesson is unpublished. It will not be visible to the students." />
       )}
@@ -327,11 +316,12 @@ const LessonIdPage = ({
           {/* <VideoForm userId={userId} courseId={courseId} /> */}
         </div>
       </div>
-      <div className=" bg-slate-100 rounded-md p-4 box-border m-6">
-        <div className="">
-          {/* <p>Is Modified: {isModified ? "true" : "false"}</p>
+      {/* <div className="rounded-md p-4 box-border m-6 h-full bg-red-600 py-10"> */}
+      <div className=" mx-6  bg-slate-100 rounded-md">
+        {/* <p>Is Modified: {isModified ? "true" : "false"}</p>
           <p>Content Type: {lessonContent.content_type}</p> */}
-          <h3 className="font-medium">Content Type</h3>
+        <div className="border gray-200 rounded-md p-3">
+          <h3 className="font-medium ">Content Type</h3>
           <Stack spacing={4} className="my-4">
             <ToggleButtonGroup
               value={lessonContent.content_type}
@@ -344,38 +334,23 @@ const LessonIdPage = ({
             </ToggleButtonGroup>
           </Stack>
         </div>
-        <div className="">
-          {/* <button
-          value={"article"}
-          onClick={() => handleContentTypeUpdate("article")}
-        >
-          article
-        </button>
-        <button
-          value={"video"}
-          onClick={() => handleContentTypeUpdate("video")}
-        >
-          video
-        </button>
-        <button value={"quiz"} onClick={() => handleContentTypeUpdate("quiz")}>
-          quiz
-        </button> */}
+        <div className="box-border m-6 min-h-[700px] flex flex-col ">
           <div>
-            {lessonContent.content_type === "article" && (
-              <div>
-                <TextEditor
-                  token={token}
-                  content={lessonContent.content}
-                  handleContentUpdate={handleContentUpdate}
-                  handleIsModified={handleIsModified}
-                  isModified={isModified}
-                />
-              </div>
-            )}
-            {lessonContent.content_type === "video" && (
-              <VideoForm userId={userId} courseId={courseId} />
-            )}
-            {lessonContent.content_type === "quiz" && (
+          {lessonContent.content_type === "article" && (
+          <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200  mt-3">
+            <TextEditor
+              token={token}
+              content={lessonContent.content}
+              handleContentUpdate={handleContentUpdate}
+              handleIsModified={handleIsModified}
+              isModified={isModified}
+            />
+          </div>
+        )}
+        {lessonContent.content_type === "video" && (
+          <VideoForm userId={userId} courseId={courseId} />
+        )}
+        {lessonContent.content_type === "quiz" && (
               <QuizComponentForm
                 initialData={{ content: lesson?.data?.[0]?.content || "" }}
                 lessonId={lessonId}

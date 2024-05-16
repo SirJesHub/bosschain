@@ -5,7 +5,7 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/react/style.css";
 import "./TextEditor.css";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { supabaseClient } from "../../../../lib/supabase/supabaseClient";
+import { supabaseClient } from "@/lib/supabase/supabaseClient";
 
 export default function TextEditor({
   content,
@@ -65,7 +65,7 @@ export default function TextEditor({
     // setBlocks()
   });
   return (
-    <div>
+    <div className="h-full w-full">
       <BlockNoteView editor={editor} editable={false} theme="light" />
     </div>
   );
