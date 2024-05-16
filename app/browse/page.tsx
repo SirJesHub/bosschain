@@ -43,13 +43,13 @@ export default function BrowsePage() {
     return <div>loading</div>;
   }
   return (
-    <div className=" mt-28">
+    <div className="mt-28 ">
       <div>
         <h1 className="ml-[10vw] text-lg font-extrabold mt-10">
           Continue Learning
         </h1>
 
-        <div className="m-10 w-[83vw] mx-auto mb-28">
+        <div className="m-10 w-[81vw] mx-auto mb-20">
           <Slider {...setting}>
             {latestAccessCourse.map((course: any) => (
               <div className="w-[340px] h-[450px]">

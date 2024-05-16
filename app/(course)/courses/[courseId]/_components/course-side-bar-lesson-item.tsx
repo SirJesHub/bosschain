@@ -10,6 +10,7 @@ export default function CourseSidebarLessonItem({
   currentLessonIndex,
   lessonIndex,
   enrollmentData,
+  currentModuleId,
 }: {
   courseId: number;
   module_id: number;
@@ -18,6 +19,7 @@ export default function CourseSidebarLessonItem({
   currentLessonIndex: number | undefined;
   lessonIndex: number;
   enrollmentData: any;
+  currentModuleId: number;
 }) {
   return (
     <div>
@@ -26,7 +28,7 @@ export default function CourseSidebarLessonItem({
       >
         <div
           className={`w-full text-xs flex flex-wrap items-center p-3 border-t-2 border-white transition-colors ${
-            currentLessonIndex == lessonIndex
+            currentLessonIndex == lessonIndex && currentModuleId == module_id
               ? "bg-blue-500 text-white font-bold"
               : "bg-gray-200 hover:bg-blue-300"
           }`}

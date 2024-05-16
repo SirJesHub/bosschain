@@ -89,8 +89,10 @@ const CoursesPage = () => {
   }
 
   return (
-    <div className="p-6">
-      <DataTable columns={columns} data={courses} />
+    <div className="pt-[69px] h-full w-full overflow-hidden">
+      <div className="p-3 h-full">
+        <DataTable columns={columns} data={courses} />
+      </div>
     </div>
   );
 };

@@ -24,7 +24,7 @@ export default function UserDashboardPage() {
   const settings = {
     dots: true,
     infinite: false,
-    speed: 800,
+    speed: 1000,
     slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
@@ -35,7 +35,7 @@ export default function UserDashboardPage() {
         breakpoint: 2300,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
           infinite: false,
           dots: true,
         },
@@ -44,7 +44,7 @@ export default function UserDashboardPage() {
         breakpoint: 1900,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
           infinite: true,
           dots: true,
         },
@@ -76,7 +76,13 @@ export default function UserDashboardPage() {
       const userEnrollment = await EnrollmentService.getAllEnrollment(userAuth);
       const latestAccessCourse =
         await EnrollmentService.getLatestAccessEnrollment(userAuth);
-      console.log("latest access course", latestAccessCourse);
+      console.log(
+        "latest access course",
+        typeof latestAccessCourse.data[5].last_access,
+      );
+
+      const currentDateISO = new Date().toISOString();
+      console.log("date", typeof currentDateISO, currentDateISO);
 
       if (userEnrollment.data) {
         setUserEnrollment(userEnrollment.data);
@@ -125,7 +131,7 @@ export default function UserDashboardPage() {
         </h1>
         <div className="m-10 w-[80vw] mx-auto grid gap-10 grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
           {userEnrollment.map((course: any) => (
-            <div className="h-[300px]">
+            <div className="h-[350px]">
               <CourseCard
                 course_id={course.course_id.course_id}
                 title={course.course_id.title}
@@ -138,6 +144,7 @@ export default function UserDashboardPage() {
           ))}
         </div>
       </div>
+      <footer className="h-[300px]"></footer>
 
       {/* <div className="h-[500px] w-[300px] bg-slate-600 ">
         <div className="h-1/2 relative">

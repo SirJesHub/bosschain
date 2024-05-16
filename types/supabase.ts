@@ -83,18 +83,21 @@ export type Database = {
           course_id: number | null;
           created_at: string;
           enrollment_id: number;
+          last_access: string | null;
           user_id: string | null;
         };
         Insert: {
           course_id?: number | null;
           created_at?: string;
           enrollment_id?: number;
+          last_access?: string | null;
           user_id?: string | null;
         };
         Update: {
           course_id?: number | null;
           created_at?: string;
           enrollment_id?: number;
+          last_access?: string | null;
           user_id?: string | null;
         };
         Relationships: [
@@ -120,7 +123,7 @@ export type Database = {
           content_type: string | null;
           created_at: string;
           description: string | null;
-          index: number | null;
+          index: number;
           is_published: boolean | null;
           lesson_id: number;
           module_id: number | null;
@@ -131,7 +134,7 @@ export type Database = {
           content_type?: string | null;
           created_at?: string;
           description?: string | null;
-          index?: number | null;
+          index: number;
           is_published?: boolean | null;
           lesson_id?: number;
           module_id?: number | null;
@@ -142,7 +145,7 @@ export type Database = {
           content_type?: string | null;
           created_at?: string;
           description?: string | null;
-          index?: number | null;
+          index?: number;
           is_published?: boolean | null;
           lesson_id?: number;
           module_id?: number | null;
@@ -202,7 +205,7 @@ export type Database = {
           course_id: number | null;
           created_at: string;
           description: string | null;
-          index: number | null;
+          index: number;
           is_published: boolean | null;
           module_id: number;
           title: string | null;
@@ -211,7 +214,7 @@ export type Database = {
           course_id?: number | null;
           created_at?: string;
           description?: string | null;
-          index?: number | null;
+          index: number;
           is_published?: boolean | null;
           module_id?: number;
           title?: string | null;
@@ -220,7 +223,7 @@ export type Database = {
           course_id?: number | null;
           created_at?: string;
           description?: string | null;
-          index?: number | null;
+          index?: number;
           is_published?: boolean | null;
           module_id?: number;
           title?: string | null;
@@ -428,6 +431,101 @@ export type Database = {
           },
         ];
       };
+      s3_multipart_uploads: {
+        Row: {
+          bucket_id: string;
+          created_at: string;
+          id: string;
+          in_progress_size: number;
+          key: string;
+          owner_id: string | null;
+          upload_signature: string;
+          version: string;
+        };
+        Insert: {
+          bucket_id: string;
+          created_at?: string;
+          id: string;
+          in_progress_size?: number;
+          key: string;
+          owner_id?: string | null;
+          upload_signature: string;
+          version: string;
+        };
+        Update: {
+          bucket_id?: string;
+          created_at?: string;
+          id?: string;
+          in_progress_size?: number;
+          key?: string;
+          owner_id?: string | null;
+          upload_signature?: string;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey";
+            columns: ["bucket_id"];
+            isOneToOne: false;
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      s3_multipart_uploads_parts: {
+        Row: {
+          bucket_id: string;
+          created_at: string;
+          etag: string;
+          id: string;
+          key: string;
+          owner_id: string | null;
+          part_number: number;
+          size: number;
+          upload_id: string;
+          version: string;
+        };
+        Insert: {
+          bucket_id: string;
+          created_at?: string;
+          etag: string;
+          id?: string;
+          key: string;
+          owner_id?: string | null;
+          part_number: number;
+          size?: number;
+          upload_id: string;
+          version: string;
+        };
+        Update: {
+          bucket_id?: string;
+          created_at?: string;
+          etag?: string;
+          id?: string;
+          key?: string;
+          owner_id?: string | null;
+          part_number?: number;
+          size?: number;
+          upload_id?: string;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey";
+            columns: ["bucket_id"];
+            isOneToOne: false;
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey";
+            columns: ["upload_id"];
+            isOneToOne: false;
+            referencedRelation: "s3_multipart_uploads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -465,6 +563,37 @@ export type Database = {
         Returns: {
           size: number;
           bucket_id: string;
+        }[];
+      };
+      list_multipart_uploads_with_delimiter: {
+        Args: {
+          bucket_id: string;
+          prefix_param: string;
+          delimiter_param: string;
+          max_keys?: number;
+          next_key_token?: string;
+          next_upload_token?: string;
+        };
+        Returns: {
+          key: string;
+          id: string;
+          created_at: string;
+        }[];
+      };
+      list_objects_with_delimiter: {
+        Args: {
+          bucket_id: string;
+          prefix_param: string;
+          delimiter_param: string;
+          max_keys?: number;
+          start_after?: string;
+          next_token?: string;
+        };
+        Returns: {
+          name: string;
+          id: string;
+          metadata: Json;
+          updated_at: string;
         }[];
       };
       search: {
