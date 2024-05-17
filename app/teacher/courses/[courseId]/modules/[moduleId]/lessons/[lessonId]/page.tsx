@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Banner } from "@/components/banner";
-import ReactJson from "react-json-view";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRoleContext } from "@/context/roleContext";
@@ -210,6 +209,13 @@ const LessonIdPage = ({
         );
         console.log("updated Content", updatedContent.data);
         setLessonContent(updatedContent.data);
+
+        if (newContentType === "quiz") {
+          setLesson((prevLesson: SupabaseResponse<any[]> | undefined) => ({
+            ...prevLesson!,
+            data: [{ ...(prevLesson?.data?.[0] ?? {}), content: "" }],
+          }));
+        }
       } else {
         // do nothing
       }
@@ -229,14 +235,36 @@ const LessonIdPage = ({
   if (isLoading) {
     // Render skeleton loading UI while data is being fetched
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-full max-w-screen-md p-8 bg-white rounded shadow-md">
-          {/* Main content area */}
-          <div className="animate-pulse">
-            {/* Placeholder for main content */}
-            <div className="h-12 mb-6 bg-gray-200 rounded"></div>
-            <div className="h-8 mb-4 bg-gray-200 rounded"></div>
-            <div className="h-96 bg-gray-200 rounded"></div>
+      <div className="pt-[68px]">
+        {!lesson?.data?.[0]?.is_published && (
+          <Banner label="This lesson is unpublished. It will not be visible to the students." />
+        )}
+        <div className="p-6 mt-6 flex flex-col md:flex-row">
+          <div className="md:w-1/2 md:pr-6">
+            <div className="flex items-center gap-x-2">
+              <div className="h-6 w-40 bg-gray-200 rounded"></div>
+              <div className="h-6 w-20 bg-gray-200 rounded"></div>
+              <div className="h-6 w-8 bg-gray-200 rounded"></div>
+            </div>
+            <div className="mt-4">
+              <div className="h-8 w-full bg-gray-200 rounded mb-4"></div>
+              <div className="h-8 w-full bg-gray-200 rounded mb-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-6 bg-slate-100 rounded-md">
+          <div className="border gray-200 rounded-md p-3">
+            <div className="h-6 w-40 bg-gray-200 rounded mb-4"></div>
+            <Stack spacing={4} className="my-4">
+              <div className="h-10 w-full bg-gray-200 rounded"></div>
+            </Stack>
+          </div>
+        </div>
+
+        <div className="box-border m-6 min-h-[700px] flex flex-col">
+          <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200 mt-3 p-6">
+            <div className="h-full w-full bg-gray-200 rounded"></div>
           </div>
         </div>
       </div>
@@ -292,7 +320,11 @@ const LessonIdPage = ({
               {lesson?.data?.[0]?.is_published ? "Unpublish" : "Publish"}
             </Button>
             <ConfirmModal onConfirm={onDeleteLesson}>
-              <Button size="sm" disabled={false}>
+              <Button
+                size="sm"
+                disabled={false}
+                className="bg-red-500 hover:bg-red-600"
+              >
                 <Trash className="h-4 w-4" />
               </Button>
             </ConfirmModal>
@@ -335,41 +367,41 @@ const LessonIdPage = ({
             </ToggleButtonGroup>
           </Stack>
         </div>
-        <div className="box-border m-6 min-h-[700px] flex flex-col ">
-          <div>
-            {lessonContent.content_type === "article" && (
-              <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200  mt-3">
-                <TextEditor
-                  token={token}
-                  content={lessonContent.content}
-                  handleContentUpdate={handleContentUpdate}
-                  handleIsModified={handleIsModified}
-                  isModified={isModified}
-                />
-              </div>
-            )}
-            {lessonContent.content_type === "video" && (
-              <VideoForm userId={userId} courseId={courseId} />
-            )}
-            {lessonContent.content_type === "quiz" && (
-              <QuizComponentForm
-                initialData={{ content: lesson?.data?.[0]?.content || "" }}
-                lessonId={lessonId}
-                token={token}
-                userId={userId}
-                onQuizContentUpdate={handleQuizContentUpdate} // Pass the callback function
-              />
-            )}
+      </div>
+
+      <div className="box-border m-6 min-h-[700px] flex flex-col ">
+        {lessonContent.content_type === "article" && (
+          <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200  mt-3">
+            <TextEditor
+              token={token}
+              content={lessonContent.content}
+              handleContentUpdate={handleContentUpdate}
+              handleIsModified={handleIsModified}
+              isModified={isModified}
+            />
           </div>
-          <div>
-            {Object.keys(parsedQuiz).length > 0 && (
-              <Quiz
-                quiz={parsedQuiz}
-                showDefaultResult={true}
-                onComplete={setQuizResult}
-              />
-            )}
-          </div>
+        )}
+        {lessonContent.content_type === "video" && (
+          <VideoForm userId={userId} courseId={courseId} />
+        )}
+        {lessonContent.content_type === "quiz" && (
+          <QuizComponentForm
+            initialData={{ content: lesson?.data?.[0]?.content || "" }}
+            lessonId={lessonId}
+            token={token}
+            userId={userId}
+            onQuizContentUpdate={handleQuizContentUpdate} // Pass the callback function
+          />
+        )}
+
+        <div>
+          {Object.keys(parsedQuiz).length > 0 && (
+            <Quiz
+              quiz={parsedQuiz}
+              showDefaultResult={true}
+              onComplete={setQuizResult}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 interface Lesson {
   lesson_id: string;
   title: string;
-  isPublished: boolean;
+  is_published: boolean;
   isFree: boolean;
 }
 
@@ -104,7 +104,7 @@ export const LessonsList = ({
                     <div
                       className={cn(
                         "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
-                        lesson.isPublished &&
+                        lesson.is_published &&
                           "bg-sky-100 border-sky-200 text-sky-700",
                       )}
                       ref={provided.innerRef}
@@ -113,7 +113,7 @@ export const LessonsList = ({
                       <div
                         className={cn(
                           "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
-                          lesson.isPublished &&
+                          lesson.is_published &&
                             "border-r-sky-200 hover:bg-sky-200",
                         )}
                         {...provided.dragHandleProps}
@@ -126,10 +126,10 @@ export const LessonsList = ({
                         <Badge
                           className={cn(
                             "bg-slate-500",
-                            lesson.isPublished && "bg-sky-700",
+                            lesson.is_published && "bg-sky-700",
                           )}
                         >
-                          {lesson.isPublished ? "Published" : "Draft"}
+                          {lesson.is_published ? "Published" : "Draft"}
                         </Badge>
                         <Pencil
                           onClick={() => onEdit(lesson.lesson_id)}

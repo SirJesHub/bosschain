@@ -122,7 +122,7 @@ const NewsPage = () => {
   };
 
   return (
-    <div className="mx-auto container px-4 py-6">
+    <div className="mx-auto container px-4 py-6" style={{ paddingTop: "6rem" }}>
       <div className="flex justify-center">
         <div className="max-w-3xl w-full">
           <div className="mb-4 flex items-center">

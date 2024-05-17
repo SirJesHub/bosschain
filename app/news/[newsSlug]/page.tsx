@@ -22,7 +22,7 @@ const NewsDetailsPage: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto container px-3 py-6">
+    <div className="mx-auto container px-3 py-6" style={{ paddingTop: "6rem" }}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <img
