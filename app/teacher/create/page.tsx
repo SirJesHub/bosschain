@@ -11,7 +11,6 @@ import { useRoleContext } from "@/context/roleContext";
 import { Role } from "@/constants/auth";
 import { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import ReactJson from "react-json-view";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { SupabaseResponse } from "@/models/requestModels";
 import { Database } from "@/types/supabase";
@@ -174,10 +173,6 @@ const CreatePage = () => {
               </Button>
 
               <br />
-
-              {/*course?.data?.map((row) => (
-                <ReactJson src={row || {}} key={row?.course_id} />
-              ))*/}
             </div>
           </form>
         </Form>

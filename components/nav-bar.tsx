@@ -1,6 +1,20 @@
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
+//   <Link
+//   href="/"
+//   className="flex items-center space-x-3 rtl:space-x-reverse h-full"
+// >
+//   <img
+//     src={process.env.NEXT_PUBLIC_COURSE_ASSETS_BASE_URL +
+//       "BossChainFinal.png"}
+//     alt="BossChain Logo"
+//     width={80} // Adjust the width as needed
+//     height={80} // Adjust the height as needed
+//     className="self-center"
+//   />
+//   </Link>
+
 export default function NavBar() {
   return (
     <>
@@ -14,6 +28,7 @@ export default function NavBar() {
               BossChain
             </span>
           </Link>
+
           <div className="pl-40 items-center md:order-3 space-x-0 md:space-x-5 rtl:space-x-reverse">
             <Link
               href="/teacher/courses"
@@ -24,7 +39,12 @@ export default function NavBar() {
             </Link>
           </div>
           <div className="pr-35 items-center md:order-4 space-x-0 md:space-x-5 rtl:space-x-reverse">
-            <UserButton afterSignOutUrl="/" />
+            {/* Fixed width container for UserButton */}
+            <div style={{ height: "30px", width: "100px" }}>
+              {" "}
+              {/* Adjust the width as needed */}
+              <UserButton afterSignOutUrl="/" />
+            </div>
           </div>
           <div
             className="pl-40 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
@@ -43,10 +63,10 @@ export default function NavBar() {
               <li>
                 <Link
                   href="/browse"
-                  className="text-white font-salsa relative hover:bg-gray-100 md:hover:bg-orange-300 md:p-5 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="text-white font-salsa relative hover:text-blue-500 md:p-5 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Browse
-                  <div className="absolute inset-x-0 bottom-0 h-5 bg-orange-300 transform origin-bottom scale-y-0 transition-transform duration-300 hover:scale-y-100 md:hover:text-blue-500" />
+                  <div className="absolute inset-x-0 bottom-0 h-5 transform origin-bottom scale-y-0 transition-transform duration-300 hover:scale-y-100 md:hover:text-blue-500" />
                 </Link>
               </li>
               <li>

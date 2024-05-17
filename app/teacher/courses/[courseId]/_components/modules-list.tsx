@@ -14,7 +14,7 @@ import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 interface Module {
   module_id: string;
   title: string;
-  isPublished: boolean;
+  is_published: boolean;
   isFree: boolean;
 }
 
@@ -104,7 +104,7 @@ export const ModulesList = ({
                     <div
                       className={cn(
                         "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
-                        module.isPublished &&
+                        module.is_published &&
                           "bg-sky-100 border-sky-200 text-sky-700",
                       )}
                       ref={provided.innerRef}
@@ -113,7 +113,7 @@ export const ModulesList = ({
                       <div
                         className={cn(
                           "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
-                          module.isPublished &&
+                          module.is_published &&
                             "border-r-sky-200 hover:bg-sky-200",
                         )}
                         {...provided.dragHandleProps}
@@ -126,10 +126,10 @@ export const ModulesList = ({
                         <Badge
                           className={cn(
                             "bg-slate-500",
-                            module.isPublished && "bg-sky-700",
+                            module.is_published && "bg-sky-700",
                           )}
                         >
-                          {module.isPublished ? "Published" : "Draft"}
+                          {module.is_published ? "Published" : "Draft"}
                         </Badge>
                         <Pencil
                           onClick={() => onEdit(module.module_id)}

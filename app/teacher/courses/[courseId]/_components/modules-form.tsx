@@ -27,7 +27,7 @@ import { ModulesList } from "./modules-list";
 interface Module {
   module_id: string;
   title: string;
-  isPublished: boolean;
+  is_published: boolean;
   isFree: boolean;
 }
 

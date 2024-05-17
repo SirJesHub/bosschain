@@ -79,11 +79,22 @@ const CoursesPage = () => {
     return <p>No courses found</p>;
   }
 
+  //role = "student";
   // If the user is not a teacher, display a message
   if (role !== "teacher") {
     return (
-      <div className="p-6 text-center">
-        <p>Sign up to be a teacher to view this page</p>
+      <div className="p-6 text-center" style={{ paddingTop: "6rem" }}>
+        <p className="text-lg font-semibold mb-4">
+          Sign up to be a teacher to view this page
+        </p>
+        <p className="text-base text-gray-600 mb-4">
+          Read our{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Becoming a Teacher Guide
+          </a>{" "}
+          and send necessary documents to this email for registration
+        </p>
+        <p className="text-base text-gray-600">BossChainSupport@gmail.com</p>
       </div>
     );
   }

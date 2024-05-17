@@ -27,7 +27,7 @@ import { LessonsList } from "./lessons-list";
 interface Lesson {
   lesson_id: string;
   title: string;
-  isPublished: boolean;
+  is_published: boolean;
   isFree: boolean;
 }
 
