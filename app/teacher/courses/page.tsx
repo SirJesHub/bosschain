@@ -66,19 +66,19 @@ const CoursesPage = () => {
     }
   };
 
-  if (!isSignedIn) {
-    return <p>Loading...</p>;
-  }
-
   // Render loading indicator while fetching courses
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (!courses.length) {
-    return <p>No courses found</p>;
+  if (!isSignedIn) {
+    return <p style={{ paddingTop: "6rem" }}>Loading...(If loading takes too long, try sign in the website again)</p>;
   }
 
+  // Render loading indicator while fetching courses
+  if (loading) {
+    return <p style={{ paddingTop: "6rem" }}>Loading...</p>;
+  }
   //role = "student";
   // If the user is not a teacher, display a message
   if (role !== "teacher") {
