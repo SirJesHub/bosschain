@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import {
   Form,
   FormControl,
@@ -57,6 +58,16 @@ export const CategoryForm = ({
         token,
       });
 
+      const course_id = parseInt(courseId);
+      const response = await CourseService.updateCourseAlgolia(
+        "category",
+        course_id,
+        undefined,
+        undefined,
+        values.category,
+      );
+
+      console.log(response);
       if (data.error) {
         console.log("[updateCourseCategory ERROR]: ", data.error);
         toast.error(data.error); // Display error message to user

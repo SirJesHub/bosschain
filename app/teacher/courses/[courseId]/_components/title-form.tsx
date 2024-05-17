@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
+import { CourseService } from "@/lib/supabase/courseRequests";
 import {
   Form,
   FormControl,
@@ -55,6 +56,16 @@ export const TitleForm = ({
         title: values.title,
         token,
       });
+
+      const course_id = parseInt(courseId);
+      const response = await CourseService.updateCourseAlgolia(
+        "title",
+        course_id,
+        values.title,
+        undefined,
+        undefined,
+      );
+      console.log(response);
 
       if (
         data.error ==

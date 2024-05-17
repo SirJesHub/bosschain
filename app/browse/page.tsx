@@ -48,11 +48,10 @@ export default function BrowsePage() {
         <h1 className="ml-[10vw] text-lg font-extrabold mt-10">
           Continue Learning
         </h1>
-
-        <div className="m-10 w-[81vw] mx-auto mb-20">
-          <Slider {...setting}>
+        {latestAccessCourse.length < 5 && (
+          <div className="m-10 w-[81vw] mx-auto mb-20 h-[420px] flex gap 20 ">
             {latestAccessCourse.map((course: any) => (
-              <div className="w-[340px] h-[450px]">
+              <div className="w-[340px] h-[450px] px-3">
                 <FullDescriptionCourseCard
                   course_id={course.course_id.course_id}
                   title={course.course_id.title}
@@ -63,8 +62,27 @@ export default function BrowsePage() {
                 />
               </div>
             ))}
-          </Slider>
-        </div>
+          </div>
+        )}
+
+        {latestAccessCourse.length > 5 && (
+          <div className="m-10 w-[81vw] mx-auto mb-20">
+            <Slider {...setting}>
+              {latestAccessCourse.map((course: any) => (
+                <div className="w-[340px] h-[450px]">
+                  <FullDescriptionCourseCard
+                    course_id={course.course_id.course_id}
+                    title={course.course_id.title}
+                    category={course.course_id.category}
+                    description={course.course_id.description}
+                    cover_image={course.course_id.cover_image}
+                    enrollment_id={course.enrollment_id}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+        )}
       </div>
       <TrendingCourse />
       <Search />

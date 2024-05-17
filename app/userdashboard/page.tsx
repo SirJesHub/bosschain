@@ -76,13 +76,8 @@ export default function UserDashboardPage() {
       const userEnrollment = await EnrollmentService.getAllEnrollment(userAuth);
       const latestAccessCourse =
         await EnrollmentService.getLatestAccessEnrollment(userAuth);
-      console.log(
-        "latest access course",
-        typeof latestAccessCourse.data[5].last_access,
-      );
 
       const currentDateISO = new Date().toISOString();
-      console.log("date", typeof currentDateISO, currentDateISO);
 
       if (userEnrollment.data) {
         setUserEnrollment(userEnrollment.data);
@@ -90,6 +85,7 @@ export default function UserDashboardPage() {
       }
 
       if (latestAccessCourse.data) {
+        console.log("88", latestAccessCourse.data.length);
         setLatestAccessCourse(latestAccessCourse.data);
       }
       setIsLoading(false);
@@ -102,28 +98,30 @@ export default function UserDashboardPage() {
   }
   return (
     <div className="pt-[60px] w-screen pb-[120px]">
-      <div>
-        <h1 className="ml-[10vw] text-lg font-extrabold mt-10">
-          Continue Learning
-        </h1>
+      {latestAccessCourse.length > 0 && (
+        <div>
+          <h1 className="ml-[10vw] text-lg font-extrabold mt-10">
+            Continue Learning
+          </h1>
 
-        <div className="m-10 w-[83vw] mx-auto mb-28">
-          <Slider {...settings}>
-            {latestAccessCourse.map((course: any) => (
-              <div className="w-[340px] h-[450px]">
-                <FullDescriptionCourseCard
-                  course_id={course.course_id.course_id}
-                  title={course.course_id.title}
-                  category={course.course_id.category}
-                  description={course.course_id.description}
-                  cover_image={course.course_id.cover_image}
-                  enrollment_id={course.enrollment_id}
-                />
-              </div>
-            ))}
-          </Slider>
+          <div className="m-10 w-[83vw] mx-auto mb-28">
+            <Slider {...settings}>
+              {latestAccessCourse.map((course: any) => (
+                <div className="w-[340px] h-[450px]">
+                  <FullDescriptionCourseCard
+                    course_id={course.course_id.course_id}
+                    title={course.course_id.title}
+                    category={course.course_id.category}
+                    description={course.course_id.description}
+                    cover_image={course.course_id.cover_image}
+                    enrollment_id={course.enrollment_id}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
         </div>
-      </div>
+      )}
 
       <div>
         <h1 className="ml-[10vw] text-lg font-extrabold mt-10">

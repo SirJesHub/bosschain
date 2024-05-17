@@ -337,21 +337,21 @@ const LessonIdPage = ({
         </div>
         <div className="box-border m-6 min-h-[700px] flex flex-col ">
           <div>
-          {lessonContent.content_type === "article" && (
-          <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200  mt-3">
-            <TextEditor
-              token={token}
-              content={lessonContent.content}
-              handleContentUpdate={handleContentUpdate}
-              handleIsModified={handleIsModified}
-              isModified={isModified}
-            />
-          </div>
-        )}
-        {lessonContent.content_type === "video" && (
-          <VideoForm userId={userId} courseId={courseId} />
-        )}
-        {lessonContent.content_type === "quiz" && (
+            {lessonContent.content_type === "article" && (
+              <div className="h-full flex-grow bg-slate-100 rounded-md border border-t-0 border-gray-200  mt-3">
+                <TextEditor
+                  token={token}
+                  content={lessonContent.content}
+                  handleContentUpdate={handleContentUpdate}
+                  handleIsModified={handleIsModified}
+                  isModified={isModified}
+                />
+              </div>
+            )}
+            {lessonContent.content_type === "video" && (
+              <VideoForm userId={userId} courseId={courseId} />
+            )}
+            {lessonContent.content_type === "quiz" && (
               <QuizComponentForm
                 initialData={{ content: lesson?.data?.[0]?.content || "" }}
                 lessonId={lessonId}

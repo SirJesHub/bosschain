@@ -12,7 +12,7 @@ export default function WeekProgressbar({
   return (
     <div className="mt-5">
       <div className="flex justify-between text-sm mb-2">
-        <p>{`${(completedLessons / totalLessons) * 100}% completed `}</p>
+        <p>{`${Math.round((completedLessons / totalLessons) * 100)}% completed `}</p>
         <p>{`${completedLessons}/${totalLessons} lessons`}</p>
       </div>
 

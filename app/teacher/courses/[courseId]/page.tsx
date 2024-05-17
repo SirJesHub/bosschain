@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import toast from "react-hot-toast";
+import { CourseService } from "@/lib/supabase/courseRequests";
 
 const CourseIdPage = () => {
   const { role } = useRoleContext();
@@ -81,6 +82,7 @@ const CourseIdPage = () => {
         { ...(prevCourse?.data?.[0] ?? {}), description: updatedDescription },
       ],
     }));
+    // update algolia
   };
 
   const handleCategoryUpdate = (updatedCategory: string) => {
@@ -88,6 +90,7 @@ const CourseIdPage = () => {
       ...prevCourse!,
       data: [{ ...(prevCourse?.data?.[0] ?? {}), category: updatedCategory }],
     }));
+    // update algilia
   };
 
   const saveFile = (event: ChangeEvent<HTMLInputElement>) => {

@@ -216,25 +216,59 @@ const insertCourseAlgolia = async (
   created_at: string,
   title: string | null,
   description: string | null,
-  instructor_id: string | null,
+  category: string | null,
 ): Promise<any> => {
   const algolia = algoliasearch(
-    "4EIO37Y3KT",
-    "4f7dc9c296db73db48a82ab8dc9f190b",
+    "PZID4D0A25",
+    "80012d7ed8978c338ca0f43ef9080d46",
   );
   const course_data = {
     objectID: courseId,
     created_at: created_at,
-    description: description,
-    instructor_id: instructor_id,
-    title: title,
+    desc: description,
+    category: category,
+    name: title,
   };
   if (course_data) {
-    const indexAL = algolia.initIndex("bosschain");
+    const indexAL = algolia.initIndex("supabase");
     const result = await indexAL.saveObject(course_data);
     console.log("Result from insertAlgolia", result);
   } else {
     console.log("[insertCourse ERROR]: ");
+  }
+};
+
+const updateCourseAlgolia = async (
+  attribute: string,
+  courseId: number,
+  title?: string,
+  description?: string,
+  category?: string,
+): Promise<any> => {
+  const algolia = algoliasearch(
+    "PZID4D0A25",
+    "80012d7ed8978c338ca0f43ef9080d46",
+  );
+  const indexAL = algolia.initIndex("supabase");
+
+  if (attribute === "description") {
+    const result = await indexAL.partialUpdateObject({
+      desc: description,
+      objectID: courseId,
+    });
+    console.log("Result from insertAlgolia", result);
+  } else if (attribute === "title") {
+    const result = await indexAL.partialUpdateObject({
+      name: title,
+      objectID: courseId,
+    });
+    console.log("Result from insertAlgolia", result);
+  } else if (attribute === "category") {
+    const result = await indexAL.partialUpdateObject({
+      category: category,
+      objectID: courseId,
+    });
+    console.log("Result from insertAlgolia", result);
   }
 };
 
@@ -463,4 +497,5 @@ export const CourseService = {
   getCoverImage,
   updateProgress,
   getAllEnrollment,
+  updateCourseAlgolia,
 };
