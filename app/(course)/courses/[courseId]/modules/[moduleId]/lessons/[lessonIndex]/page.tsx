@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Wildlife_Sample from "@/videos/Wildlife_Sample.mp4.json";
 import MuxUploader from "@mux/mux-uploader-react";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
+import Quiz from "react-quiz-component";
 
 export default function page({
   params: { courseId, moduleId, lessonIndex },
@@ -24,6 +25,7 @@ export default function page({
   const { isLoaded, userId: maybeUserId, sessionId, getToken } = useAuth();
   const userId = maybeUserId || "";
   const [userAuth, setUserAuth] = useState<any>();
+  const [parsedQuiz, setParsedQuiz] = useState<object>();
 
   useEffect(() => {
     const pageInitialized = async () => {
@@ -55,6 +57,14 @@ export default function page({
         moduleId,
         lessonIndex,
       );
+      console.log(lessonContent.data.content);
+
+      try {
+        setParsedQuiz(JSON.parse(lessonContent.data.content));
+        console.log(typeof parsedQuiz);
+      } catch (error) {
+        console.error("Error parsing quiz JSON:", error);
+      }
 
       if (lessonContent.data) {
         setContent(lessonContent.data.content);
@@ -66,6 +76,16 @@ export default function page({
     };
     pageInitialized();
   }, []);
+
+  const setQuizResult = (obj: any) => {
+    console.log(obj.numberOfCorrectAnswers / obj.numberOfQuestions);
+
+    let quizScorePercent = obj.numberOfCorrectAnswers / obj.numberOfQuestions;
+
+    if (quizScorePercent >= 0.7) {
+    }
+    // YOUR LOGIC GOES HERE
+  };
 
   return (
     <div className="h-full flex flex-col w-full">
@@ -96,6 +116,16 @@ export default function page({
             </div>
           </div>
         )}
+        {contentType === "quiz" && (
+          <div className="flex flex-col items-center justify-center h-96 pt-10">
+            <Quiz
+              quiz={parsedQuiz}
+              showDefaultResult={true}
+              onComplete={setQuizResult}
+            />
+          </div>
+        )}
+
         {contentType === "video" && (
           <div className="pr-3 pl-4 pt-2">
             <div className="border-gray-200 border-2 rounded-md">

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Banner } from "@/components/banner";
-import ReactJson from "react-json-view";
 import { EnrollmentService } from "@/lib/supabase/enrollmentRequests";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRoleContext } from "@/context/roleContext";
@@ -151,14 +150,26 @@ const ModuleIdPage = () => {
   if (isLoading) {
     // Render skeleton loading UI while data is being fetched
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-full max-w-screen-md p-8 bg-white rounded shadow-md">
-          {/* Main content area */}
-          <div className="animate-pulse">
-            {/* Placeholder for main content */}
-            <div className="h-12 mb-6 bg-gray-200 rounded"></div>
-            <div className="h-8 mb-4 bg-gray-200 rounded"></div>
-            <div className="h-96 bg-gray-200 rounded"></div>
+      <div
+        className="min-h-screen bg-gray-100 pt-[85px]"
+        style={{ paddingRight: "200px" }}
+      >
+        <div className="py-10 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="col-span-2">
+                <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-8 bg-gray-200 rounded"></div>
+                    <div className="h-12 bg-gray-200 rounded"></div>
+                    <div className="h-80 bg-gray-200 rounded"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="hidden lg:block">
+                {/* Mock boxes to mimic the layout */}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -187,7 +198,11 @@ const ModuleIdPage = () => {
               {module?.data?.[0]?.is_published ? "Unpublish" : "Publish"}
             </Button>
             <ConfirmModal onConfirm={onDeleteModule}>
-              <Button size="sm" disabled={false}>
+              <Button
+                size="sm"
+                disabled={false}
+                className="bg-red-500 hover:bg-red-600"
+              >
                 <Trash className="h-4 w-4" />
               </Button>
             </ConfirmModal>
@@ -214,13 +229,13 @@ const ModuleIdPage = () => {
                 {
                   lesson_id: "1",
                   title: "Module 1",
-                  isPublished: true,
+                  is_published: true,
                   isFree: false,
                 },
                 {
                   lesson_id: "2",
                   title: "Module 2",
-                  isPublished: false,
+                  is_published: false,
                   isFree: true,
                 },
                 // Add more modules as needed
